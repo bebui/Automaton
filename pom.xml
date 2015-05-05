@@ -29,9 +29,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git@github.com:chocoteam/choco3.git</connection>
-        <url>scm:git:git://github.com/chocoteam/choco3</url>
-        <developerConnection>scm:git:git@github.com:chocoteam/choco3.git</developerConnection>
+        <connection>scm:git:git@github.com:bebui/Automaton.git</connection>
+        <url>scm:git:git://github.com/bebui/Automaton</url>
+        <developerConnection>scm:git:git@github.com:bebui/Automaton.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
