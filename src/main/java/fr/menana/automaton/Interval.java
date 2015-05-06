@@ -61,9 +61,19 @@ public class Interval implements Comparable<Interval>,Cloneable {
         return false;
     }
 
-    public String toString()
-    {
-        return "["+this.min+(this.max==this.min ? "]" : ","+this.max+"]");
+    public String toString() {
+        String min = Integer.toString(this.min);
+        String max = Integer.toString(this.max);
+        if (this.min == Integer.MIN_VALUE)
+            min = "-"+Character.toString('\u221e');
+        else if (this.min == Integer.MAX_VALUE)
+            min = "-"+Character.toString('\u221e');
+        if (this.max == Integer.MIN_VALUE)
+            max = "-"+Character.toString('\u221e');
+        if (this.max == Integer.MAX_VALUE)
+            max = Character.toString('\u221e');
+
+        return "["+min+(this.max==this.min ? "]" : ","+max+"]");
     }
 
     public Interval intersection(Interval o) {
