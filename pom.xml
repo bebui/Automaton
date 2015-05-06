@@ -95,6 +95,35 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.10.b1</version>
+                <configuration>
+                    <header>src/etc/header.txt</header>
+                    <failIfMissing>false</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <properties>
+                        <project>Automaton</project>
+                        <owner>Julien Menana</owner>
+                        <email>julien@menana.fr</email>
+                        <year>2015</year>
+                    </properties>
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
+                    <headerDefinitions>
+                        <headerDefinition>src/etc/old.xml</headerDefinition>
+                    </headerDefinitions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
