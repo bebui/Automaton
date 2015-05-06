@@ -26,6 +26,13 @@ import java.util.List;
  * Created by Julien Menana on 02/05/2015.
  */
 public class Util {
+
+    /**
+     * Construct the powerset of a given set
+     * @param list the list of elements
+     * @param <T> the type of the elements
+     * @return the list of all the subsets that can be constructed from the given set
+     */
     public static <T> List<List<T>> powerset(Collection<T> list) {
         List<List<T>> ps = new ArrayList<List<T>>();
         ps.add(new ArrayList<T>());
@@ -44,8 +51,14 @@ public class Util {
         return ps;
     }
 
+    /**
+     * A comparator to sort list in descending size order
+     */
     public static ListSizeComparator listSizeComparator =  new ListSizeComparator();
 
+    /**
+     * A comparator to sort list in descending size order
+     */
     public static class ListSizeComparator implements Comparator<List> {
 
         public int compare(List o1, List o2) {
@@ -53,11 +66,16 @@ public class Util {
         }
     }
 
-    public static boolean isInteger(String s) {
-        return isInteger(s,10);
+    /**
+     * Checks if a given {@link java.lang.String} is an integer
+     * @param string the   {@link java.lang.String} to check
+     * @return <code>true</code>  if and only if the given {@link java.lang.String} is an integer
+     */
+    public static boolean isInteger(String string) {
+        return isInteger(string,10);
     }
 
-    public static boolean isInteger(String s, int radix) {
+    private static boolean isInteger(String s, int radix) {
         if(s.isEmpty()) return false;
         for(int i = 0; i < s.length(); i++) {
             if(i == 0 && s.charAt(i) == '-') {

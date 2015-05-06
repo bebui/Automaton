@@ -24,18 +24,41 @@ import java.util.*;
  */
 public class State  {
 
+    /**
+     * The index of this {@link fr.menana.automaton.State} in the {@link fr.menana.automaton.Automaton}
+     */
     int index;
+
+    /**
+     *  Indicates if this {@link fr.menana.automaton.State} is the initial state of the {@link fr.menana.automaton.Automaton}
+     */
     boolean initial;
+
+    /**
+     * Inidicates if this {@link fr.menana.automaton.State} is an accepting state
+     */
     boolean accept;
 
+    /**
+     * Structure that map all destination {@link fr.menana.automaton.State} to its {@link fr.menana.automaton.Transition}
+     */
     Map<State,Transition> transitions;
 
+    /**
+     * Construts a new {@link fr.menana.automaton.State}
+     */
     public State() {
         this.transitions = new HashMap<State, Transition>();
         this.initial = false;
         this.accept = false;
     }
 
+    /**
+     * Check if a given word can be read from this {@link fr.menana.automaton.State}
+     * @param idx the start index in the word
+     * @param word the word being read
+     * @return <code>true</code> if and only if the word ends on an accepting {@link fr.menana.automaton.State}
+     */
     public boolean run(int idx, int[] word) {
         if (idx == word.length)
             return this.accept;
@@ -52,17 +75,22 @@ public class State  {
         return ret;
     }
 
-    public boolean addTransition(Transition tr)
+    /**
+     * Add a {@link fr.menana.automaton.Transition} to this {@link fr.menana.automaton.State}
+     * @param transition the {@link fr.menana.automaton.Transition} to add
+     * @return <code>true</code> if and only if this transition does not contains value already used by other transition from this state
+     */
+    public boolean addTransition(Transition transition)
     {
 
         boolean intersect = false;
-        if (tr.values == null) {
-            this.addToTransitionMap(tr);
+        if (transition.values == null) {
+            this.addToTransitionMap(transition);
             return intersect;
         }
         for (Transition t : transitions.values())
-            intersect |= tr.values.intersects(t.values);
-        this.addToTransitionMap(tr);
+            intersect |= transition.values.intersects(t.values);
+        this.addToTransitionMap(transition);
         return intersect;
     }
 
@@ -83,12 +111,26 @@ public class State  {
         }
     }
 
+    /**
+     * Returns the map of {@link fr.menana.automaton.Transition}
+     * @return a map of {@link fr.menana.automaton.Transition}
+     */
     public Map<State,Transition> getTransitions() {
         return transitions;
     }
+
+    /**
+     * Checks if this {@link fr.menana.automaton.State} is the initial {@link fr.menana.automaton.State} of the {@link fr.menana.automaton.Automaton}
+     * @return <code>true</code> if and only if this {@link fr.menana.automaton.State} is the initial {@link fr.menana.automaton.State} of the {@link fr.menana.automaton.Automaton}
+     */
     public boolean isInitial() {
         return initial;
     }
+
+    /**
+     * Checks if this {@link fr.menana.automaton.State} is an accepting{@link fr.menana.automaton.State} of the {@link fr.menana.automaton.Automaton}
+     * @return  <code>true</code> if and only if this {@link fr.menana.automaton.State} is an accepting {@link fr.menana.automaton.State} of the {@link fr.menana.automaton.Automaton}
+     */
     public boolean isAccept() {
         return accept;
     }
@@ -99,14 +141,22 @@ public class State  {
         return (initial?"Q":"q")+index+(accept?"*":"");
     }
 
-    public static boolean hasAcceptingState(Collection<State> states) {
+    /**
+     * Checks if a set of {@link fr.menana.automaton.State} contains an accepting state
+     * @param states a set of {@link fr.menana.automaton.State}
+     * @return <code>true</code> if and only if at least one of the given {@link fr.menana.automaton.State} is an accepting state
+     */
+    static boolean hasAcceptingState(Collection<State> states) {
         for (State s : states)
             if (s.accept)
                 return true;
         return false;
     }
 
-
+    /**
+     * Returns the index of this {@link fr.menana.automaton.State} in the containing {@link fr.menana.automaton.Automaton}
+     * @return the index of this {@link fr.menana.automaton.State}
+     */
     public int getIndex() {
         return index;
     }

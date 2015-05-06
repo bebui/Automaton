@@ -20,14 +20,30 @@ package fr.menana.automaton;
 import java.util.*;
 
 /**
+ * This class represent an interval of integers.
+ * It can be manipulated using the given primitives
  * Created by Julien Menana on 01/05/2015.
  */
 public class Interval implements Comparable<Interval>,Cloneable {
 
+    /**
+     * The lower bound of the interval
+     */
     int min;
+
+    /**
+     * The upper bound of the interval
+     */
     int max;
 
 
+    /**
+     * Constructs a new {@link fr.menana.automaton.Interval} between a lower and an upper bound.
+     * Bounds are included in the {@link fr.menana.automaton.Interval}
+     *
+     * @param min the lower bound
+     * @param max the upper bound
+     */
     public Interval(int min, int max)
     {
         this.min = min;
@@ -39,20 +55,36 @@ public class Interval implements Comparable<Interval>,Cloneable {
         }
     }
 
+    /**
+     * Checks if this {@link fr.menana.automaton.Interval} contains a given integer value
+     * @param value the value to be checked
+     * @return <code>true</code> if and only if the value belongs to this {@link fr.menana.automaton.Interval}
+     */
     public boolean contains(int value)
     {
         return value >= this.min && value <= this.max;
     }
+
+    /**
+     * Checks if this {@link fr.menana.automaton.Interval} contains the given {@link fr.menana.automaton.Interval}
+     * @param value the {@link fr.menana.automaton.Interval} to be checked
+     * @return <code>true</code> if and only if the {@link fr.menana.automaton.Interval} is included in this {@link fr.menana.automaton.Interval}
+     */
     public boolean contains(Interval value)
     {
         return this.contains(value.min) && this.contains(value.max) ||
                 this.equals(value);
     }
 
-    public boolean intersects(Interval o) {
-        if (o == null)
+    /**
+     * Checks if a given {@link fr.menana.automaton.Interval} intersects with this {@link fr.menana.automaton.Interval}
+     * @param interval the other {@link fr.menana.automaton.Interval}
+     * @return <code>true</code> if and only if the two intervals intersect
+     */
+    public boolean intersects(Interval interval) {
+        if (interval == null)
             return false;
-        return !(this.max < o.min || o.max < this.min);
+        return !(this.max < interval.min || interval.max < this.min);
 
     }
 
@@ -93,13 +125,22 @@ public class Interval implements Comparable<Interval>,Cloneable {
         return "["+min+(this.max==this.min ? "]" : ","+max+"]");
     }
 
-    public Interval intersection(Interval o) {
-        if (! intersects(o))
+    /**
+     * Returns the intersection of this {@link fr.menana.automaton.Interval} with a given {@link fr.menana.automaton.Interval}
+     * @param interval the other {@link fr.menana.automaton.Interval}
+     * @return a new {@link fr.menana.automaton.Interval} if and only if the intersection is not empty, null otherwise.
+     */
+    public Interval intersection(Interval interval) {
+        if (! intersects(interval))
             return null;
-        Interval ret = new Interval(Math.max(this.min,o.min),Math.min(this.max, o.max));
+        Interval ret = new Interval(Math.max(this.min,interval.min),Math.min(this.max, interval.max));
         return ret;
     }
 
+    /**
+     * Returns the complement of this {@link fr.menana.automaton.Interval} in [|Integer.MIN_VALUE,Integer.MAX_VALUE|]
+     * @return a list of {@link fr.menana.automaton.Interval}
+     */
     public List<Interval> complement()
     {
         List<Interval> out = new ArrayList<>(2);
@@ -125,82 +166,6 @@ public class Interval implements Comparable<Interval>,Cloneable {
         } catch (CloneNotSupportedException e) {}
         return clone;
     }
-
-
-
-    public static void main(String[] args) {
-        IntervalSet set = new IntervalSet();
-
-        set.add(1, 4,7);
-
-        System.out.println(set);
-
-        IntervalSet set2 = new IntervalSet();
-        set2.add(IntervalSet.ALL);
-
-        System.out.println(set2);
-
-        System.out.println(set.intersection(set2));
-        System.out.println(set2.intersection(set));
-
-
-
-       /* for (int i = 0 ; i <= 10;++i)
-            set2.add(i);
-
-        for (int i = 20 ; i <= 30;++i)
-            set2.add(i);
-
-        for (int i = 40 ; i <= 50;++i)
-            set2.add(i);
-        for (int i = 60 ; i <= 70;++i)
-            set2.add(i);
-
-
-
-        //set2.add(new fr.menana.automaton.Interval(0, 10));
-       // set2.add(new fr.menana.automaton.Interval(20,30));
-      //  set2.add(new fr.menana.automaton.Interval(40,50));
-     //
-     //   System.transitions.println(set2);
-
-        set2.add(new fr.menana.automaton.Interval(55, 200));
-        //set2.add(new fr.menana.automaton.Interval(29, 100));
-       // set2.add(new fr.menana.automaton.Interval(Integer.MIN_VALUE,-2));
-       // set2.add(new fr.menana.automaton.Interval(15,19));
-
-        set2.remove(1);
-        for (int i = 40 ; i <= 50 ; ++i)
-            set2.remove(i);
-        System.out.println(set2);
-
-        fr.menana.automaton.IntervalSet set = new fr.menana.automaton.IntervalSet();
-
-        set.add(new fr.menana.automaton.Interval(5,25));
-        set.add(new fr.menana.automaton.Interval(35,40));
-        set.add(new fr.menana.automaton.Interval(-1, 2));
-       // set.add(new fr.menana.automaton.Interval(-100, 53));
-        //System.out.println(set);
-
-        //System.out.println(set.intersection(set2));
-        //System.out.println(set);
-
-        System.out.println();
-        System.out.println("######");
-        System.out.println(set);
-        System.out.println(set2);
-
-
-        System.out.println(fr.menana.automaton.IntervalSet.union(Arrays.asList(set, set2)));  */
-
-
-
-
-
-
-    }
-
-
 
 
 }
