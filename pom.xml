@@ -7,6 +7,7 @@
     <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>${project.groupId}:${project.artifactId}</name>
+    <url>https://github.com/bebui/Automaton</url>
 
     <description>
         Automaton is a Free and Open-Source Library dedicated to create and manipulate determinist and non-deterministic finite automaton.
