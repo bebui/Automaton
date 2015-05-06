@@ -2,10 +2,11 @@ package fr.menana.automaton;
 
 import fr.menana.automaton.regexp.RegExpParser;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
-import java.util.Random;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by julien on 01/05/2015.
@@ -53,7 +54,7 @@ public class Automaton implements Cloneable {
         this.setAccept(s,true);
     }
     public void setAccept(State s,boolean accept) {
-        this.acceptIndexes.set(s.index,accept);
+        this.acceptIndexes.set(s.index, accept);
         s.accept = accept;
     }
 
@@ -163,6 +164,59 @@ public class Automaton implements Cloneable {
         return clone;
 
 
+    }
+
+    public void toDotty(String f) {
+        String s = this.toDot();
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(f)));
+            bw.write(s);
+            bw.close();
+        } catch (IOException e) {
+// System.err.println("Unable to write dotty file " + f);
+        }
+    }
+    public String toDot() {
+        StringBuilder b = new StringBuilder("digraph Automaton {\n");
+        b.append(" rankdir = LR;\n");
+        List<State> states = this.getStates();
+// setStateNumbers(states);
+        for (State s : states) {
+            int idx = s.getIndex();
+            b.append(" ").append(idx);
+            if (s.isAccept())
+                b.append(" [shape=doublecircle];\n");
+            else
+                b.append(" [shape=circle];\n");
+            if (s.isInitial()) {
+                b.append(" initial [shape=plaintext,label=\"\"];\n");
+                b.append(" initial -> ").append(idx).append("\n");
+            }
+            for (Transition t : s.getTransitions().values()) {
+                b.append(" ").append(idx);
+                appendDot(t, b);
+            }
+        }
+        return b.append("}\n").toString();
+    }
+    private void appendDot(Transition t, StringBuilder b) {
+        int destIdx = t.dest.getIndex();
+        b.append(" -> ").append(destIdx).append(" [label=\"");
+        if (t.values == null && t.hasEpsilon())
+            b.append("{eps}");
+        else {
+            b.append("{");
+                for (Interval i : t.getIntervals()) {
+                    b.append(i);
+                    b.append(",");
+                }
+            if (b.charAt(b.length()-1) == ',')
+                b.deleteCharAt(b.length()-1);
+
+            b.append("}");
+
+        }
+        b.append("\"]\n");
     }
 
 
