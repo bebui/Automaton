@@ -1,5 +1,7 @@
 package fr.menana.automaton;
 
+import fr.menana.automaton.regexp.RegExpParser;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -26,6 +28,11 @@ public class Automaton implements Cloneable {
         this.acceptIndexes = new BitSet();
         this.deterministic = true;
     }
+
+    public List<State> getStates() {
+        return states;
+    }
+
 
     public State addState() {
         State s = new State();
@@ -97,7 +104,7 @@ public class Automaton implements Cloneable {
 
     public boolean run(int... word)
     {
-        return this.getInitial().run(0,word);
+        return this.getInitial().run(0, word);
     }
 
     public Automaton determinize()
@@ -114,6 +121,10 @@ public class Automaton implements Cloneable {
     }
 
     public Automaton concatenate(Automaton other) { return Operation.concatenate(this, other);}
+
+    public Automaton union(Automaton other) { return Operation.union(this, other);}
+
+    public Automaton complement() { return Operation.complement(this);}
 
 
     public Automaton clone() {
@@ -154,6 +165,7 @@ public class Automaton implements Cloneable {
 
     }
 
+
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         for (State s : states) {
@@ -163,93 +175,20 @@ public class Automaton implements Cloneable {
         return buffer.toString();
     }
 
+    public static Automaton nfaFromString(String regexp) {
+        return new RegExpParser(regexp).parse().toNFA();
+    }
+    public static Automaton dfaFromString(String regexp) {
+        return nfaFromString(regexp).minimize();
+    }
+
 
     public static void main(String[] args) {
-        Automaton auto = new Automaton();
-        State a = auto.addState();
-        State b = auto.addState();
-        State c = auto.addState();
-        State d = auto.addState();
-        State e = auto.addState();
-        State f = auto.addState();
-        State g = auto.addState();
-        State h = auto.addState();
-
-        auto.setInitial(a);
-
-        auto.addTransition(a, b, 1);
-        auto.addTransition(a, h, 0);
-
-
-        auto.addTransition(b, a, 1);
-        auto.addTransition(b, h, 0);
-
-        auto.addTransition(h, c, 0,1);
-
-        auto.addTransition(c, f, 1);
-        auto.addTransition(c, e, 0);
-
-        auto.addTransition(e, f, 0);
-        auto.addTransition(e, g, 1);
-
-        auto.addTransition(g, g, 0);
-        auto.addTransition(g, f, 1);
-
-         auto.addTransition(f, f, 0, 1);
-
-
-
-        auto.setAccept(g);
-        auto.setAccept(f);
-
-        Automaton auto2 = auto.revert();
-        Automaton auto3 = auto.minimize();
-
-        Random r = new Random();
-        int count = 0;
-        for (long  i = 0; i < 100000; ++i)
-        {
-            String s = Integer.toBinaryString(r.nextInt());
-            String[] tmp = s.split("");
-            int size = r.nextInt(tmp.length);
-            int[] word = new int[size];
-            for (int k = 0 ; k < size ; ++k) {
-                word[k] = Integer.parseInt(tmp[k]);
-
-            }
-
-             if (auto.run(word) != auto3.run(word))
-                 System.out.println("PB");
-
-        }
-        System.out.println(auto3);
+        Automaton auto =  dfaFromString("(1|3)*");
 
 
         System.out.println(auto);
-
-
-        // auto.setAccept(h);
-
-        //System.out.println(auto.revert().determinize().revert().determinize());
-
-
-       /* auto = new fr.menana.automaton.Automaton();
-        fr.menana.automaton.State s0 = auto.addState();
-        fr.menana.automaton.State s1 = auto.addState();
-        fr.menana.automaton.State s2 = auto.addState();
-
-        auto.setInitial(s0);
-        auto.setAccept(s2);
-
-        auto.addEpsilonTransition(s0, s1);
-
-        auto.addTransition(s1, s1, 1);
-        auto.addTransition(s1, s2, 0);
-
-
-        System.out.println(auto);
-
-        System.out.println(auto.determinize());*/
+        System.out.println(auto.complement());
 
 
 
@@ -257,7 +196,4 @@ public class Automaton implements Cloneable {
     }
 
 
-    public List<State> getStates() {
-        return states;
-    }
 }

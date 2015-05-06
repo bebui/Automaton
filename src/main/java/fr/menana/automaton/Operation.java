@@ -1,5 +1,7 @@
 package fr.menana.automaton;
 
+import fr.menana.automaton.regexp.RegExpParser;
+
 import java.util.*;
 
 /**
@@ -263,13 +265,60 @@ public class Operation {
         return out;
     }
 
-    public static void main(String[] args) {
-        Set<Interval> set = new TreeSet<>();
-        set.add(new Interval(0,0));
-        set.add(new Interval(0,1));
-     //   set.add(new fr.menana.automaton.Interval(1,1));
+    public static Automaton union(Automaton first, Automaton second) {
+        Automaton out = first.clone();
+        Map<State, State> map = new HashMap<State, State>();
+        for (State s : second.getStates()) {
+            map.put(s, out.addState());
+        }
+        for (State s : second.getStates()) {
+            for (Transition tr : s.getTransitions().values()) {
+                if (tr.values != null) {
+                    out.addTransition(map.get(tr.orig),map.get(tr.dest),tr.values.clone());
+                }
+                if (tr.hasEpsilon())
+                    out.addEpsilonTransition(map.get(tr.orig),map.get(tr.dest));
+            }
+        }
+        for (State s : second.getAcceptList()) {
+            out.setAccept(map.get(s));
+        }
+        State init = out.addState();
+        out.addEpsilonTransition(init,out.getInitial());
+        out.addEpsilonTransition(init, map.get(second.getInitial()));
+        out.setInitial(init);
+        return out;
+    }
 
-        System.out.println(getDisjunction(set));
+    public static Automaton complement(Automaton auto) {
+        Automaton out = auto.clone();
+        State poubelle = out.addState();
+        Map<State,IntervalSet> toAdd = new HashMap<>();
+        for (State s : out.getStates()) {
+            IntervalSet set = IntervalSet.ALL.clone();
+            for (Transition tr : s.transitions.values()) {
+                if (tr.values != null) {
+                    set = set.intersection(tr.values.complement());
+                }
+            }
+            out.setAccept(s,!s.accept);
+            toAdd.put(s,set);
+        }
+        for (Map.Entry<State,IntervalSet> couple : toAdd.entrySet()) {
+            out.addTransition(couple.getKey(),poubelle,couple.getValue());
+        }
+        out.setAccept(poubelle);
+        return out;
+    }
+
+
+    public static void main(String[] args) {
+        Automaton a = new RegExpParser("10").parse().toNFA().minimize();
+        Automaton b = new RegExpParser("50").parse().toNFA().minimize();
+
+        System.out.println(a);
+        System.out.println(b);
+        System.out.println(complement(a).minimize());
 
 
 
