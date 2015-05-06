@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by julien on 05/05/2015.
+ * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpOr extends RegExp {
     private RegExp thisOne;

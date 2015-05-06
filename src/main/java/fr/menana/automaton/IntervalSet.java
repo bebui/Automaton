@@ -3,7 +3,7 @@ package fr.menana.automaton;
 import java.util.*;
 
 /**
- * Created by julien on 01/05/2015.
+ * Created by Julien Menana on 01/05/2015.
  */
 public class IntervalSet implements Cloneable{
 

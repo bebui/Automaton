@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by julien on 01/05/2015.
+ * Main class to create and manipulate finite automaton
+ * Created by Julien Menana on 01/05/2015.
  */
 public class Automaton implements Cloneable {
 
@@ -24,8 +25,8 @@ public class Automaton implements Cloneable {
 
     public Automaton(){
         this.initIndex = -1;
-        this.states = new ArrayList<State>();
-        this.transitions = new ArrayList<Transition>();
+        this.states = new ArrayList<>();
+        this.transitions = new ArrayList<>();
         this.acceptIndexes = new BitSet();
         this.deterministic = true;
     }

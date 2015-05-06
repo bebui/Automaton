@@ -5,7 +5,7 @@ import fr.menana.automaton.IntervalSet;
 import fr.menana.automaton.State;
 
 /**
- * Created by julien on 05/05/2015.
+ * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpAny extends RegExp {
 

@@ -3,7 +3,7 @@ package fr.menana.automaton.regexp;
 import fr.menana.automaton.Automaton;
 
 /**
- * Created by julien on 05/05/2015.
+ * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpKleenePlus extends RegExp {
     private RegExp internal;

@@ -5,7 +5,7 @@ import fr.menana.automaton.regexp.RegExpParser;
 import java.util.*;
 
 /**
- * Created by julien on 01/05/2015.
+ * Created by Julien Menana on 01/05/2015.
  */
 public class Operation {
 

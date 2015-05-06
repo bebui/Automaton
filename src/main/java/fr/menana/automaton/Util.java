@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by julien on 02/05/2015.
+ * Created by Julien Menana on 02/05/2015.
  */
 public class Util {
     public static <T> List<List<T>> powerset(Collection<T> list) {
