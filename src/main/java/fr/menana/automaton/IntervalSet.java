@@ -54,7 +54,7 @@ public class IntervalSet implements Cloneable{
     }
 
 
-    private void merge(Interval a, Interval b)
+    private void mergeContigus(Interval a, Interval b)
     {
         a.max = b.max;
         container.remove(b);
@@ -99,12 +99,12 @@ public class IntervalSet implements Cloneable{
             else if (floor.max == value - 1 ) {
                 floor.max = value;
                 if (floor.max == ceiling.min - 1)
-                    merge(floor,ceiling);
+                    mergeContigus(floor, ceiling);
             }
             else if (ceiling.min == value + 1) {
                 ceiling.min = value;
                 if (floor.max == ceiling.min - 1)
-                    merge(floor,ceiling);
+                    mergeContigus(floor, ceiling);
             }
             else
                 container.add(tmp);
