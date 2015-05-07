@@ -22,7 +22,7 @@ import fr.menana.automaton.IntervalSet;
 import fr.menana.automaton.State;
 
 /**
- * A regular expression element that accepts any integer
+ * A regular expression element that accepts any integer.  <p>
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpAny extends RegExp {

@@ -22,8 +22,8 @@ import fr.menana.automaton.State;
 
 
 /**
- * Represents a regular expression element composed of a regular expression with a Kleene star symbol.
- * The Kleene star symbol stands for zero or more times the given regular expression.
+ * Represents a regular expression element composed of a regular expression with a Kleene star symbol.  <br>
+ * The Kleene star symbol stands for zero or more times the given regular expression.  <p>
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpKleeneStar extends RegExp {

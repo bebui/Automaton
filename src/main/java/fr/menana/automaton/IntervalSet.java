@@ -20,8 +20,8 @@ package fr.menana.automaton;
 import java.util.*;
 
 /**
- * This class represents an ordered set of integer values as a set of {@link fr.menana.automaton.Interval}
- * The {@link fr.menana.automaton.Interval} are stored using a TreeSet to preserve ordering
+ * This class represents an ordered set of integer values as a set of {@link fr.menana.automaton.Interval} <br>
+ * The {@link fr.menana.automaton.Interval} are stored using a TreeSet to preserve ordering <p>
  * Created by Julien Menana on 01/05/2015.
  */
 public class IntervalSet implements Cloneable{

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents a transition carrying values and/or epsilon from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}
+ * This class represents a transition carrying values and/or epsilon from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} <br>
  * Created by Julien Menana on 01/05/2015.
  */
 public class Transition  {

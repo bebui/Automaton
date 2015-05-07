@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Represents a regular expression that is repeated a number of time in a given range
+ * Represents a regular expression that is repeated a number of time in a given range  <p>
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpKleeneRange extends RegExp {

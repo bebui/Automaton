@@ -21,7 +21,7 @@ import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
 
 /**
- * A regular expression element representing symbols of the regular expression as integers
+ * A regular expression element representing symbols of the regular expression as integers.  <p>
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpInt extends RegExp {

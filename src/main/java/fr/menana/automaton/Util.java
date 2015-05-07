@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * This class provides some tools and algorithm to help writing more complex algorithm
+ * This class provides some tools and algorithm to help writing more complex algorithm <br>
  * Created by Julien Menana on 02/05/2015.
  */
 public class Util {

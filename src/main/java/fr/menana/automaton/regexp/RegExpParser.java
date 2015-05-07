@@ -21,17 +21,15 @@ import fr.menana.automaton.Automaton;
 import fr.menana.automaton.Util;
 
 /**
- * This class is a parser for regular expression whose alphabet is solely composed of integers. <p>
+ * This class is a parser for regular expression whose alphabet is solely composed of integers. <br>
  * It supports : <p>
- *    - &lt;x&gt; notation for integer greater than 10 or negative integer. ("12&lt;12&gt;" is the regular expression for 1 followed by 2 followed by 12)  <p>
- *    - * notation for Kleene star <p>
- *    - + notation for Kleene plus <p>
- *    - . notation for any integer <p>
- *    - {x,y} notation to enforce the appearance of an expression between x and y times <p>
+ *    - &lt;x&gt; notation for integer greater than 10 or negative integer. ("12&lt;12&gt;" is the regular expression for 1 followed by 2 followed by 12) <br>
+ *    - * notation for Kleene star <br>
+ *    - + notation for Kleene plus <br>
+ *    - . notation for any integer <br>
+ *    - {x,y} notation to enforce the appearance of an expression between x and y times <br>
  *    - ? notation for zero or one. <p>
- *
- *
- *  - Created by Julien Menana on 05/05/15.
+ * Created by Julien Menana on 05/05/15.
  */
 public class RegExpParser {
 

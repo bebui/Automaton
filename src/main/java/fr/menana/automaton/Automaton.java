@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Main class to create and manipulate finite automaton.
- * An automaton can be created using primitives of this class or using the regexp parser
+ * Main class to create and manipulate finite automaton. <br>
+ * An automaton can be created using primitives of this class or using the regexp parser <p>
  * Created by Julien Menana on 01/05/2015.
  */
 public class Automaton implements Cloneable {
@@ -97,8 +97,8 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Sets given state to be the initial state of the automaton.
-     * If a previous state was set initial it is not consider initial anymore.
+     * Sets given state to be the initial state of the automaton. <br>
+     * If a previous state was set initial it is not consider initial anymore. <br>
      * A finite automaton can have only one initial state.
      * @param state the {@link fr.menana.automaton.State} to be set initial
      */
@@ -161,8 +161,8 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Adds a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}
-     * the values are represented by an {@link fr.menana.automaton.IntervalSet}
+     * Adds a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}. <br>
+     * The values are represented by an {@link fr.menana.automaton.IntervalSet}
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
      * @param values the symbols of the transition as an {@link fr.menana.automaton.IntervalSet}
@@ -175,8 +175,8 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Adds a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}
-     * the values are represented by an {@link fr.menana.automaton.Interval}
+     * Adds a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}. <br>
+     * The values are represented by an {@link fr.menana.automaton.Interval}
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
      * @param values the symbols of the transition as an {@link fr.menana.automaton.Interval}
@@ -188,8 +188,8 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Adds a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}
-     * the values are represented by an array of int
+     * Adds a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}. <br>
+     * The values are represented by an array of int
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
      * @param values the symbols of the transition as an array of int
@@ -201,7 +201,7 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Adds a new epsilon transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}
+     * Adds a new epsilon transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}. <br>
      * As soon as such a transition is added, the automaton becomes a NFA
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}

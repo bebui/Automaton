@@ -25,7 +25,7 @@ import fr.menana.automaton.Transition;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Represents a sequence or concatenation of two regular expressinos
+/** Represents a sequence or concatenation of two regular expressions <p>
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpSequence extends RegExp {

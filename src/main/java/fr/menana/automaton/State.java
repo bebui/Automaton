@@ -20,8 +20,8 @@ package fr.menana.automaton;
 import java.util.*;
 
 /**
- * This class represents a state in a finite automaton
- * It is meant to be created via the {@link Automaton#addState()} method
+ * This class represents a state in a finite automaton <br>
+ * It is meant to be created via the {@link Automaton#addState()} method <p>
  * Created by Julien Menana on 01/05/2015.
  */
 public class State  {

@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a regular expression constructed by the union of two regular expressions
+ * Represents a regular expression constructed by the union of two regular expressions <p>
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpOr extends RegExp {

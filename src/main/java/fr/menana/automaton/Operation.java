@@ -21,15 +21,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This class consists of static methods to manipulate a finite {@link fr.menana.automaton.Automaton}.
- * The operation that can be performed are minimization, determinization, union, concatenation, reversion and complement
+ * This class consists of static methods to manipulate a finite {@link fr.menana.automaton.Automaton}. <br>
+ * The operation that can be performed are minimization, determinization, union, concatenation, reversion and complement <br>
  * Created by Julien Menana on 01/05/2015.
  */
 public class Operation {
 
     /**
-     * Enum of the available minimization algorithms
-     * Brzozowski performs in O(2^n) where n is the number of states in the automaton, but has a good average case-complexity
+     * Enum of the available minimization algorithms <br>
+     * Brzozowski performs in O(2^n) where n is the number of states in the automaton, but has a good average case-complexity <br>
      * Hopcroft performs in O(n s log(n))
      */
     public enum MINIMIZATION_ALGO {
@@ -43,7 +43,7 @@ public class Operation {
     public static MINIMIZATION_ALGO minimization_method = MINIMIZATION_ALGO.Brzozowski;
 
     /**
-     * Returns a new minimal {@link fr.menana.automaton.Automaton} that recognizes the same language as the given {@link fr.menana.automaton.Automaton}
+     * Returns a new minimal {@link fr.menana.automaton.Automaton} that recognizes the same language as the given {@link fr.menana.automaton.Automaton}<br>
      * The algorithm used is set by the variable {@link fr.menana.automaton.Operation#minimization_method}
      * @param base the {@link fr.menana.automaton.Automaton} to minimize
      * @return an equivalent minimal  automaton
@@ -53,7 +53,7 @@ public class Operation {
     }
 
     /**
-     * Returns a new minimal {@link fr.menana.automaton.Automaton} that recognizes the same language as the given {@link fr.menana.automaton.Automaton}
+     * Returns a new minimal {@link fr.menana.automaton.Automaton} that recognizes the same language as the given {@link fr.menana.automaton.Automaton}<br>
      * The algorithm used is set by the element in the given enum {@link fr.menana.automaton.Operation.MINIMIZATION_ALGO}
      * @param base the {@link fr.menana.automaton.Automaton} to minimize
      * @param method the minimization algorithm to use
@@ -74,6 +74,7 @@ public class Operation {
      */
     @SuppressWarnings("unused")
     public static Automaton minimizeHopcroft(Automaton base) {
+
         throw new UnsupportedOperationException();
     }
 
@@ -89,7 +90,7 @@ public class Operation {
 
 
     /**
-     * Determinizes a given {@link fr.menana.automaton.Automaton} using the subset construction algorithm.
+     * Determinizes a given {@link fr.menana.automaton.Automaton} using the subset construction algorithm.<br>
      * If the {@link fr.menana.automaton.Automaton} is already deterministic, return a clone.
      * @param nfa a non-deterministic {@link fr.menana.automaton.Automaton}
      * @return  a minimal {@link fr.menana.automaton.Automaton}
@@ -266,7 +267,7 @@ public class Operation {
 
     /**
      * Returns a set of {@link fr.menana.automaton.State} that can be reached from a given collection of {@link fr.menana.automaton.State}
-     * using on of the integer value of the given {@link fr.menana.automaton.Interval}
+     * using one of the integer value of the given {@link fr.menana.automaton.Interval}
      * @param states a collection of origin {@link fr.menana.automaton.State}
      * @param symbol an {@link fr.menana.automaton.Interval} of integer values
      * @return the set of reached {@link fr.menana.automaton.State}

@@ -21,8 +21,8 @@ package fr.menana.automaton;
 import java.util.*;
 
 /**
- * This class represent an interval of integers.
- * It can be manipulated using the given primitives
+ * This class represent an interval of integers. <br>
+ * It can be manipulated using the given primitives <p>
  * Created by Julien Menana on 01/05/2015.
  */
 public class Interval implements Comparable<Interval>,Cloneable {
@@ -39,7 +39,7 @@ public class Interval implements Comparable<Interval>,Cloneable {
 
 
     /**
-     * Constructs a new interval between a lower and an upper bound.
+     * Constructs a new interval between a lower and an upper bound. <br>
      * Bounds are included in the interval
      *
      * @param min the lower bound

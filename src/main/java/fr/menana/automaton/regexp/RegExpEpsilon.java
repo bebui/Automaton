@@ -21,7 +21,7 @@ import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
 
 /**
- * A regular expression element that represents no integer
+ * A regular expression element that represents no integer.  <p>
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpEpsilon extends RegExp {
