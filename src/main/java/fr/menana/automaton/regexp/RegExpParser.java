@@ -110,6 +110,10 @@ public class RegExpParser {
             eat("+") ;
             base = new RegExpKleenePlus(base) ;
         }
+        while (more() && peek().equals("?")) {
+            eat("?") ;
+            base = new RegExpKleeneRange(base,"0,1");
+        }
         if (more() && peek().equals("{")) {
             eat("{");
             StringBuilder b = new StringBuilder();
