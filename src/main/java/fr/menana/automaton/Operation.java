@@ -52,10 +52,11 @@ public class Operation {
         return minimize(base, minimization_method);
     }
 
-        /**
+    /**
      * Returns a new minimal {@link fr.menana.automaton.Automaton} that recognizes the same language as the given {@link fr.menana.automaton.Automaton}
      * The algorithm used is set by the element in the given enum {@link fr.menana.automaton.Operation.MINIMIZATION_ALGO}
      * @param base the {@link fr.menana.automaton.Automaton} to minimize
+     * @param method the minimization algorithm to use
      * @return an equivalent minimal  automaton
      */
     public static Automaton minimize(Automaton base, MINIMIZATION_ALGO method) {
@@ -282,25 +283,26 @@ public class Operation {
 
     /**
      * Returns a new {@link fr.menana.automaton.Automaton} that recognizes the mirror of the language defined by the given {@link fr.menana.automaton.Automaton}
+     * @param automaton the {@link fr.menana.automaton.Automaton} to revert
      * @return a reverted {@link fr.menana.automaton.Automaton}
      */
-    public static Automaton revert(Automaton a) {
+    public static Automaton revert(Automaton automaton) {
         Map<State, State> map = new HashMap<>();
         Automaton out = new Automaton();
-        for (State s : a.getStates()) {
+        for (State s : automaton.getStates()) {
             map.put(s, out.addState());
         }
-        for (State s : a.getStates()) {
+        for (State s : automaton.getStates()) {
             for (Transition t : s.transitions.values())
             {
                 State d = t.dest;
                 out.addTransition(map.get(d),map.get(s),t.values.clone());
             }
         }
-        out.setAccept(map.get(a.getInitial()));
+        out.setAccept(map.get(automaton.getInitial()));
         State init = out.addState();
         out.setInitial(init);
-        for (State s : a.getAcceptList())
+        for (State s : automaton.getAcceptList())
         {
             out.addEpsilonTransition(init,map.get(s));
         }

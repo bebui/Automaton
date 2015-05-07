@@ -225,15 +225,16 @@ public class Automaton implements Cloneable {
      * @param word a word as an int array
      * @return <code>true</code> if and only if the word belongs to the language of the automaton
      */
+    @SuppressWarnings("unused")
     public boolean run(int... word)
     {
         return this.getInitial().run(0, word);
     }
 
     /**
-     * Returns a new deterministic automaton that recognizes the same language as this automaton
-     * If this automaton is already deterministic, returns a clone of this automaton
-     * @return an equivalent deterministic automaton
+     * Calls {@link fr.menana.automaton.Operation#determinize(Automaton)} on this automaton
+     * @see fr.menana.automaton.Operation#determinize(Automaton)
+     * @return a new automaton deterministic automaton
      */
     public Automaton determinize()
     {
@@ -244,6 +245,7 @@ public class Automaton implements Cloneable {
     /**
      * Calls {@link fr.menana.automaton.Operation#minimize(Automaton)} on this automaton
      * @see fr.menana.automaton.Operation#minimize(Automaton)
+     * @return a new automaton resulting of the minimization
      */
     public Automaton minimize() {
         return Operation.minimize(this);
@@ -252,6 +254,7 @@ public class Automaton implements Cloneable {
     /**
      * Calls {@link fr.menana.automaton.Operation#revert(Automaton)} on this automaton
      * @see fr.menana.automaton.Operation#revert(Automaton)
+     * @return a new automaton resulting of the reversion
      */
     public Automaton revert() {
         return Operation.revert(this);
@@ -259,16 +262,18 @@ public class Automaton implements Cloneable {
 
 
     /**
-     * Calls {@link fr.menana.automaton.Operation#union(Automaton, Automaton)} on this automaton and the given one
-     * @see fr.menana.automaton.Operation#union(Automaton, Automaton)
+     * Calls {@link fr.menana.automaton.Operation#concatenate(Automaton, Automaton)} on this automaton and the given one
+     * @see fr.menana.automaton.Operation#concatenate(Automaton, Automaton)
+     * @param other the automaton to append
+     * @return a new automaton resulting of the concatenation
      */
     public Automaton concatenate(Automaton other) { return Operation.concatenate(this, other);}
 
     /**
-     * Returns a new automaton recognizing the union of the languages defined by the current automaton
-     * and the automaton given as a parameter
-     * @param other the automaton used for the union
-     * @return a new automaton
+     * Calls {@link fr.menana.automaton.Operation#union(Automaton, Automaton)} on this automaton and the given one
+     * @see fr.menana.automaton.Operation#union(Automaton, Automaton)
+     * @param other the automaton the union is performed with
+     * @return a new automaton resulting of the union
      */
     @SuppressWarnings("unused")
     public Automaton union(Automaton other) { return Operation.union(this, other);}
@@ -276,6 +281,7 @@ public class Automaton implements Cloneable {
     /**
      * Calls {@link fr.menana.automaton.Operation#complement(Automaton)} on this automaton
      * @see fr.menana.automaton.Operation#complement(Automaton)
+     * @return a new automaton recognizing the complementary language of this automaton
      */
     @SuppressWarnings("unused")
     public Automaton complement() { return Operation.complement(this);}
@@ -398,8 +404,9 @@ public class Automaton implements Cloneable {
      * @param regexp a regular expression
      * @return a new non-deterministic automaton recognizing the same language as the regular expression
      */
+    @SuppressWarnings("unused")
     public static Automaton nfaFromString(String regexp) {
-        return new RegExpParser(regexp).parse().toNFA();
+        return RegExpParser.toDFA(regexp);
     }
 
     /**
@@ -408,6 +415,6 @@ public class Automaton implements Cloneable {
      * @return a new deterministic automaton recognizing the same language as the regular expression
      */
     public static Automaton dfaFromString(String regexp) {
-        return nfaFromString(regexp).minimize();
+        return RegExpParser.toDFA(regexp);
     }
 }
