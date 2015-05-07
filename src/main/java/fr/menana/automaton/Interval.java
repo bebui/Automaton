@@ -139,6 +139,12 @@ public class Interval implements Comparable<Interval>,Cloneable {
         return new Interval(Math.max(this.min,interval.min),Math.min(this.max, interval.max));
     }
 
+    @Override
+    public int hashCode() {
+        return this.min * this.max;
+    }
+
+
     /**
      * Returns the complement of this interval in [|Integer.MIN_VALUE,Integer.MAX_VALUE|]
      * @return a list of interval

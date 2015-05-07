@@ -74,11 +74,90 @@ public class Operation {
      */
     @SuppressWarnings("unused")
     public static Automaton minimizeHopcroft(Automaton base) {
+        base = base.isDeterministic() ? base : base.determinize();
+        Set<Interval> alphabet = new TreeSet<>();
+        List<Transition> allTransitions = base.getAllTransitions();
+        for (Transition tr : allTransitions) {
+            alphabet.addAll(tr.getIntervals());
+        }
+        alphabet = getDisjunction(alphabet);
 
-        throw new UnsupportedOperationException();
+
+        Set<Set<State>> p = new HashSet<>();
+        Set<Set<State>> w = new HashSet<>();
+        Set<State> acceptSet = new HashSet<>(base.getAcceptList());
+        Set<State> nonAcceptSet = new HashSet<>(base.getNonAcceptList());
+        if (!acceptSet.isEmpty())
+            p.add(acceptSet);
+        if (!nonAcceptSet.isEmpty())
+            p.add(nonAcceptSet);
+        w.add(acceptSet);
+
+        while (!w.isEmpty()) {
+            Set<State> a = w.iterator().next();
+            w.remove(a);
+            for (Interval interval : alphabet) {
+                Set<State> x = allTransitions.stream().filter(tr -> a.contains(tr.dest) && tr.values.intersects(interval)).map(tr -> tr.orig).collect(Collectors.toSet());
+                for (Set<State> y : new HashSet<>(p)) {
+                    Set<State> inter = intersection(x,y);
+                    Set<State> comp  = minus(y,x);
+                    if (!inter.isEmpty() && !comp.isEmpty()) {
+                        p.remove(y);
+                        p.add(inter);
+                        p.add(comp);
+
+                        if (w.contains(y)) {
+                            p.remove(y);
+                            p.add(inter);
+                            p.add(comp);
+                        }
+                        else if (inter.size() <= comp.size()) {
+                            w.add(inter);
+                        }
+                        else {
+                            w.add(comp);
+                        }
+
+                    }
+                }
+            }
+
+        }
+        Automaton out = new Automaton();
+        Map<Set<State>,State> setToNewState = new HashMap<>();
+        Map<State,Set<State>> oldStateToSet = new HashMap<>();
+        for (Set<State> group : p) {
+            State newState = out.addState();
+            setToNewState.put(group, newState);
+            if (State.hasAcceptingState(group))
+                out.setAccept(newState);
+            if (State.hasInitialState(group))
+                out.setInitial(newState);
+            for (State s : group) {
+                oldStateToSet.put(s,group);
+            }
+        }
+        for (Set<State> group : p) {
+            State newState = setToNewState.get(group);
+            for (State oldState : group) {
+                for (Transition tr : oldState.getTransitions().values()) {
+                    out.addTransition(newState,setToNewState.get(oldStateToSet.get(tr.dest)), tr.values.clone());
+                }
+            }
+        }
+        return out;
     }
 
-        /**
+    private static Set<State> intersection(Collection<State> left, Collection<State> right) {
+        return left.stream().filter(right::contains).collect(Collectors.toSet());
+    }
+    private static Set<State> minus(Collection<State> left, Collection<State> right) {
+        Set<State> out = new HashSet<>(left);
+        right.forEach(out::remove);
+        return out;
+    }
+
+    /**
      * Minimizes the given {@link fr.menana.automaton.Automaton} using Brzozowski algorithm
      * @param base the {@link fr.menana.automaton.Automaton} to minimize
      * @return a minimal {@link fr.menana.automaton.Automaton}
@@ -137,7 +216,7 @@ public class Operation {
                 }
             }
 
-            List<Interval> intervalAlphabet = getDisjunction(intervals);
+            Set<Interval> intervalAlphabet = getDisjunction(intervals);
             for (Interval i : intervalAlphabet) {
                 Set<State> next = move(current, i);
                 if (!next.isEmpty()) {
@@ -163,10 +242,10 @@ public class Operation {
 
     /**
      * Get the minimal ? list of {@link fr.menana.automaton.Interval} representing the same set of values as the given collection of overlapping {@link fr.menana.automaton.Interval}
-     * @param intervals a collection of overlapping {@link fr.menana.automaton.Interval}
-     * @return a list of non overlapping {@link fr.menana.automaton.Interval}
+     * @param intervals a collection of overlapping {@link Interval}
+     * @return a set of non overlapping {@link fr.menana.automaton.Interval}
      */
-    private static List<Interval> getDisjunction(Collection<Interval> intervals) {
+    private static TreeSet<Interval> getDisjunction(Collection<Interval> intervals) {
         boolean somethingDone = true;
         if (intervals.isEmpty())
             somethingDone = false;
@@ -212,9 +291,9 @@ public class Operation {
             }
         }
         // Cloning the interval within the result to avoid side effects
-        stack = stack.stream().map(Interval::clone).collect(Collectors.toList());
+        return new TreeSet<>(stack.stream().map(Interval::clone).collect(Collectors.toSet()));
 
-        return stack;
+
 
     }
 
@@ -396,5 +475,16 @@ public class Operation {
         }
         out.setAccept(poubelle);
         return out;
+    }
+
+
+    public static void main(String[] args) {
+        Automaton a = Automaton.nfaFromString("(1|2|3|4|5){2,3}(4|5|<10>|<11>)+");
+        a = a.determinize();
+        State toto = a.addState();
+        a.addTransition(toto,a.getInitial(),1,2,3);
+        a.addEpsilonTransition(toto,a.getInitial());
+        a.removeDeadStates();
+        System.out.println(a);
     }
 }

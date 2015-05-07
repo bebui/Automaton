@@ -152,6 +152,17 @@ public class State  {
                 return true;
         return false;
     }
+    /**
+     * Checks if a set of state contains the initial state
+     * @param states a set of state
+     * @return <code>true</code> if and only if at least one of the given state is the initial state
+     */
+    static boolean hasInitialState(Collection<State> states) {
+        for (State s : states)
+            if (s.initial)
+                return true;
+        return false;
+    }
 
     /**
      * Returns the index of this state in the containing {@link fr.menana.automaton.Automaton}

@@ -22,7 +22,7 @@ import fr.menana.automaton.Util;
 
 /**
  * This class is a parser for regular expression whose alphabet is solely composed of integers. <br>
- * It supports : <p>
+ * It supports : <br>
  *    - &lt;x&gt; notation for integer greater than 10 or negative integer. ("12&lt;12&gt;" is the regular expression for 1 followed by 2 followed by 12) <br>
  *    - * notation for Kleene star <br>
  *    - + notation for Kleene plus <br>
@@ -183,5 +183,7 @@ public class RegExpParser {
     private RegExp parse() {
         return this.regex();
     }
+
+
 
 }

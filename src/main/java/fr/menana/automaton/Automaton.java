@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Main class to create and manipulate finite automaton. <br>
@@ -159,6 +160,30 @@ public class Automaton implements Cloneable {
         }
         return liste;
     }
+    /**
+     * Constructs and returns a list containing all the non-accepting states
+     * @return a list of non-accepting {@link fr.menana.automaton.State}
+     */
+    public List<State> getNonAcceptList() {
+        List<State> liste = new ArrayList<>(this.acceptIndexes.cardinality());
+        int nbStates = this.states.size();
+        for (int i = this.acceptIndexes.nextClearBit(0) ; i >= 0 && i < nbStates; i = this.acceptIndexes.nextClearBit(i + 1)) {
+            liste.add(this.states.get(i));
+        }
+        return liste;
+    }
+
+    /**
+     * Constructs and returns a list containing all transition in the automaton.
+     * @return a list of all transition in the automaton
+     */
+    public List<Transition> getAllTransitions() {
+        List<Transition> transitions = new ArrayList<>();
+        for (State state : this.states) {
+            transitions.addAll(state.getTransitions().values().stream().collect(Collectors.toList()));
+        }
+        return transitions;
+    }
 
     /**
      * Adds a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}. <br>
@@ -285,6 +310,38 @@ public class Automaton implements Cloneable {
      */
     @SuppressWarnings("unused")
     public Automaton complement() { return Operation.complement(this);}
+
+    public void removeDeadStates() {
+        Automaton tmp = new Automaton();
+        Map<State,State> map = new HashMap<>();
+        Stack<State> toVisit = new Stack<>();
+        Set<State> visited = new HashSet<>();
+        toVisit.push(this.getInitial());
+        while (!toVisit.isEmpty()) {
+            State current = toVisit.pop();
+            visited.add(current);
+            State newState = tmp.addState();
+            System.out.println(newState.getIndex());
+            map.put(current, newState);
+            tmp.setAccept(newState, current.isAccept());
+            if (current.isInitial())
+                tmp.setInitial(current);
+            current.getTransitions().values().stream().filter(tr -> !visited.contains(tr.dest)).forEach(tr -> toVisit.push(tr.dest));
+        }
+        for (State oldState : visited) {
+            for (Transition tr : oldState.transitions.values()) {
+                if (tr.values != null && !tr.hasEpsilon())
+                    tmp.addTransition(map.get(oldState),map.get(tr.dest),tr.values.clone());
+                else if (tr.values == null || tr.hasEpsilon())
+                    tmp.addEpsilonTransition(map.get(oldState), map.get(tr.dest));
+            }
+        }
+        this.initIndex = tmp.initIndex;
+        this.deterministic = tmp.deterministic;
+        this.states = tmp.states;
+        this.acceptIndexes = tmp.acceptIndexes;
+
+    }
 
     @Override
     public Automaton clone() {
