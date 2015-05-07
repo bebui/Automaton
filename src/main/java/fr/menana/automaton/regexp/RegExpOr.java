@@ -26,19 +26,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Represents a regular expression constructed by the union of two regular expressions
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpOr extends RegExp {
-    private RegExp thisOne;
-    private RegExp thatOne;
+    /**
+     * Regular expression composing the union
+     */
+    private RegExp left;
 
-    public RegExpOr(RegExp thisOne, RegExp thatOne) {
-        this.thisOne = thisOne;
-        this.thatOne = thatOne;
+    /**
+     * Regular expression composing the union
+     */
+    private RegExp right;
+
+    /**
+     * Constructs a new regular expression as the union of two given regular expression
+     * @param left the first regular expression composing the union
+     * @param right the second regular expressino composing the union
+     */
+    RegExpOr(RegExp left, RegExp right) {
+        this.left = left;
+        this.right = right;
     }
 
+    @Override
     public String toString() {
-        return "(" + this.thisOne + "|" + this.thatOne + ")";
+        return "(" + this.left + "|" + this.right + ")";
     }
 
     @Override
@@ -47,7 +61,7 @@ public class RegExpOr extends RegExp {
         State s1 = auto.addState();
         State s2 = auto.addState();
 
-        Automaton[] choice = new Automaton[]{thisOne.toNFA(),thatOne.toNFA()};
+        Automaton[] choice = new Automaton[]{left.toNFA(), right.toNFA()};
 
         for (Automaton a : choice) {
             Map<State,State> asso = new HashMap<>();

@@ -20,16 +20,28 @@ package fr.menana.automaton.regexp;
 import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
 
+
 /**
+ * Represents a regular expression element composed of a regular expression with a Kleene star symbol.
+ * The Kleene star symbol stands for zero or more times the given regular expression.
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpKleeneStar extends RegExp {
+
+    /**
+     * The regular expression on which to apply the Kleene star
+     */
     private RegExp internal;
 
-    public RegExpKleeneStar(RegExp internal) {
+    /**
+     * Constructs a new regular expression with the Kleene stàr symbol
+     * @param internal the regular expression the Kleene star is applied
+     */
+    RegExpKleeneStar(RegExp internal) {
         this.internal = internal;
     }
 
+    @Override
     public String toString() {
         return "(" + this.internal.toString() + ")*";
     }

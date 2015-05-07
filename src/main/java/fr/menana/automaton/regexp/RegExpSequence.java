@@ -25,26 +25,40 @@ import fr.menana.automaton.Transition;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
+/** Represents a sequence or concatenation of two regular expressinos
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpSequence extends RegExp {
-    private RegExp first;
-    private RegExp second;
 
-    public RegExpSequence(RegExp first, RegExp second) {
-        this.first = first;
-        this.second = second;
+    /**
+     * The left hand side regular expression of the sequence
+     */
+    private RegExp left;
+
+    /**
+     * The right hand side regular expression of the sequence
+     */
+    private RegExp right;
+
+    /**
+     * Constructs a new regular expression as the sequence or concatenation of two given regular expression
+     * @param left the first regular expression composing the sequence
+     * @param right the second regular expressino composing the sequence
+     */
+    RegExpSequence(RegExp left, RegExp right) {
+        this.left = left;
+        this.right = right;
     }
 
+    @Override
     public String toString() {
-        return first.toString() + second.toString();
+        return left.toString() + right.toString();
     }
 
     @Override
     public Automaton toNFA() {
-        Automaton auto = this.first.toNFA();
-        Automaton second = this.second.toNFA();
+        Automaton auto = this.left.toNFA();
+        Automaton second = this.right.toNFA();
 
         Map<State,State> asso = new HashMap<>();
         for (State s : second.getStates())

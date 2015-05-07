@@ -21,11 +21,12 @@ import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
 
 /**
+ * A regular expression element that represents no integer
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpEpsilon extends RegExp {
 
-
+    @Override
     public String toString() {
         return "";
     }

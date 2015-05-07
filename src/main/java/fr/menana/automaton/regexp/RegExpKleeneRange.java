@@ -22,23 +22,45 @@ import fr.menana.automaton.State;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
+ * Represents a regular expression that is repeated a number of time in a given range
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpKleeneRange extends RegExp {
 
+    /**
+     * The regular expression that has to be repeated
+     */
     RegExp internal;
+
+    /**
+     * the minimum number of repetition of the given regular expression
+     */
     int min;
+
+    /**
+     * the maximum number of repetition of the given regular expression
+     */
     int max;
 
-    public RegExpKleeneRange(RegExp internal, String s) {
+    /**
+     * Constructs a new regular expression that is repeated a number of time in a given range
+     * @param internal the regular expression thas has to be repeated
+     * @param intRange the range within the regular expression has to be repeated
+     */
+    RegExpKleeneRange(RegExp internal, String intRange) {
         this.internal = internal;
-        this.parse(s);
+        this.parse(intRange);
     }
 
-    public void  parse(String s) {
-        String[] splitted = s.split(",");
+    /**
+     * Parse a range or a integer into min and max
+     * @param intRange a integer range in the form X or X,Y
+     */
+    private void  parse(String intRange) {
+        String[] splitted = intRange.split(",");
         this.min = Integer.parseInt(splitted[0]);
         if (splitted.length > 1)
             this.max = Integer.parseInt(splitted[1]);
@@ -59,8 +81,7 @@ public class RegExpKleeneRange extends RegExp {
         }
         List<Integer> finalIndexes = new ArrayList<>();
         for (int i = this.min ; i < this.max ; ++i) {
-            for (State s : auto.getAcceptList())
-                finalIndexes.add(s.getIndex());
+            finalIndexes.addAll(auto.getAcceptList().stream().map(State::getIndex).collect(Collectors.toList()));
             auto = auto.concatenate(this.internal.toNFA());
         }
         State accept = auto.addState();

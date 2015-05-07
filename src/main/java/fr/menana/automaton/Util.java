@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * This class provides some tools and algorithm to help writing more complex algorithm
  * Created by Julien Menana on 02/05/2015.
  */
 public class Util {
@@ -33,16 +34,17 @@ public class Util {
      * @param <T> the type of the elements
      * @return the list of all the subsets that can be constructed from the given set
      */
+    @SuppressWarnings("unused")
     public static <T> List<List<T>> powerset(Collection<T> list) {
-        List<List<T>> ps = new ArrayList<List<T>>();
-        ps.add(new ArrayList<T>());
+        List<List<T>> ps = new ArrayList<>();
+        ps.add(new ArrayList<>());
 
         for (T item : list) {
-            List<List<T>> newPs = new ArrayList<List<T>>();
+            List<List<T>> newPs = new ArrayList<>();
 
             for (List<T> subset : ps) {
                 newPs.add(subset);
-                List<T> newSubset = new ArrayList<T>(subset);
+                List<T> newSubset = new ArrayList<>(subset);
                 newSubset.add(item);
                 newPs.add(newSubset);
             }
@@ -54,6 +56,7 @@ public class Util {
     /**
      * A comparator to sort list in descending size order
      */
+    @SuppressWarnings("unused")
     public static ListSizeComparator listSizeComparator =  new ListSizeComparator();
 
     /**

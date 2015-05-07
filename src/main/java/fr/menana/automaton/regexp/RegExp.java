@@ -20,13 +20,24 @@ package fr.menana.automaton.regexp;
 import fr.menana.automaton.Automaton;
 
 /**
+ * Abstract class for regular expression. <p>
  * Created by Julien Menana on 05/05/2015.
  */
 public abstract class RegExp {
 
+    RegExp(){}
+
+    /**
+     * Singleton for epsilon regular expression
+     */
     public static RegExp blank = new RegExpEpsilon();
 
+    @Override
     public abstract String toString();
 
+    /**
+     * Returns the non-deterministic {@link fr.menana.automaton.Automaton} that represents the language accepted by this regular expression
+     * @return a non deterministic {@link fr.menana.automaton.Automaton} equivalent to this regular expression
+     */
     public abstract Automaton toNFA();
 }

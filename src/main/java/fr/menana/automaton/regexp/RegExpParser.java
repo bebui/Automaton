@@ -21,16 +21,32 @@ import fr.menana.automaton.Automaton;
 import fr.menana.automaton.Util;
 
 /**
- * Created by A66572 on 05/05/15.
+ * This class is a parser for regular expression whose alphabet is solely composed of integers. <p>
+ * It supports : <p>
+ *  - &lt;x&gt; notation for integer greater than 10 or negative integer. ("12&lt;12&gt;" is the regular expression for 1 followed by 2 followed by 12)  <p>
+ *  - * notation for Kleene star <p>
+ *  - + notation for Kleene plus <p>
+ *  - . notation for any integer <p>
+ *  - {x,y} notation to enforce the appearance of an expression between x and y times <p>
+ *  - ? notation for zero or one. <p> <p>
+ *  - Created by Julien Menana on 05/05/15.
  */
 public class RegExpParser {
 
 
+    /**
+     * The input to consume and form the regular expression
+     */
     private String input;
 
-    public RegExpParser(String input) {
+    /**
+     * Consturcts a new parser from a string
+     * @param input a regular expression as a string
+     */
+    private RegExpParser(String input) {
         this.input = input;
     }
+
 
     private String peek() {
         if (input.charAt(0) == '<') {
@@ -57,7 +73,7 @@ public class RegExpParser {
     }
 
     private boolean more() {
-        return input.length() > 0 ;
+        return !input.isEmpty();
     }
     private RegExp regex() {
         RegExp term = term() ;
@@ -96,7 +112,7 @@ public class RegExpParser {
         }
         if (more() && peek().equals("{")) {
             eat("{");
-            StringBuffer b = new StringBuffer();
+            StringBuilder b = new StringBuilder();
             while (more() && !peek().equals("}")) {
                 String s = peek();
                 b.append(s);
@@ -110,7 +126,6 @@ public class RegExpParser {
     }
 
     private RegExp base() {
-        String s = peek();
         if (peek().equals("(")) {
             eat("(");
             RegExp r = regex() ;
@@ -132,24 +147,37 @@ public class RegExpParser {
         }
     }
 
+    /**
+     * Returns a new {@link fr.menana.automaton.regexp.RegExp} constructed from a regular expression expressed as a string
+     * @param regexp the regular expression string to parse
+     * @return a new {@link fr.menana.automaton.regexp.RegExp} tree from the input string
+     */
+    public static RegExp toRegExp(String regexp) {
+        return new RegExpParser(regexp).parse();
+    }
 
-    public RegExp parse() {
-        return this.regex();
+    /**
+     * Returns a new non-deterministic {@link fr.menana.automaton.Automaton} from a regular expression represented by the given string
+     * @param regexp the regular expression string to parse
+     * @return a new non-deterministic {@link fr.menana.automaton.Automaton} constructed from the input string
+     */
+    public static Automaton toNFA(String regexp) {
+        return toRegExp(regexp).toNFA();
+    }
+
+    /**
+     * Returns a new deterministic {@link fr.menana.automaton.Automaton} from a regular expression represented by the given string
+     * @param regexp the regular expression string to parse
+     * @return a new deterministic {@link fr.menana.automaton.Automaton} constructed from the input string
+     */
+    @SuppressWarnings("unused")
+    public static Automaton toDFA(String regexp) {
+        return toNFA(regexp).minimize();
     }
 
 
-    public static void main(String[] args) {
-        String toto = "1234(<10>|<12>|<11>){1,3}.1234";
-        RegExpParser parser = new RegExpParser(toto);
-
-        RegExp r = parser.parse();
-        System.out.println(r);
-
-        Automaton dfa = r.toNFA().minimize();
-        System.out.println(dfa);
-
-        System.out.println(dfa.run(1, 2, 3, 4, 11,1,1,2,3,4));
-
+    private RegExp parse() {
+        return this.regex();
     }
 
 }

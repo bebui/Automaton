@@ -34,7 +34,7 @@ public class Automaton implements Cloneable {
 
 
     /**
-     * State list of the {@link fr.menana.automaton.Automaton}
+     * State list of the automaton
      */
     private List<State> states;
 
@@ -55,7 +55,7 @@ public class Automaton implements Cloneable {
 
 
     /**
-     *  Constructs an empty {@link fr.menana.automaton.Automaton}
+     *  Constructs an empty automaton
      */
     public Automaton(){
         this.initIndex = -1;
@@ -65,7 +65,7 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Constructs an new {@link fr.menana.automaton.Automaton} from a regular expression.
+     * Constructs an new automaton from a regular expression.
      * @param regexp the regular expression
      */
     public Automaton(String regexp) {
@@ -77,7 +77,7 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Returns the list of the states of the {@link fr.menana.automaton.Automaton}
+     * Returns the list of the states of the automaton
      * @return a list of {@link fr.menana.automaton.State}
      */
     public List<State> getStates() {
@@ -86,7 +86,7 @@ public class Automaton implements Cloneable {
 
 
     /**
-     * Creates and adds a new State in the {@link fr.menana.automaton.Automaton}
+     * Creates and adds a new State in the automaton
      * @return a newly created {@link fr.menana.automaton.State}
      */
     public State addState() {
@@ -97,9 +97,9 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Sets given state to be the initial state of the {@link fr.menana.automaton.Automaton}.
+     * Sets given state to be the initial state of the automaton.
      * If a previous state was set initial it is not consider initial anymore.
-     * A finite {@link fr.menana.automaton.Automaton} can have only one initial state.
+     * A finite automaton can have only one initial state.
      * @param state the {@link fr.menana.automaton.State} to be set initial
      */
     public void setInitial(State state) {
@@ -111,7 +111,7 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Sets a given state to be in the accepting state set of the {@link fr.menana.automaton.Automaton}.
+     * Sets a given state to be in the accepting state set of the automaton.
      * @param state a {@link fr.menana.automaton.State} to be set accepting
      */
     public void setAccept(State state) {
@@ -129,16 +129,17 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Checks whether a state is the initial state of the {@link fr.menana.automaton.Automaton}
+     * Checks whether a state is the initial state of the automaton
      * @param state a {@link fr.menana.automaton.State} to be checked
      * @return  <code>true</code> if and only if the state is the initial state of the automaton, false otherwise
      */
+    @SuppressWarnings("unused")
     public boolean isInitial(State state) {
         return state.index == this.initIndex;
     }
 
     /**
-     * Returns the initial state of the {@link fr.menana.automaton.Automaton}
+     * Returns the initial state of the automaton
      * @return a {@link fr.menana.automaton.State}
      */
     public State getInitial() {
@@ -152,7 +153,7 @@ public class Automaton implements Cloneable {
      * @return a list of accepting {@link fr.menana.automaton.State}
      */
     public List<State> getAcceptList() {
-        List<State> liste = new ArrayList<State>(this.acceptIndexes.cardinality());
+        List<State> liste = new ArrayList<>(this.acceptIndexes.cardinality());
         for (int i = this.acceptIndexes.nextSetBit(0) ; i >= 0 ; i = this.acceptIndexes.nextSetBit(i+1)) {
             liste.add(this.states.get(i));
         }
@@ -201,7 +202,7 @@ public class Automaton implements Cloneable {
 
     /**
      * Adds a new epsilon transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}
-     * As soon as such a transition is added, the {@link fr.menana.automaton.Automaton} becomes a NFA
+     * As soon as such a transition is added, the automaton becomes a NFA
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
      */
@@ -212,7 +213,7 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Checks whether this {@link fr.menana.automaton.Automaton} is deterministic or not
+     * Checks whether this automaton is deterministic or not
      * @return  <code>true</code> if and only if the automaton is deterministic
      */
     public boolean isDeterministic() {
@@ -222,7 +223,7 @@ public class Automaton implements Cloneable {
     /**
      * Checks if a word given as an int array is a word in the language defined by this automaton
      * @param word a word as an int array
-     * @return <code>true</code> if and only if the word belongs to the language of the {@link fr.menana.automaton.Automaton}
+     * @return <code>true</code> if and only if the word belongs to the language of the automaton
      */
     public boolean run(int... word)
     {
@@ -230,53 +231,53 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Returns a new deterministic {@link fr.menana.automaton.Automaton} that recognizes the same language as this {@link fr.menana.automaton.Automaton}
-     * If this {@link fr.menana.automaton.Automaton} is already deterministic, returns a clone of this {@link fr.menana.automaton.Automaton}
-     * @return an equivalent deterministic {@link fr.menana.automaton.Automaton}
+     * Returns a new deterministic automaton that recognizes the same language as this automaton
+     * If this automaton is already deterministic, returns a clone of this automaton
+     * @return an equivalent deterministic automaton
      */
     public Automaton determinize()
     {
         return Operation.determinize(this);
     }
 
+
     /**
-     * Returns a new minimal {@link fr.menana.automaton.Automaton} that recognizes the same language as this {@link fr.menana.automaton.Automaton}
-     * The algorithm used is set by the variable {@link fr.menana.automaton.Operation.MINIMIZATION_ALGO}
-     * @return an equivalent minimal  {@link fr.menana.automaton.Automaton}
+     * Calls {@link fr.menana.automaton.Operation#minimize(Automaton)} on this automaton
+     * @see fr.menana.automaton.Operation#minimize(Automaton)
      */
     public Automaton minimize() {
         return Operation.minimize(this);
     }
 
     /**
-     * Returns a new {@link fr.menana.automaton.Automaton} that recognizes the mirror language defined by this {@link fr.menana.automaton.Automaton}
-     * @return a reverted {@link fr.menana.automaton.Automaton}
+     * Calls {@link fr.menana.automaton.Operation#revert(Automaton)} on this automaton
+     * @see fr.menana.automaton.Operation#revert(Automaton)
      */
     public Automaton revert() {
         return Operation.revert(this);
     }
 
+
     /**
-     * Returns a new {@link fr.menana.automaton.Automaton} recognizing the concatenation of the languages defined by the current {@link fr.menana.automaton.Automaton}
-     * and the {@link fr.menana.automaton.Automaton} parameter
-     * The returned {@link fr.menana.automaton.Automaton} may no be deterministic
-     * @param other the {@link fr.menana.automaton.Automaton} to be concatenated
-     * @return a new {@link fr.menana.automaton.Automaton}
+     * Calls {@link fr.menana.automaton.Operation#union(Automaton, Automaton)} on this automaton and the given one
+     * @see fr.menana.automaton.Operation#union(Automaton, Automaton)
      */
     public Automaton concatenate(Automaton other) { return Operation.concatenate(this, other);}
 
     /**
-     * Returns a new {@link fr.menana.automaton.Automaton} recognizing the union of the languages defined by the current {@link fr.menana.automaton.Automaton}
-     * and the {@link fr.menana.automaton.Automaton} given as a parameter
-     * @param other the {@link fr.menana.automaton.Automaton} used for the union
-     * @return a new {@link fr.menana.automaton.Automaton}
+     * Returns a new automaton recognizing the union of the languages defined by the current automaton
+     * and the automaton given as a parameter
+     * @param other the automaton used for the union
+     * @return a new automaton
      */
+    @SuppressWarnings("unused")
     public Automaton union(Automaton other) { return Operation.union(this, other);}
 
     /**
-     * Returns a new {@link fr.menana.automaton.Automaton} that recognizes the complementary language of the current {@link fr.menana.automaton.Automaton}
-     * @return a new {@link fr.menana.automaton.Automaton}
+     * Calls {@link fr.menana.automaton.Operation#complement(Automaton)} on this automaton
+     * @see fr.menana.automaton.Operation#complement(Automaton)
      */
+    @SuppressWarnings("unused")
     public Automaton complement() { return Operation.complement(this);}
 
     @Override
@@ -285,7 +286,7 @@ public class Automaton implements Cloneable {
         Automaton clone = null;
         try {
             clone = (Automaton) super.clone();
-            clone.states = new ArrayList<State>(this.states.size());
+            clone.states = new ArrayList<>(this.states.size());
             clone.acceptIndexes = (BitSet)this.acceptIndexes.clone();
             clone.deterministic = this.deterministic;
             clone.initIndex = this.initIndex;
@@ -310,7 +311,7 @@ public class Automaton implements Cloneable {
             }
 
         } catch (CloneNotSupportedException e) {
-            System.err.println("ne devrait pas arriver");
+            System.err.println(e+"Should not happen !");
         }
 
         return clone;
@@ -319,9 +320,10 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Generates a Graphviz dotty file that pictures the current {@link fr.menana.automaton.Automaton}
+     * Generates a Graphviz dotty file that pictures the current automaton
      * @param filename the filename
      */
+    @SuppressWarnings("unused")
     public void toDotty(String filename) {
         String s = this.toDot();
         try {
@@ -329,19 +331,18 @@ public class Automaton implements Cloneable {
             bw.write(s);
             bw.close();
         } catch (IOException e) {
-// System.err.println("Unable to write dotty file " + f);
+            System.err.println("Unable to write dotty file " + filename);
         }
     }
 
     /**
-     * Returns a {@link java.lang.String} representing the {@link fr.menana.automaton.Automaton} in dot format
+     * Returns a {@link java.lang.String} representing the automaton in dot format
      * @return a {@link java.lang.String} in Graphviz dot format
      */
     public String toDot() {
         StringBuilder b = new StringBuilder("digraph Automaton {\n");
         b.append(" rankdir = LR;\n");
         List<State> states = this.getStates();
-// setStateNumbers(states);
         for (State s : states) {
             int idx = s.getIndex();
             b.append(" ").append(idx);
@@ -384,7 +385,7 @@ public class Automaton implements Cloneable {
 
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (State s : states) {
             for (Transition t : s.transitions.values())
                 buffer.append(t).append("\n");
@@ -395,7 +396,7 @@ public class Automaton implements Cloneable {
     /**
      * Constucts an NFA from a regexp given as a {@link java.lang.String}
      * @param regexp a regular expression
-     * @return a new non-deterministic {@link fr.menana.automaton.Automaton} recognizing the same language as the regular expression
+     * @return a new non-deterministic automaton recognizing the same language as the regular expression
      */
     public static Automaton nfaFromString(String regexp) {
         return new RegExpParser(regexp).parse().toNFA();
@@ -404,7 +405,7 @@ public class Automaton implements Cloneable {
     /**
      * Constucts an DFA from a regexp given as a {@link java.lang.String}
      * @param regexp a regular expression
-     * @return a new deterministic {@link fr.menana.automaton.Automaton} recognizing the same language as the regular expression
+     * @return a new deterministic automaton recognizing the same language as the regular expression
      */
     public static Automaton dfaFromString(String regexp) {
         return nfaFromString(regexp).minimize();

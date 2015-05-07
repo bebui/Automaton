@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class represents a transition carrying values and/or epsilon from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}
  * Created by Julien Menana on 01/05/2015.
  */
 public class Transition  {
@@ -46,58 +47,59 @@ public class Transition  {
     boolean epsilon;
 
     /**
-     * Constructs a new Transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
+     * Constructs a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
      * values given as an {@link fr.menana.automaton.IntervalSet}
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
      * @param values the values as an {@link fr.menana.automaton.IntervalSet}
      */
-    public Transition(State orig, State dest, IntervalSet values) {
+     Transition(State orig, State dest, IntervalSet values) {
         this.orig = orig;
         this.dest = dest;
         this.values = values;
     }
 
     /**
-     * Constructs a new Transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
+     * Constructs a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
      * values given as an integer array
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
      * @param values the values as an integer array
      */
-    public Transition(State orig, State dest, int[] values) {
+    Transition(State orig, State dest, int[] values) {
         this(orig,dest,IntervalSet.fromIntArray(values));
     }
     /**
-     * Constructs a new Transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
+     * Constructs a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
      * values given as an {@link fr.menana.automaton.Interval}
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
      * @param values the values as an {@link fr.menana.automaton.Interval}
      */
-    public Transition(State orig, State dest, Interval values)
+    Transition(State orig, State dest, Interval values)
     {
         this(orig,dest,IntervalSet.fromInterval(values));
     }
 
     /**
-     * Constructs a new Transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
+     * Constructs a new transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
      * values given as an single integer
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
      * @param value the value as an integer
      */
-    public Transition(State orig, State dest, int value)
+    @SuppressWarnings("unused")
+    Transition(State orig, State dest, int value)
     {
         this(orig,dest,new int[]{value}) ;
     }
 
     /**
-     * Constructs a new epsilon-Transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
+     * Constructs a new epsilon-transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} with
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
      */
-    public Transition(State orig,State dest)
+    Transition(State orig,State dest)
     {
         this(orig,dest,(IntervalSet) null);
         this.epsilon = true;
@@ -105,7 +107,7 @@ public class Transition  {
 
     /**
      * Checks if this transition carries an epsilon
-     * @return
+     * @return <code>true</code> if and only if the transition carries an epsilon
      */
     public boolean hasEpsilon() {
         return this.epsilon;
@@ -114,19 +116,17 @@ public class Transition  {
     /**
      * Adds an epsilon to this transition
      */
-    public void addEpsilon() {
+    @SuppressWarnings("unused")
+    void addEpsilon() {
         this.epsilon = true;
     }
 
     /**
      * Returns the list of {@link fr.menana.automaton.Interval} carried by this transition
-     * @return
+     * @return the list of {@link fr.menana.automaton.Interval} carried by this transition
      */
-    public List<Interval> getIntervals() {
-        if (values != null)
-            return new ArrayList<>(this.values.getIntervals());
-        else
-            return new ArrayList<>(0);
+    List<Interval> getIntervals() {
+        return values != null ? new ArrayList<>(this.values.getIntervals()) : new ArrayList<>(0);
     }
 
 

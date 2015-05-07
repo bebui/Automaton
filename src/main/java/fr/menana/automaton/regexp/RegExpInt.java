@@ -21,20 +21,30 @@ import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
 
 /**
+ * A regular expression element representing symbols of the regular expression as integers
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpInt extends RegExp {
-    private int c;
 
-    public RegExpInt(int c) {
-        this.c = c;
+    /**
+     * An integer used as a symbol in the alphabet of the regular expression
+     */
+    private int symbol;
+
+    /**
+     * Constructs a regular expression element that contains an integer
+     * @param symbol the integer represented by this element
+     */
+    RegExpInt(int symbol) {
+        this.symbol = symbol;
     }
 
+    @Override
     public String toString() {
-        if (c >= 0 && c < 10)
-            return Integer.toString(c);
+        if (symbol >= 0 && symbol < 10)
+            return Integer.toString(symbol);
         else
-            return "<" + Integer.toString(c) + ">";
+            return "<" + Integer.toString(symbol) + ">";
     }
 
     @Override
@@ -44,7 +54,7 @@ public class RegExpInt extends RegExp {
         State s2 = auto.addState();
         auto.setInitial(s1);
         auto.setAccept(s2);
-        auto.addTransition(s1,s2,this.c);
+        auto.addTransition(s1,s2,this.symbol);
         return auto;
     }
 }

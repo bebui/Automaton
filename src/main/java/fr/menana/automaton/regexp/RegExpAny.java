@@ -22,11 +22,12 @@ import fr.menana.automaton.IntervalSet;
 import fr.menana.automaton.State;
 
 /**
+ * A regular expression element that accepts any integer
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpAny extends RegExp {
 
-
+    @Override
     public String toString() {
        return ".";
     }

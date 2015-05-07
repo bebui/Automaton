@@ -17,6 +17,7 @@
  */
 package fr.menana.automaton;
 
+
 import java.util.*;
 
 /**
@@ -38,8 +39,8 @@ public class Interval implements Comparable<Interval>,Cloneable {
 
 
     /**
-     * Constructs a new {@link fr.menana.automaton.Interval} between a lower and an upper bound.
-     * Bounds are included in the {@link fr.menana.automaton.Interval}
+     * Constructs a new interval between a lower and an upper bound.
+     * Bounds are included in the interval
      *
      * @param min the lower bound
      * @param max the upper bound
@@ -56,9 +57,9 @@ public class Interval implements Comparable<Interval>,Cloneable {
     }
 
     /**
-     * Checks if this {@link fr.menana.automaton.Interval} contains a given integer value
+     * Checks if this interval contains a given integer value
      * @param value the value to be checked
-     * @return <code>true</code> if and only if the value belongs to this {@link fr.menana.automaton.Interval}
+     * @return <code>true</code> if and only if the value belongs to this interval
      */
     public boolean contains(int value)
     {
@@ -66,9 +67,9 @@ public class Interval implements Comparable<Interval>,Cloneable {
     }
 
     /**
-     * Checks if this {@link fr.menana.automaton.Interval} contains the given {@link fr.menana.automaton.Interval}
-     * @param value the {@link fr.menana.automaton.Interval} to be checked
-     * @return <code>true</code> if and only if the {@link fr.menana.automaton.Interval} is included in this {@link fr.menana.automaton.Interval}
+     * Checks if this interval contains the given interval
+     * @param value the interval to be checked
+     * @return <code>true</code> if and only if the interval is included in this interval
      */
     public boolean contains(Interval value)
     {
@@ -77,29 +78,30 @@ public class Interval implements Comparable<Interval>,Cloneable {
     }
 
     /**
-     * Checks if a given {@link fr.menana.automaton.Interval} intersects with this {@link fr.menana.automaton.Interval}
-     * @param interval the other {@link fr.menana.automaton.Interval}
+     * Checks if a given interval intersects with this interval
+     * @param interval the other interval
      * @return <code>true</code> if and only if the two intervals intersect
      */
     public boolean intersects(Interval interval) {
-        if (interval == null)
-            return false;
-        return !(this.max < interval.min || interval.max < this.min);
-
+        return interval != null && !(this.max < interval.min || interval.max < this.min);
     }
 
-    public int compareTo(Interval o) {
-        if (this == o || this.equals(o))
+    @Override
+    public int compareTo(Interval other) throws NullPointerException {
+        if (other == null)
+            throw new NullPointerException();
+        if (this == other || this.equals(other))
             return 0;
-        if (this.min < o.min)
+        if (this.min < other.min)
             return -1;
-        else if (this.min > o.min)
+        else if (this.min > other.min)
             return 1;
         else
-            return this.max - o.max;
+            return this.max - other.max;
 
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
@@ -110,6 +112,7 @@ public class Interval implements Comparable<Interval>,Cloneable {
         return false;
     }
 
+    @Override
     public String toString() {
         String min = Integer.toString(this.min);
         String max = Integer.toString(this.max);
@@ -126,20 +129,19 @@ public class Interval implements Comparable<Interval>,Cloneable {
     }
 
     /**
-     * Returns the intersection of this {@link fr.menana.automaton.Interval} with a given {@link fr.menana.automaton.Interval}
-     * @param interval the other {@link fr.menana.automaton.Interval}
-     * @return a new {@link fr.menana.automaton.Interval} if and only if the intersection is not empty, null otherwise.
+     * Returns the intersection of this interval with a given interval
+     * @param interval the other interval
+     * @return a new interval if and only if the intersection is not empty, null otherwise.
      */
     public Interval intersection(Interval interval) {
         if (! intersects(interval))
             return null;
-        Interval ret = new Interval(Math.max(this.min,interval.min),Math.min(this.max, interval.max));
-        return ret;
+        return new Interval(Math.max(this.min,interval.min),Math.min(this.max, interval.max));
     }
 
     /**
-     * Returns the complement of this {@link fr.menana.automaton.Interval} in [|Integer.MIN_VALUE,Integer.MAX_VALUE|]
-     * @return a list of {@link fr.menana.automaton.Interval}
+     * Returns the complement of this interval in [|Integer.MIN_VALUE,Integer.MAX_VALUE|]
+     * @return a list of interval
      */
     public List<Interval> complement()
     {
@@ -151,19 +153,20 @@ public class Interval implements Comparable<Interval>,Cloneable {
         else if (this.min == Integer.MIN_VALUE && this.max != Integer.MAX_VALUE) {
             out.add(new Interval(this.max +1, Integer.MAX_VALUE));
         }
-        else if (this.min != Integer.MIN_VALUE && this.max == Integer.MAX_VALUE) {
+        else if (this.min != Integer.MIN_VALUE) {
             out.add(new Interval(Integer.MIN_VALUE,this.min - 1));
         }
         return out;
     }
 
+    @Override
     public Interval clone() {
         Interval clone = null;
         try {
             clone = (Interval) super.clone();
             clone.max = this.max;
             clone.min = this.min;
-        } catch (CloneNotSupportedException e) {}
+        } catch (CloneNotSupportedException ignored) {}
         return clone;
     }
 

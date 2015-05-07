@@ -20,15 +20,27 @@ package fr.menana.automaton.regexp;
 import fr.menana.automaton.Automaton;
 
 /**
+ * Represents a regular expression element composed of a regular expression with a Kleene plus symbol.
+ * The Kleene plus symbol stands for one or more times the given regular expression.
+ * It is constructed using a {@link fr.menana.automaton.regexp.RegExpSequence} and a {@link fr.menana.automaton.regexp.RegExpKleeneStar}
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpKleenePlus extends RegExp {
+
+    /**
+     * The regular expression on which to apply the Kleene plus
+     */
     private RegExp internal;
 
-    public RegExpKleenePlus(RegExp internal) {
+    /**
+     * Constructs a new regular expression with the Kleene plus symbol
+     * @param internal the regular expression the Kleene plus is applied
+     */
+    RegExpKleenePlus(RegExp internal) {
         this.internal = new RegExpSequence(internal, new RegExpKleeneStar(internal));
     }
 
+    @Override
     public String toString() {
         return "(" + this.internal.toString() + ")*";
     }

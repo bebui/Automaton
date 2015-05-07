@@ -32,7 +32,7 @@ public class IntervalSet implements Cloneable{
     private TreeSet<Interval> container;
 
     /**
-     * A static reference to an {@link fr.menana.automaton.IntervalSet} containting all values between Integer.MIN_VALUE and Integer.MAX_VALUE
+     * A static reference to an interval set containting all values between Integer.MIN_VALUE and Integer.MAX_VALUE
      */
     public static IntervalSet ALL = new IntervalSet();
     static {
@@ -40,16 +40,17 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * A static reference to an empty {@link fr.menana.automaton.IntervalSet}
+     * A static reference to an empty interval set
      */
+    @SuppressWarnings("unused")
     public static IntervalSet EMPTY = new IntervalSet();
 
 
     /**
-     * Constucts an empty {@link fr.menana.automaton.IntervalSet}
+     * Constucts an empty interval set
      */
     public IntervalSet() {
-        this.container = new TreeSet<Interval>();
+        this.container = new TreeSet<>();
     }
 
 
@@ -60,19 +61,21 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * Adds a set of integer values given as an array to this {@link fr.menana.automaton.IntervalSet}
+     * Adds a set of integer values given as an array to this interval set
      * @param values an int array
      * @return <code>true</code> if and only if the values were added
      */
+    @SuppressWarnings("unused")
     public boolean add(int... values) {
         return this.add(IntervalSet.fromIntArray(values));
     }
 
     /**
-     * Adds an integer value to this {@link fr.menana.automaton.IntervalSet}
+     * Adds an integer value to this interval set
      * @param value an int
      * @return <code>true</code> if and only if the value was added
      */
+    @SuppressWarnings("unused")
     public boolean add(int value) {
         Interval tmp = new Interval(value, value);
         Interval floor = container.floor(tmp);
@@ -113,14 +116,14 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * Adds a set of integer values given as another {@link fr.menana.automaton.IntervalSet} to this {@link fr.menana.automaton.IntervalSet}
+     * Adds a set of integer values given as another interval set to this interval set
      * @param intervalSet a set of integer values
      * @return <code>true</code> if and only if the values were added
      */
     public boolean add(IntervalSet intervalSet) {
         boolean ret = false;
         if (intervalSet == null)
-            return ret;
+            return false;
         for (Interval i : intervalSet.container) {
             //System.out.println("on a "+this);
            // System.out.println("on ajoute "+i);
@@ -132,7 +135,7 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * Adds a set of integer values given as a {@link fr.menana.automaton.Interval} to this {@link fr.menana.automaton.IntervalSet}
+     * Adds a set of integer values given as a {@link fr.menana.automaton.Interval} to this interval set
      * @param interval a set of integer values
      * @return <code>true</code> if and only if the values were added
      */
@@ -203,18 +206,19 @@ public class IntervalSet implements Cloneable{
 
 
     /**
-     * Removes a given {@link fr.menana.automaton.IntervalSet} to this  {@link fr.menana.automaton.IntervalSet}
-     * @param intervalSet the values as an {@link fr.menana.automaton.IntervalSet} to remove
+     * Removes a given interval set to this  interval set
+     * @param intervalSet the values as an interval set to remove
      */
+    @SuppressWarnings("unused")
     public void remove(IntervalSet intervalSet) {
         this.container = this.intersection(intervalSet.complement()).container;
 
     }
 
     /**
-     * Checks if this  {@link fr.menana.automaton.IntervalSet} contains a given integer value
+     * Checks if this  interval set contains a given integer value
      * @param value the integer value to be checked
-     * @return <code>true</code>  if and only if this  {@link fr.menana.automaton.IntervalSet} contains the value
+     * @return <code>true</code>  if and only if this  interval set contains the value
      */
     public boolean contains(int value)
     {
@@ -232,8 +236,8 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * Checks if this  {@link fr.menana.automaton.IntervalSet} is empty
-     * @return <code>true</code> if and only if this  {@link fr.menana.automaton.IntervalSet} has no value
+     * Checks if this  interval set is empty
+     * @return <code>true</code> if and only if this  interval set has no value
      */
     public boolean isEmpty()
     {
@@ -241,9 +245,9 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * Checks if a given  {@link fr.menana.automaton.IntervalSet} intersects with this  {@link fr.menana.automaton.IntervalSet}
-     * @param intervalSet the other  {@link fr.menana.automaton.IntervalSet}
-     * @return  <code>true</code> if and only if the given  {@link fr.menana.automaton.IntervalSet} and this  {@link fr.menana.automaton.IntervalSet} have common values
+     * Checks if a given  interval set intersects with this  interval set
+     * @param intervalSet the other  interval set
+     * @return  <code>true</code> if and only if the given  interval set and this  interval set have common values
      */
     public boolean intersects(IntervalSet intervalSet)
     {
@@ -260,9 +264,9 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * Checks if a given  {@link fr.menana.automaton.Interval} intersects with this  {@link fr.menana.automaton.IntervalSet}
+     * Checks if a given  {@link fr.menana.automaton.Interval} intersects with this  interval set
      * @param interval the  {@link fr.menana.automaton.Interval}
-     * @return  <code>true</code> if and only if the given  {@link fr.menana.automaton.Interval} and this  {@link fr.menana.automaton.IntervalSet} have common values
+     * @return  <code>true</code> if and only if the given  {@link fr.menana.automaton.Interval} and this  interval set have common values
      */
     public boolean intersects(Interval interval)
     {
@@ -275,9 +279,9 @@ public class IntervalSet implements Cloneable{
 
 
     /**
-     * Returns a new  {@link fr.menana.automaton.IntervalSet} resulting of the intersection of this  {@link fr.menana.automaton.IntervalSet} and a given  {@link fr.menana.automaton.IntervalSet}
-     * @param intervalSet the  {@link fr.menana.automaton.IntervalSet} to intersect
-     * @return a new  {@link fr.menana.automaton.IntervalSet}
+     * Returns a new  interval set resulting of the intersection of this  interval set and a given  interval set
+     * @param intervalSet the  interval set to intersect
+     * @return a new  interval set
      */
     public IntervalSet intersection(IntervalSet intervalSet)
     {
@@ -285,19 +289,15 @@ public class IntervalSet implements Cloneable{
         if (intervalSet == null || intervalSet.container == null || this.container == null)
             return intervals;
         for (Interval oi : intervalSet.container) {
-            for (Interval ti : this.container) {
-                if (oi.intersects(ti)) {
-                    intervals.add(oi.intersection(ti));
-                }
-            }
+            this.container.stream().filter(ti -> oi.intersects(ti)).forEach(ti -> intervals.add(oi.intersection(ti)));
         }
         return intervals;
     }
 
 
     /**
-     * Returns a new  {@link fr.menana.automaton.IntervalSet} reprenting the complement in [|Integer.MIN_VALUE,Integer.MAX_VALUE|] of this  {@link fr.menana.automaton.IntervalSet}
-     * @return a new  {@link fr.menana.automaton.IntervalSet}
+     * Returns a new  interval set reprenting the complement in [|Integer.MIN_VALUE,Integer.MAX_VALUE|] of this  interval set
+     * @return a new  interval set
      */
     public IntervalSet complement()  {
         IntervalSet ret = new IntervalSet();
@@ -329,10 +329,11 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * Returns a new  {@link fr.menana.automaton.IntervalSet} equal to this  {@link fr.menana.automaton.IntervalSet} minus the  {@link fr.menana.automaton.IntervalSet} given
-     * @param others the  {@link fr.menana.automaton.IntervalSet} to remove to this  {@link fr.menana.automaton.IntervalSet}
-     * @return a new  {@link fr.menana.automaton.IntervalSet}
+     * Returns a new  interval set equal to this  interval set minus the  interval set given
+     * @param others the  interval set to remove to this  interval set
+     * @return a new  interval set
      */
+    @SuppressWarnings("unused")
     public IntervalSet minus(IntervalSet... others) {
         IntervalSet ret = this;
         for (IntervalSet other : others) {
@@ -342,40 +343,42 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * Returns the union of this  {@link fr.menana.automaton.IntervalSet} with a list of  {@link fr.menana.automaton.IntervalSet}
-     * @param others the  {@link fr.menana.automaton.IntervalSet} to add to this  {@link fr.menana.automaton.IntervalSet}
-     * @return a new  {@link fr.menana.automaton.IntervalSet}
+     * Returns the union of this  interval set with a list of  interval set
+     * @param others the  interval set to add to this  interval set
+     * @return a new  interval set
      */
+    @SuppressWarnings("unused")
     public IntervalSet union(IntervalSet... others) {
-        List<IntervalSet> list = new ArrayList<IntervalSet>(Arrays.asList(others));
+        List<IntervalSet> list = new ArrayList<>(Arrays.asList(others));
         list.add(this);
-        IntervalSet ret = IntervalSet.union(list);
-        return ret;
+        return IntervalSet.union(list);
     }
 
 
+    @Override
     public String toString() {
         return container.toString();
     }
 
+    @Override
     public IntervalSet clone(){
         IntervalSet clone = null;
         try {
             clone = (IntervalSet) super.clone();
-            clone.container = new TreeSet<Interval>();
+            clone.container = new TreeSet<>();
             for (Interval i : this.container){
                 clone.container.add(i.clone());
             }
-        } catch (CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException ignored) {
 
         }
         return clone;
     }
 
     /**
-     * Returns the union the given {@link fr.menana.automaton.IntervalSet}
-     * @param intervals the  {@link fr.menana.automaton.IntervalSet} to add to each other
-     * @return a new  {@link fr.menana.automaton.IntervalSet}
+     * Returns the union the given interval set
+     * @param intervals the  interval set to add to each other
+     * @return a new  interval set
      */
     public static IntervalSet union(Collection<IntervalSet> intervals) {
         IntervalSet out = new IntervalSet();
@@ -395,10 +398,11 @@ public class IntervalSet implements Cloneable{
 
 
     /**
-     * Returns a new  {@link fr.menana.automaton.IntervalSet} resulting of the intersection of the given  {@link fr.menana.automaton.IntervalSet}
-     * @param intervalSets the  {@link fr.menana.automaton.IntervalSet} to intersect
-     * @return a new  {@link fr.menana.automaton.IntervalSet}
+     * Returns a new  interval set resulting of the intersection of the given  interval set
+     * @param intervalSets the  interval set to intersect
+     * @return a new  interval set
      */
+    @SuppressWarnings("unused")
     public static IntervalSet intersection(Collection<IntervalSet> intervalSets) {
         IntervalSet out = new IntervalSet();
         if (intervalSets.isEmpty())
@@ -414,9 +418,9 @@ public class IntervalSet implements Cloneable{
     }
 
     /**
-     * Return a new {@link fr.menana.automaton.IntervalSet} from an integer array
-     * @param values the int array used to construct the {@link fr.menana.automaton.IntervalSet}
-     * @return a new {@link fr.menana.automaton.IntervalSet} containing all values in the given int array
+     * Return a new interval set from an integer array
+     * @param values the int array used to construct the interval set
+     * @return a new interval set containing all values in the given int array
      */
     public static IntervalSet fromIntArray(int... values)
     {
@@ -446,13 +450,19 @@ public class IntervalSet implements Cloneable{
 
 
     /**
-     * Consturcts a new {@link fr.menana.automaton.IntervalSet} from a single {@link fr.menana.automaton.Interval}
+     * Consturcts a new interval set from a single {@link fr.menana.automaton.Interval}
      * @param values the {@link fr.menana.automaton.Interval}
-     * @return a new {@link fr.menana.automaton.IntervalSet}
+     * @return a new interval set
      */
     public static IntervalSet fromInterval(Interval values) {
         IntervalSet set = new IntervalSet();
         set.add(values);
         return set;
+    }
+
+    public static void main(String[] args) {
+        IntervalSet set = IntervalSet.fromIntArray(1,2,3);
+        IntervalSet set2 = IntervalSet.fromIntArray(2,3,4);
+        System.out.println(set.intersection(set2));
     }
 }
