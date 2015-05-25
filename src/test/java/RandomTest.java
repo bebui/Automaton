@@ -75,17 +75,14 @@ public class RandomTest {
      */
     @Test
     public void randomBinaryMinTest() {
+        System.out.println("Random binary automaton minimization test: ");
         long totalhop = 0;
         long totalbrz = 0;
         Random r = new Random();
 
         for (int i = 0 ; i < 500; ++i) {
-
-
-           printBar((i+1)/50,10);
-
+            printBar((i+1)/50,10);
             Automaton auto = random();//.determinize();
-
 
             // System.out.print(i+"("+auto.getNbStates()+")");
             //System.out.print(" => HOP : ");
@@ -138,60 +135,60 @@ public class RandomTest {
             }
 
         }
+        System.out.println("\nDone");
 
 
     }
 
-   @Test
-   public void randomComplementTest() {
+    @Test
+    public void randomComplementTest() {
+        System.out.println("Random binary automaton complement test: ");
+        Random r = new Random();
 
-       Random r = new Random();
+        for (int i = 0; i < 500; ++i) {
 
-       for (int i = 0 ; i < 500; ++i) {
+            printBar((i + 1) / 50, 10);
+            Automaton auto = random();//.determinize();
+            Automaton comp = auto.complement();
 
-           printBar((i+1)/50,10);
-           Automaton auto = random();//.determinize();
-           Automaton comp = auto.complement();
-
-           Automaton hop = Operation.minimizeHopcroft(auto);
-           Automaton compHop = Operation.minimizeHopcroft(comp);
-           Automaton hopComp = hop.complement().minimize();
+            Automaton hop = Operation.minimizeHopcroft(auto);
+            Automaton compHop = Operation.minimizeHopcroft(comp);
+            Automaton hopComp = hop.complement().minimize();
 
 
-           boolean eq = true;
+            boolean eq = true;
 
-           for (int j = 0 ; j < 10000 ; ++j) {
+            for (int j = 0; j < 10000; ++j) {
 
-               System.out.print("");
+                System.out.print("");
 
-               String word = Integer.toBinaryString(r.nextInt());
-               char[] parts = word.toCharArray();
-               int[] iParts = new int[parts.length];
-               int k = 0;
-               for (char s : parts)
-                   iParts[k++] = Integer.parseInt(s + "");
+                String word = Integer.toBinaryString(r.nextInt());
+                char[] parts = word.toCharArray();
+                int[] iParts = new int[parts.length];
+                int k = 0;
+                for (char s : parts)
+                    iParts[k++] = Integer.parseInt(s + "");
 
-               boolean bhop = hop.run(iParts);
-               boolean bcompHop = compHop.run(iParts);
-               boolean bhopComp = hopComp.run(iParts);
-               eq &= bhop != bcompHop;
-               assertTrue(eq);
+                boolean bhop = hop.run(iParts);
+                boolean bcompHop = compHop.run(iParts);
+                boolean bhopComp = hopComp.run(iParts);
+                eq &= bhop != bcompHop;
+                assertTrue(eq);
 
-               eq &= bcompHop == bhopComp;
-               assertTrue(eq);
-           }
-           if (!eq) {
-               System.out.println("PB: "+i);
-               auto.toDotty("det" + i + ".dot");
-               hop.toDotty("hop" + i + ".dot");
-               compHop.toDotty("chop" + i + ".dot");
-               hopComp.toDotty("hcop" + i + ".dot");
+                eq &= bcompHop == bhopComp;
+                assertTrue(eq);
+            }
+            if (!eq) {
+                System.out.println("PB: " + i);
+                auto.toDotty("det" + i + ".dot");
+                hop.toDotty("hop" + i + ".dot");
+                compHop.toDotty("chop" + i + ".dot");
+                hopComp.toDotty("hcop" + i + ".dot");
 
-           }
+            }
 
-       }
-
-   }
-
+        }
+        System.out.println("\nDone");
+    }
 }
 
