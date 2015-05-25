@@ -79,6 +79,18 @@ public class Automaton implements Cloneable {
     }
 
     /**
+     * Return the state with the given index
+     * @param idx the index of the {@link fr.menana.automaton.State} to retrieve
+     * @return a {@link fr.menana.automaton.State}
+     */
+    @SuppressWarnings("unused")
+    public State getState(int idx) {
+        if (idx >= 0 && idx < this.states.size())
+            return this.states.get(idx);
+        return null;
+    }
+
+    /**
      * Returns the number of states in this automaton
      * @return the number of  {@link fr.menana.automaton.State}
      */
@@ -567,4 +579,5 @@ public class Automaton implements Cloneable {
     public static Automaton dfaFromString(String regexp) {
         return RegExpParser.toDFA(regexp);
     }
+
 }

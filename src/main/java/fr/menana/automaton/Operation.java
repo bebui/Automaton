@@ -446,6 +446,10 @@ public class Operation {
      * @return a new automaton recognizing the union of the languages defined by the {@link fr.menana.automaton.Automaton} parameters
      */
     public static Automaton union(Automaton first, Automaton second) {
+        if (first.getInitial() == null)
+            return second.clone();
+        else if (second.getInitial() == null)
+            return first.clone();
         Automaton out = first.clone();
         Map<State, State> map = new HashMap<>();
         for (State s : second.getStates()) {
