@@ -4,7 +4,7 @@
 
     <groupId>fr.menana</groupId>
     <artifactId>automaton</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.5</version>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -39,7 +39,7 @@
         <connection>scm:git:git@github.com:bebui/Automaton.git</connection>
         <url>scm:git:git://github.com/bebui/Automaton</url>
         <developerConnection>scm:git:git@github.com:bebui/Automaton.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>automaton-1.5</tag>
     </scm>
 
     <distributionManagement>
