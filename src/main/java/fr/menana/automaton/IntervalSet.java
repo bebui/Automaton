@@ -24,7 +24,7 @@ import java.util.*;
  * The {@link fr.menana.automaton.Interval} are stored using a TreeSet to preserve ordering <p>
  * Created by Julien Menana on 01/05/2015.
  */
-public class IntervalSet implements Cloneable{
+public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
 
     /**
      * The container of this set
@@ -354,6 +354,36 @@ public class IntervalSet implements Cloneable{
         return IntervalSet.union(list);
     }
 
+    /**
+     * Returns the minimum value of this set of intervals
+     * @return the minimum value of this set
+     */
+    public int getMin() {
+        return this.container.first().min;
+    }
+
+
+    /**
+     * Returns the maximum value of this set of intervals
+     * @return the maximum value of this set
+     */
+    public int getMax() {
+        return this.container.last().max;
+    }
+
+    /**
+     * Returns the cardinality of this set
+     * @return the cardinality of this set
+     */
+    public int size() {
+        int sz = 0;
+        for (Interval i : this.container)
+            sz+=i.size();
+        return sz;
+    }
+
+
+
 
     @Override
     public String toString() {
@@ -449,8 +479,27 @@ public class IntervalSet implements Cloneable{
     }
 
 
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        else if (other != null && other instanceof IntervalSet) {
+            IntervalSet inter = (IntervalSet) other;
+            List<Interval> ointer = new ArrayList<>(inter.getIntervals());
+            List<Interval> tinter = new ArrayList<>(inter.getIntervals());
+            if (ointer.size() != tinter.size())
+                return false;
+            for (int i = 0; i < tinter.size(); ++i) {
+                if (!ointer.get(i).equals(tinter.get(i)))
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+
     /**
-     * Consturcts a new interval set from a single {@link fr.menana.automaton.Interval}
+     * Constructs a new interval set from a single {@link fr.menana.automaton.Interval}
      * @param values the {@link fr.menana.automaton.Interval}
      * @return a new interval set
      */
@@ -464,5 +513,22 @@ public class IntervalSet implements Cloneable{
         IntervalSet set = IntervalSet.fromIntArray(1,2,3);
         IntervalSet set2 = IntervalSet.fromIntArray(2,3,4);
         System.out.println(set.intersection(set2));
+    }
+
+    @Override
+    public int compareTo(IntervalSet other) {
+        if (other == null)
+            return 1;
+        else if (this.getMin() <other.getMin())
+            return -1;
+        else if (this.getMin() == other.getMin()) {
+            if (this.getMax() == other.getMax())
+                return new Integer(this.size()).compareTo(other.size());
+            else
+                return new Integer(this.getMax()).compareTo(other.getMax());
+        }
+        else
+            return 1;
+
     }
 }

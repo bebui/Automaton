@@ -97,7 +97,7 @@ public class Interval implements Comparable<Interval>,Cloneable {
         else if (this.min > other.min)
             return 1;
         else
-            return this.max - other.max;
+            return new Integer(this.max).compareTo(other.max);
 
     }
 
@@ -125,7 +125,7 @@ public class Interval implements Comparable<Interval>,Cloneable {
         if (this.max == Integer.MAX_VALUE)
             max = Character.toString('\u221e');
 
-        return "["+min+(this.max==this.min ? "]" : ","+max+"]");
+        return "[|"+min+(this.max==this.min ? "|]" : ","+max+"|]");
     }
 
     /**
@@ -142,6 +142,14 @@ public class Interval implements Comparable<Interval>,Cloneable {
     @Override
     public int hashCode() {
         return this.min * this.max;
+    }
+
+    /**
+     * Returns the cardinality of the interval that is max - min + 1
+     * @return the size of the interval
+     */
+    public int size() {
+        return this.max - this.min + 1;
     }
 
 
@@ -164,6 +172,7 @@ public class Interval implements Comparable<Interval>,Cloneable {
         }
         return out;
     }
+
 
     @Override
     public Interval clone() {

@@ -40,7 +40,7 @@ public class Operation {
     /**
      * The minimization algorithm to use when {@link fr.menana.automaton.Operation#minimize(Automaton)} is called
      */
-    public static MINIMIZATION_ALGO minimization_method = MINIMIZATION_ALGO.Brzozowski;
+    public static MINIMIZATION_ALGO minimization_method = MINIMIZATION_ALGO.Hopcroft;
 
     /**
      * Returns a new minimal {@link fr.menana.automaton.Automaton} that recognizes the same language as the given {@link fr.menana.automaton.Automaton}<br>
@@ -63,7 +63,7 @@ public class Operation {
         switch(method){
             case Brzozowski : return minimizeBrzozowski(base);
             case Hopcroft   : return minimizeHopcroft(base);
-            default         : return minimizeBrzozowski(base);
+            default         : return minimizeHopcroft(base);
         }
     }
 
@@ -72,16 +72,17 @@ public class Operation {
      * @param base the {@link fr.menana.automaton.Automaton} to minimize
      * @return a minimal {@link fr.menana.automaton.Automaton}
      */
-    @SuppressWarnings("unused")
     public static Automaton minimizeHopcroft(Automaton base) {
-        base = base.isDeterministic() ? base : base.determinize();
+        base = base.isDeterministic() ? base.clone() : base.determinize();
+        if (base.getNbStates() == 0)
+            return new Automaton();
+        base.removeDeadStates();
         Set<Interval> alphabet = new TreeSet<>();
         List<Transition> allTransitions = base.getAllTransitions();
         for (Transition tr : allTransitions) {
             alphabet.addAll(tr.getIntervals());
         }
         alphabet = getDisjunction(alphabet);
-
 
         Set<Set<State>> p = new HashSet<>();
         Set<Set<State>> w = new HashSet<>();
@@ -91,33 +92,33 @@ public class Operation {
             p.add(acceptSet);
         if (!nonAcceptSet.isEmpty())
             p.add(nonAcceptSet);
+
         w.add(acceptSet);
+        w.add(nonAcceptSet);
 
         while (!w.isEmpty()) {
             Set<State> a = w.iterator().next();
             w.remove(a);
             for (Interval interval : alphabet) {
                 Set<State> x = allTransitions.stream().filter(tr -> a.contains(tr.dest) && tr.values.intersects(interval)).map(tr -> tr.orig).collect(Collectors.toSet());
-                for (Set<State> y : new HashSet<>(p)) {
-                    Set<State> inter = intersection(x,y);
-                    Set<State> comp  = minus(y,x);
-                    if (!inter.isEmpty() && !comp.isEmpty()) {
-                        p.remove(y);
-                        p.add(inter);
-                        p.add(comp);
-
-                        if (w.contains(y)) {
+                if (!x.isEmpty()) {
+                    for (Set<State> y : new HashSet<>(p)) {
+                        Set<State> inter = intersection(x, y);
+                        Set<State> comp = minus(y, x);
+                        if (!inter.isEmpty() && !comp.isEmpty()) {
                             p.remove(y);
                             p.add(inter);
                             p.add(comp);
+                            if (w.contains(y)) {
+                                w.remove(y);
+                                w.add(inter);
+                                w.add(comp);
+                            } else if (inter.size() <= comp.size()) {
+                                w.add(inter);
+                            } else {
+                                w.add(comp);
+                            }
                         }
-                        else if (inter.size() <= comp.size()) {
-                            w.add(inter);
-                        }
-                        else {
-                            w.add(comp);
-                        }
-
                     }
                 }
             }
@@ -126,13 +127,15 @@ public class Operation {
         Automaton out = new Automaton();
         Map<Set<State>,State> setToNewState = new HashMap<>();
         Map<State,Set<State>> oldStateToSet = new HashMap<>();
+        State newInit = null;
         for (Set<State> group : p) {
+         //   System.out.println(group);
             State newState = out.addState();
             setToNewState.put(group, newState);
             if (State.hasAcceptingState(group))
                 out.setAccept(newState);
             if (State.hasInitialState(group))
-                out.setInitial(newState);
+                newInit = newState;
             for (State s : group) {
                 oldStateToSet.put(s,group);
             }
@@ -145,6 +148,11 @@ public class Operation {
                 }
             }
         }
+        out.setInitial(newInit);
+
+        out.reIndex();
+
+
         return out;
     }
 
@@ -164,7 +172,15 @@ public class Operation {
      */
     public static Automaton minimizeBrzozowski(Automaton base) {
         Automaton a = base.isDeterministic() ? base : base.determinize();
-        return a.revert().determinize().revert().determinize();
+        if (a.getNbStates() == 0)
+            return new Automaton();
+        a = a.revert();//
+        a.toDotty("reverted.dot");
+        a = a.determinize(); // .determinize();
+        a.toDotty("revdet.dot");
+        a = a.revert().determinize();
+        a.removeDeadStates();
+        return a;
     }
 
 
@@ -178,14 +194,13 @@ public class Operation {
         if (nfa.isDeterministic())
             return nfa.clone();
 
-
         if (nfa.getInitial() == null)
             return null;
 
         Automaton dfa = new Automaton();
 
 
-        Stack<Set<State>> toVisit = new Stack<>();
+        Set<Set<State>> toVisit = new HashSet<>();
 
         Set<State> start = closure(nfa.getInitial());
 
@@ -193,19 +208,21 @@ public class Operation {
         State dfaInit = dfa.addState();
         dfaInit.initial = true;
         dfaInit.accept = State.hasAcceptingState(start);
-        dfa.setInitial(dfaInit);
         if (dfaInit.accept)
             dfa.setAccept(dfaInit);
 
         Map<Set<State>,State> association = new HashMap<>();
         association.put(start, dfaInit);
 
-        toVisit.push(start);
+        toVisit.add(start);
         Set<Set<State>> visited = new HashSet<>();
 
         while (!toVisit.isEmpty()) {
+            Iterator<Set<State>> it = toVisit.iterator();
 
-            Set<State> current = toVisit.pop();
+
+            Set<State> current = it.next();
+            it.remove();
             visited.add(current);
             //System.out.println("CURRENT : " + current);
 
@@ -230,11 +247,13 @@ public class Operation {
                     }
                     dfa.addTransition(association.get(current), dfaState, i.clone());
                     if (!toVisit.contains(next) && !visited.contains(next))
-                        toVisit.push(next);
+                        toVisit.add(next);
                 }
             }
         }
 
+        dfa.setInitial(dfaInit);
+        dfa.reIndex();
 
 
         return dfa;
@@ -391,6 +410,7 @@ public class Operation {
 
     /**
      * Returns a new automaton recognizing the concatenation of the languages defined by the {@link fr.menana.automaton.Automaton} given as a parameter
+     * The returned automaton is deterministic if and only if both given automatons already are
      * @param first the first {@link fr.menana.automaton.Automaton} used for the concatenation
      * @param second the second {@link fr.menana.automaton.Automaton} used for the concatenation
      * @return a new automaton recognizing the concatenation of the languages defined by the {@link fr.menana.automaton.Automaton} parameters
@@ -417,11 +437,12 @@ public class Operation {
                     out.addEpsilonTransition(map.get(tr.orig),map.get(tr.dest));
             }
         }
-        return out;
+        return (first.isDeterministic() && second.isDeterministic()?out.minimize():out) ;
     }
 
     /**
      * Returns a new automaton recognizing the union of the languages defined by the {@link fr.menana.automaton.Automaton} given as a parameter
+     * The returned automaton is deterministic if and only if both given automatons already are
      * @param first the first {@link fr.menana.automaton.Automaton} used for the union
      * @param second the second {@link fr.menana.automaton.Automaton} used for the union
      * @return a new automaton recognizing the union of the languages defined by the {@link fr.menana.automaton.Automaton} parameters
@@ -448,7 +469,7 @@ public class Operation {
         out.addEpsilonTransition(init,out.getInitial());
         out.addEpsilonTransition(init, map.get(second.getInitial()));
         out.setInitial(init);
-        return out;
+        return (first.isDeterministic() && second.isDeterministic()?out.minimize():out) ;
     }
 
     /**
@@ -479,12 +500,23 @@ public class Operation {
 
 
     public static void main(String[] args) {
-        Automaton a = Automaton.nfaFromString("(1|2|3|4|5){2,3}(4|5|<10>|<11>)+");
+        Automaton a = Automaton.nfaFromString("((72345)|((7|8)+))");
+       // System.out.println(a);
         a = a.determinize();
-        State toto = a.addState();
-        a.addTransition(toto,a.getInitial(),1,2,3);
-        a.addEpsilonTransition(toto,a.getInitial());
-        a.removeDeadStates();
         System.out.println(a);
+        a.toDotty("det.dot");
+        //System.out.println(a.minimize());
+        Automaton b = a.minimize();
+        //State out = b.addState();
+        //b.addTransition(out,b.getInitial(),13,14);
+       // b = b.minimize();
+        b.toDotty("hop.dot");
+        System.out.println(b);
+        Operation.minimization_method = MINIMIZATION_ALGO.Brzozowski;
+        a.minimize().toDotty("brz.dot");
+       // System.out.println(a.minimize());     */
+
+
+
     }
 }

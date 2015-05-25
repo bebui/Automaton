@@ -22,6 +22,7 @@ import fr.menana.automaton.Util;
 
 /**
  * This class is a parser for regular expression whose alphabet is solely composed of integers. <br>
+ * Largely inspired from <a href="http://matt.might.net/articles/parsing-regex-with-recursive-descent/">http://matt.might.net/articles/parsing-regex-with-recursive-descent/</a>
  * It supports : <br>
  *    - &lt;x&gt; notation for integer greater than 10 or negative integer. ("12&lt;12&gt;" is the regular expression for 1 followed by 2 followed by 12) <br>
  *    - * notation for Kleene star <br>

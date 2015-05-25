@@ -24,7 +24,7 @@ import java.util.*;
  * It is meant to be created via the {@link Automaton#addState()} method <p>
  * Created by Julien Menana on 01/05/2015.
  */
-public class State  {
+public class State { //implements Comparable<State>{
 
     /**
      * The index of this state in the {@link fr.menana.automaton.Automaton}
@@ -123,7 +123,7 @@ public class State  {
      * Checks if this state is the initial state of the {@link fr.menana.automaton.Automaton}
      * @return <code>true</code> if and only if this state is the initial state of the {@link fr.menana.automaton.Automaton}
      */
-    public boolean isInitial() {
+    boolean isInitial() {
         return initial;
     }
 
@@ -131,7 +131,7 @@ public class State  {
      * Checks if this state is an acceptingstate of the {@link fr.menana.automaton.Automaton}
      * @return  <code>true</code> if and only if this state is an accepting state of the {@link fr.menana.automaton.Automaton}
      */
-    public boolean isAccept() {
+    boolean isAccept() {
         return accept;
     }
 
@@ -171,4 +171,33 @@ public class State  {
     public int getIndex() {
         return index;
     }
+
+    void setInitial() {
+        this.initial = true;
+    }
+
+  /*  public int compareTo(State other) {
+        return new Integer(this.index).compareTo(other.index);
+    }  */
+
+
+    public boolean hasTransitionWith(int value) {
+        for (Transition tr : this.transitions.values()) {
+            if (tr.values.contains(value))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        else if (other != null && other instanceof State) {
+            State state = (State) other;
+            return (state.index == this.index && state.accept == this.accept && state.initial == this.initial);
+        }
+        return false;
+    }
+
+
 }

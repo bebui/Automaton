@@ -45,11 +45,6 @@ public class Automaton implements Cloneable {
     private int initIndex;
 
     /**
-     * indexes of the accepting states
-     */
-    private BitSet acceptIndexes;
-
-    /**
      * <code>true</code> if automaton is deterministic, <code>false</code> otherwise
      */
     private boolean deterministic;
@@ -61,7 +56,6 @@ public class Automaton implements Cloneable {
     public Automaton(){
         this.initIndex = -1;
         this.states = new ArrayList<>();
-        this.acceptIndexes = new BitSet();
         this.deterministic = true;
     }
 
@@ -74,7 +68,6 @@ public class Automaton implements Cloneable {
         this.states = auto.states;
         this.initIndex = auto.initIndex;
         this.deterministic = auto.deterministic;
-        this.acceptIndexes = auto.acceptIndexes;
     }
 
     /**
@@ -83,6 +76,14 @@ public class Automaton implements Cloneable {
      */
     public List<State> getStates() {
         return states;
+    }
+
+    /**
+     * Returns the number of states in this automaton
+     * @return the number of  {@link fr.menana.automaton.State}
+     */
+    public int getNbStates() {
+        return states.size();
     }
 
 
@@ -108,7 +109,7 @@ public class Automaton implements Cloneable {
             this.states.get(this.initIndex).initial = false;
         }
         this.initIndex = state.index;
-        state.initial = true;
+        state.setInitial();
     }
 
     /**
@@ -116,7 +117,7 @@ public class Automaton implements Cloneable {
      * @param state a {@link fr.menana.automaton.State} to be set accepting
      */
     public void setAccept(State state) {
-        this.setAccept(state,true);
+        this.setAccept(state, true);
     }
 
     /**
@@ -125,7 +126,6 @@ public class Automaton implements Cloneable {
      * @param accept true if the state is an accepting state, false otherwise
      */
     public void setAccept(State state,boolean accept) {
-        this.acceptIndexes.set(state.index, accept);
         state.accept = accept;
     }
 
@@ -154,23 +154,14 @@ public class Automaton implements Cloneable {
      * @return a list of accepting {@link fr.menana.automaton.State}
      */
     public List<State> getAcceptList() {
-        List<State> liste = new ArrayList<>(this.acceptIndexes.cardinality());
-        for (int i = this.acceptIndexes.nextSetBit(0) ; i >= 0 ; i = this.acceptIndexes.nextSetBit(i+1)) {
-            liste.add(this.states.get(i));
-        }
-        return liste;
+        return this.states.stream().filter(State::isAccept).collect(Collectors.toList());
     }
     /**
      * Constructs and returns a list containing all the non-accepting states
      * @return a list of non-accepting {@link fr.menana.automaton.State}
      */
     public List<State> getNonAcceptList() {
-        List<State> liste = new ArrayList<>(this.acceptIndexes.cardinality());
-        int nbStates = this.states.size();
-        for (int i = this.acceptIndexes.nextClearBit(0) ; i >= 0 && i < nbStates; i = this.acceptIndexes.nextClearBit(i + 1)) {
-            liste.add(this.states.get(i));
-        }
-        return liste;
+        return this.states.stream().filter(s -> !s.isAccept()).collect(Collectors.toList());
     }
 
     /**
@@ -178,11 +169,11 @@ public class Automaton implements Cloneable {
      * @return a list of all transition in the automaton
      */
     public List<Transition> getAllTransitions() {
-        List<Transition> transitions = new ArrayList<>();
+        Set<Transition> transitions = new HashSet<>();
         for (State state : this.states) {
             transitions.addAll(state.getTransitions().values().stream().collect(Collectors.toList()));
         }
-        return transitions;
+        return transitions.stream().collect(Collectors.toList());
     }
 
     /**
@@ -292,7 +283,8 @@ public class Automaton implements Cloneable {
      * @param other the automaton to append
      * @return a new automaton resulting of the concatenation
      */
-    public Automaton concatenate(Automaton other) { return Operation.concatenate(this, other);}
+    public Automaton concatenate(Automaton other) {
+        return Operation.concatenate(this, other);}
 
     /**
      * Calls {@link fr.menana.automaton.Operation#union(Automaton, Automaton)} on this automaton and the given one
@@ -301,7 +293,8 @@ public class Automaton implements Cloneable {
      * @return a new automaton resulting of the union
      */
     @SuppressWarnings("unused")
-    public Automaton union(Automaton other) { return Operation.union(this, other);}
+    public Automaton union(Automaton other) {
+        return Operation.union(this, other);}
 
     /**
      * Calls {@link fr.menana.automaton.Operation#complement(Automaton)} on this automaton
@@ -312,36 +305,57 @@ public class Automaton implements Cloneable {
     public Automaton complement() { return Operation.complement(this);}
 
     public void removeDeadStates() {
-        Automaton tmp = new Automaton();
-        Map<State,State> map = new HashMap<>();
-        Stack<State> toVisit = new Stack<>();
-        Set<State> visited = new HashSet<>();
-        toVisit.push(this.getInitial());
-        while (!toVisit.isEmpty()) {
-            State current = toVisit.pop();
-            visited.add(current);
-            State newState = tmp.addState();
-            System.out.println(newState.getIndex());
-            map.put(current, newState);
-            tmp.setAccept(newState, current.isAccept());
-            if (current.isInitial())
-                tmp.setInitial(current);
-            current.getTransitions().values().stream().filter(tr -> !visited.contains(tr.dest)).forEach(tr -> toVisit.push(tr.dest));
-        }
-        for (State oldState : visited) {
-            for (Transition tr : oldState.transitions.values()) {
-                if (tr.values != null && !tr.hasEpsilon())
-                    tmp.addTransition(map.get(oldState),map.get(tr.dest),tr.values.clone());
-                else if (tr.values == null || tr.hasEpsilon())
-                    tmp.addEpsilonTransition(map.get(oldState), map.get(tr.dest));
+        Set<State> used = this.getUseFulStates();
+      //  System.out.println(this);
+        for (State s : this.states) {
+            for (Iterator<State> it = s.transitions.keySet().iterator() ; it.hasNext();) {
+                State next = it.next();
+               // System.out.println("St: "+next+" set: "+used+" contains ? "+used.contains(next));
+                if (!used.contains(next)) {
+               //     System.out.println("REM");
+                    it.remove();
+                }
             }
         }
-        this.initIndex = tmp.initIndex;
-        this.deterministic = tmp.deterministic;
-        this.states = tmp.states;
-        this.acceptIndexes = tmp.acceptIndexes;
+       // System.out.println("DEADSTATE : "+this);
+        this.reIndex();
+      //  System.out.println("REINDEX : "+this);
+    }
+
+    public Set<State> getUseFulStates() {
+        if (this.getNbStates() == 0)
+            return new HashSet<>();
+        else {
+            Set<State> useful = new HashSet<>();
+            Stack<State> toTest = new Stack<>();
+            Map<State,Set<Transition>> reverse = new HashMap<>();
+            List<Transition> trs = this.getAllTransitions();
+            for (Transition tr : trs) {
+                if (!reverse.containsKey(tr.dest)) {
+                    reverse.put(tr.dest,new HashSet<>());
+                }
+                reverse.get(tr.dest).add(tr);
+            }
+            toTest.addAll(this.getAcceptList().stream().collect(Collectors.toList()));
+            while (!toTest.isEmpty()) {
+                State s = toTest.pop();
+                useful.add(s);
+                if (reverse.containsKey(s)) {
+                    for (Iterator<Transition> it = reverse.get(s).iterator(); it.hasNext(); ) {
+                        Transition tmp = it.next();
+                        if (tmp != null) {
+                            toTest.push(tmp.orig);
+                            it.remove();
+                        }
+                    }
+                }
+
+            }
+            return useful;
+        }
 
     }
+
 
     @Override
     public Automaton clone() {
@@ -350,7 +364,6 @@ public class Automaton implements Cloneable {
         try {
             clone = (Automaton) super.clone();
             clone.states = new ArrayList<>(this.states.size());
-            clone.acceptIndexes = (BitSet)this.acceptIndexes.clone();
             clone.deterministic = this.deterministic;
             clone.initIndex = this.initIndex;
             for (int i = 0 ; i < this.states.size(); ++i)
@@ -379,6 +392,43 @@ public class Automaton implements Cloneable {
 
         return clone;
 
+
+    }
+
+    /**
+     * Re-indexes the automaton state indexes. <br>
+     * The initial state is indexed at 0  <br>
+     * Removes non connected states
+     */
+    public void reIndex() {
+        if (this.getNbStates() != 0) {
+
+            ArrayDeque<State> toVisit = new ArrayDeque<>();
+            Set<State> visited = new HashSet<>();
+            toVisit.push(this.getInitial());
+            for (State s : this.states) {
+                s.index = Integer.MAX_VALUE;
+            }
+            int idx = 0;
+            while (!toVisit.isEmpty()) {
+                State s = toVisit.poll();
+                if (!visited.contains(s)) {
+                    visited.add(s);
+                    s.index = idx++;
+                    Set<State> nexts = new HashSet<>(s.getTransitions().keySet());
+                    nexts.removeAll(visited);
+                    toVisit.addAll(nexts);
+                }
+
+            }
+            this.initIndex = 0;
+            //System.out.println(this.states);
+            Collections.sort(this.states, (o1, o2) -> new Integer(o1.index).compareTo(o2.index));
+            for (State s : this.states)
+                s.transitions.keySet().removeIf(st -> st.index == Integer.MAX_VALUE);
+
+            this.states.removeIf(s -> s.index == Integer.MAX_VALUE);
+        }
 
     }
 
@@ -456,6 +506,25 @@ public class Automaton implements Cloneable {
         return buffer.toString();
     }
 
+    public boolean equals(Object other) {
+        if (this == other)
+            return true;
+        if (other == null || ! (other instanceof Automaton))
+            return false;
+        Automaton auto = ((Automaton) other).clone();
+        Automaton orig = this.clone();
+        auto.removeDeadStates();
+        orig.removeDeadStates();
+        //auto.toDotty("auto.dot");
+        //orig.toDotty("orig.dot");
+        if (orig.getNbStates() != auto.getNbStates())
+            return false;
+        List<Transition> myTr = orig.getAllTransitions();
+        List<Transition> oTr  = auto.getAllTransitions();
+        return myTr.equals(oTr);
+    }
+
+
     /**
      * Constucts an NFA from a regexp given as a {@link java.lang.String}
      * @param regexp a regular expression
@@ -463,7 +532,7 @@ public class Automaton implements Cloneable {
      */
     @SuppressWarnings("unused")
     public static Automaton nfaFromString(String regexp) {
-        return RegExpParser.toDFA(regexp);
+        return RegExpParser.toNFA(regexp);
     }
 
     /**

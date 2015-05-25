@@ -24,7 +24,7 @@ import java.util.List;
  * This class represents a transition carrying values and/or epsilon from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} <br>
  * Created by Julien Menana on 01/05/2015.
  */
-public class Transition  {
+public class Transition {
 
     /**
      * The origin {@link fr.menana.automaton.State} of this transition
@@ -129,11 +129,16 @@ public class Transition  {
         return values != null ? new ArrayList<>(this.values.getIntervals()) : new ArrayList<>(0);
     }
 
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof Transition))
+            return false;
+        Transition tr = (Transition) other;
+        return tr.orig.equals(this.orig) && tr.dest.equals(this.dest) && tr.epsilon == this.epsilon && tr.values.equals(this.values);
+    }
+
 
     public String toString() {
         return orig + " -> " + (values != null ?values:"") + (epsilon?"e":"")+" -> "+dest;
     }
-
-
 
 }

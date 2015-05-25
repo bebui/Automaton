@@ -7,3 +7,5 @@ target
 *.iws
 *.jar
 *.DS_Store
+*.dot
+*.pdf
