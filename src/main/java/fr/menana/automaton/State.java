@@ -18,6 +18,7 @@
 package fr.menana.automaton;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a state in a finite automaton <br>
@@ -174,6 +175,13 @@ public class State { //implements Comparable<State>{
 
     void setInitial() {
         this.initial = true;
+    }
+
+    Set<State> delta(int value) {
+        return this.transitions.values().stream().filter(tr -> tr.values.contains(value)).map(tr -> tr.dest).collect(Collectors.toSet());
+    }
+    Set<State> deltaEpsilon() {
+        return this.transitions.values().stream().filter(tr -> tr.hasEpsilon()).map(tr -> tr.dest).collect(Collectors.toSet());
     }
 
   /*  public int compareTo(State other) {

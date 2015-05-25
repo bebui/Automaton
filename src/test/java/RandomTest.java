@@ -3,12 +3,9 @@ import fr.menana.automaton.Operation;
 import fr.menana.automaton.State;
 import org.junit.Test;
 
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 import java.util.Stack;
 
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -80,8 +77,8 @@ public class RandomTest {
         long totalbrz = 0;
         Random r = new Random();
 
-        for (int i = 0 ; i < 500; ++i) {
-            printBar((i+1)/50,10);
+        for (int i = 0 ; i < 250; ++i) {
+            printBar((i+1)/25,10);
             Automaton auto = random();//.determinize();
 
             // System.out.print(i+"("+auto.getNbStates()+")");
@@ -107,7 +104,7 @@ public class RandomTest {
 
             boolean eq = true;
 
-            for (int j = 0 ; j < 10000 ; ++j) {
+            for (int j = 0 ; j < 8000 ; ++j) {
 
                 System.out.print("");
 
@@ -145,9 +142,9 @@ public class RandomTest {
         System.out.println("Random binary automaton complement test: ");
         Random r = new Random();
 
-        for (int i = 0; i < 500; ++i) {
+        for (int i = 0; i < 250; ++i) {
 
-            printBar((i + 1) / 50, 10);
+            printBar((i + 1) / 25, 10);
             Automaton auto = random();//.determinize();
             Automaton comp = auto.complement();
 
@@ -158,7 +155,7 @@ public class RandomTest {
 
             boolean eq = true;
 
-            for (int j = 0; j < 10000; ++j) {
+            for (int j = 0; j < 8000; ++j) {
 
                 System.out.print("");
 

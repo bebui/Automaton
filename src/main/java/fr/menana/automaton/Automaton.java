@@ -396,6 +396,29 @@ public class Automaton implements Cloneable {
     }
 
     /**
+     * Returns the set of {@link fr.menana.automaton.State} that can be reached from a given {@link fr.menana.automaton.State} with transition of the given value <br>
+     * The set has only one element if the automaton is deterministic
+     * @param orig The {@link fr.menana.automaton.State} from which to compute the reachable {@link fr.menana.automaton.State}
+     * @param value The value taken by the transiton
+     * @return a set of {@link fr.menana.automaton.State} reachable from the given {@link fr.menana.automaton.State} using the value transition.
+     */
+    @SuppressWarnings("unused")
+    public Set<State> delta(State orig,int value) {
+        return orig.delta(value);
+    }
+
+    /**
+     * Returns the set of {@link fr.menana.automaton.State} that can be reached from a given {@link fr.menana.automaton.State} with an epsilon transition
+     * @param orig The {@link fr.menana.automaton.State} from which to compute the reachable {@link fr.menana.automaton.State}
+     * @return a set of {@link fr.menana.automaton.State} reachable from the given {@link fr.menana.automaton.State} using the epsilon transition.
+     */
+    @SuppressWarnings("unused")
+    public Set<State> deltaEpsilon(State orig) {
+        return orig.deltaEpsilon();
+    }
+
+
+    /**
      * Re-indexes the automaton state indexes. <br>
      * The initial state is indexed at 0  <br>
      * Removes non connected states
@@ -506,6 +529,7 @@ public class Automaton implements Cloneable {
         return buffer.toString();
     }
 
+    @Override
     public boolean equals(Object other) {
         if (this == other)
             return true;
