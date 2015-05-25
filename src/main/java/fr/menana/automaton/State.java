@@ -124,7 +124,7 @@ public class State { //implements Comparable<State>{
      * Checks if this state is the initial state of the {@link fr.menana.automaton.Automaton}
      * @return <code>true</code> if and only if this state is the initial state of the {@link fr.menana.automaton.Automaton}
      */
-    boolean isInitial() {
+    public boolean isInitial() {
         return initial;
     }
 
@@ -132,7 +132,7 @@ public class State { //implements Comparable<State>{
      * Checks if this state is an acceptingstate of the {@link fr.menana.automaton.Automaton}
      * @return  <code>true</code> if and only if this state is an accepting state of the {@link fr.menana.automaton.Automaton}
      */
-    boolean isAccept() {
+    public boolean isAccept() {
         return accept;
     }
 
