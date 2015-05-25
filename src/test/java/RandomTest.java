@@ -56,28 +56,45 @@ public class RandomTest {
 
     }
 
+    private void printBar(int cur, int max) {
+        StringBuilder builder = new StringBuilder("[");
+        for (int l = 1 ; l <= cur ; ++l) {
+            builder.append('*');
+        }
+        for (int l = cur + 1 ; l<= max ; ++l) {
+            builder.append(" ");
+        }
+        builder.append("]\r");
+        System.out.print(builder);
+
+    }
+
     /**
      * Generates thousand random automaton which accept language composed with the alphabet {0,1}
      * Checks if minimized automaton with Brzozowski or Hopcroft accepts the same randomly generated 10000 words
      */
     @Test
-    public void randomBinaryTest() {
+    public void randomBinaryMinTest() {
         long totalhop = 0;
         long totalbrz = 0;
         Random r = new Random();
 
-        for (int i = 0 ; i < 1000; ++i) {
+        for (int i = 0 ; i < 500; ++i) {
+
+
+           printBar((i+1)/50,10);
+
             Automaton auto = random();//.determinize();
 
 
-           // System.out.print(i+"("+auto.getNbStates()+")");
+            // System.out.print(i+"("+auto.getNbStates()+")");
             //System.out.print(" => HOP : ");
             long tick = System.currentTimeMillis();
             Automaton hop = Operation.minimizeHopcroft(auto);
             long thop = System.currentTimeMillis() - tick;
             totalhop+= thop;
-           // System.out.print(thop + "ms");
-           // hop.toDotty("hop.dot");
+            // System.out.print(thop + "ms");
+            // hop.toDotty("hop.dot");
 
             //System.out.print(", BRZ : ");
             tick = System.currentTimeMillis();
@@ -86,14 +103,17 @@ public class RandomTest {
             totalbrz += tbrz;
             //System.out.print(tbrz + "ms");
 
-         //   boolean eq = brz.equals(hop);
+            //   boolean eq = brz.equals(hop);
 
-          //  System.out.println(", nbS : " + hop.getNbStates() + " " + (hop.getNbStates() == brz.getNbStates()));
+            //  System.out.println(", nbS : " + hop.getNbStates() + " " + (hop.getNbStates() == brz.getNbStates()));
 
 
             boolean eq = true;
 
             for (int j = 0 ; j < 10000 ; ++j) {
+
+                System.out.print("");
+
                 String word = Integer.toBinaryString(r.nextInt());
                 char[] parts = word.toCharArray();
                 int[] iParts = new int[parts.length];
@@ -119,12 +139,59 @@ public class RandomTest {
 
         }
 
- //       System.out.println("total hop : "+totalhop+"ms");
- //       System.out.println("total brz : "+totalbrz+"ms");
-
-
-
 
     }
 
+   @Test
+   public void randomComplementTest() {
+
+       Random r = new Random();
+
+       for (int i = 0 ; i < 500; ++i) {
+
+           printBar((i+1)/50,10);
+           Automaton auto = random();//.determinize();
+           Automaton comp = auto.complement();
+
+           Automaton hop = Operation.minimizeHopcroft(auto);
+           Automaton compHop = Operation.minimizeHopcroft(comp);
+           Automaton hopComp = hop.complement().minimize();
+
+
+           boolean eq = true;
+
+           for (int j = 0 ; j < 10000 ; ++j) {
+
+               System.out.print("");
+
+               String word = Integer.toBinaryString(r.nextInt());
+               char[] parts = word.toCharArray();
+               int[] iParts = new int[parts.length];
+               int k = 0;
+               for (char s : parts)
+                   iParts[k++] = Integer.parseInt(s + "");
+
+               boolean bhop = hop.run(iParts);
+               boolean bcompHop = compHop.run(iParts);
+               boolean bhopComp = hopComp.run(iParts);
+               eq &= bhop != bcompHop;
+               assertTrue(eq);
+
+               eq &= bcompHop == bhopComp;
+               assertTrue(eq);
+           }
+           if (!eq) {
+               System.out.println("PB: "+i);
+               auto.toDotty("det" + i + ".dot");
+               hop.toDotty("hop" + i + ".dot");
+               compHop.toDotty("chop" + i + ".dot");
+               hopComp.toDotty("hcop" + i + ".dot");
+
+           }
+
+       }
+
+   }
+
 }
+

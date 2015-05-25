@@ -175,9 +175,7 @@ public class Operation {
         if (a.getNbStates() == 0)
             return new Automaton();
         a = a.revert();//
-        a.toDotty("reverted.dot");
         a = a.determinize(); // .determinize();
-        a.toDotty("revdet.dot");
         a = a.revert().determinize();
         a.removeDeadStates();
         return a;
@@ -499,7 +497,7 @@ public class Operation {
     }
 
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
         Automaton a = Automaton.nfaFromString("((72345)|((7|8)+))");
        // System.out.println(a);
         a = a.determinize();
@@ -514,9 +512,9 @@ public class Operation {
         System.out.println(b);
         Operation.minimization_method = MINIMIZATION_ALGO.Brzozowski;
         a.minimize().toDotty("brz.dot");
-       // System.out.println(a.minimize());     */
+       // System.out.println(a.minimize());
 
 
 
-    }
+    }*/
 }
