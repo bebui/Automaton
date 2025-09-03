@@ -1,6 +1,6 @@
 /**
  * Automaton
- * Copyright (c) 2015, Julien Menana, All rights reserved.
+ * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,13 @@ import java.util.List;
  * Created by Julien Menana on 02/05/2015.
  */
 public class Util {
+
+    /**
+     * Private constructor to hide the implicit public one.
+     */
+    private Util() {
+        // Hiding the implicit public one
+    }
 
     /**
      * Construct the powerset of a given set
@@ -63,6 +70,12 @@ public class Util {
      * A comparator to sort list in descending size order
      */
     public static class ListSizeComparator implements Comparator<List> {
+        /**
+         * Constructs a new ListSizeComparator.
+         */
+        public ListSizeComparator() {
+            // Default constructor
+        }
 
         public int compare(List o1, List o2) {
             return o2.size() - o1.size();

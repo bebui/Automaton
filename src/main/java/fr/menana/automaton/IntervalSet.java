@@ -1,6 +1,6 @@
 /**
  * Automaton
- * Copyright (c) 2015, Julien Menana, All rights reserved.
+ * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -500,6 +500,10 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
         return set;
     }
 
+    /**
+     * Main method for testing purposes.
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         IntervalSet set = IntervalSet.fromIntArray(1,2,3);
         IntervalSet set2 = IntervalSet.fromIntArray(2,3,4);

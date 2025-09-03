@@ -1,6 +1,6 @@
 /**
  * Automaton
- * Copyright (c) 2015, Julien Menana, All rights reserved.
+ * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -178,11 +178,20 @@ public class State { //implements Comparable<State>{
         return this.transitions.values().stream().filter(tr -> tr.hasEpsilon()).map(tr -> tr.dest).collect(Collectors.toSet());
     }
 
+    /**
+     * Compares this state with the specified state for order.
+     * @param other the state to be compared.
+     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object.
+     */
     public int compareTo(State other) {
         return Integer.compare(this.index, other.index);
     }
 
-
+    /**
+     * Checks if this state has a transition with the given value.
+     * @param value the value to check
+     * @return <code>true</code> if and only if this state has a transition with the given value
+     */
     public boolean hasTransitionWith(int value) {
         return this.transitions.values().stream().anyMatch(tr -> tr.values.contains(value));
     }

@@ -1,6 +1,6 @@
 /**
  * Automaton
- * Copyright (c) 2015, Julien Menana, All rights reserved.
+ * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -314,12 +314,19 @@ public class Automaton implements Cloneable {
     @SuppressWarnings("unused")
     public Automaton complement() { return Operation.complement(this);}
 
+    /**
+     * Removes states that are not reachable from the initial state.
+     */
     public void removeDeadStates() {
         Set<State> used = this.getUseFulStates();
         this.states.forEach(s -> s.transitions.keySet().removeIf(next -> !used.contains(next)));
         this.reIndex();
     }
 
+    /**
+     * Returns the set of states that can reach an accepting state.
+     * @return a set of useful states
+     */
     public Set<State> getUseFulStates() {
         if (this.getNbStates() == 0)
             return new HashSet<>();

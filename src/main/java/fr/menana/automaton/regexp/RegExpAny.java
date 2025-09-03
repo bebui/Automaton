@@ -1,6 +1,6 @@
 /**
  * Automaton
- * Copyright (c) 2015, Julien Menana, All rights reserved.
+ * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,6 +26,13 @@ import fr.menana.automaton.State;
  * Created by Julien Menana on 05/05/2015.
  */
 public class RegExpAny extends RegExp {
+
+    /**
+     * Constructs a new RegExpAny.
+     */
+    public RegExpAny() {
+        super();
+    }
 
     @Override
     public String toString() {
