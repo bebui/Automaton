@@ -97,7 +97,7 @@ public class Interval implements Comparable<Interval>,Cloneable {
         else if (this.min > other.min)
             return 1;
         else
-            return new Integer(this.max).compareTo(other.max);
+            return Integer.compare(this.max, other.max);
 
     }
 

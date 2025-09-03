@@ -18,6 +18,7 @@
 package fr.menana.automaton;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class represents an ordered set of integer values as a set of {@link fr.menana.automaton.Interval} <br>
@@ -249,18 +250,14 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * @param intervalSet the other  interval set
      * @return  <code>true</code> if and only if the given  interval set and this  interval set have common values
      */
-    public boolean intersects(IntervalSet intervalSet)
-    {
+    public boolean intersects(IntervalSet intervalSet) {
         if (intervalSet == null)
             return false;
-        for (Interval i : intervalSet.container)
-        {
+        return intervalSet.container.stream().anyMatch(i -> {
             Interval floor = container.floor(i);
             Interval ceiling = container.ceiling(i);
-            if (i.intersects(floor) || i.intersects(ceiling))
-                return true;
-        }
-        return false;
+            return i.intersects(floor) || i.intersects(ceiling);
+        });
     }
 
     /**
@@ -376,10 +373,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * @return the cardinality of this set
      */
     public int size() {
-        int sz = 0;
-        for (Interval i : this.container)
-            sz+=i.size();
-        return sz;
+        return this.container.stream().mapToInt(Interval::size).sum();
     }
 
 
@@ -391,14 +385,13 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
     }
 
     @Override
-    public IntervalSet clone(){
+    public IntervalSet clone() {
         IntervalSet clone = null;
         try {
             clone = (IntervalSet) super.clone();
-            clone.container = new TreeSet<>();
-            for (Interval i : this.container){
-                clone.container.add(i.clone());
-            }
+            clone.container = this.container.stream()
+                    .map(Interval::clone)
+                    .collect(Collectors.toCollection(TreeSet::new));
         } catch (CloneNotSupportedException ignored) {
 
         }
@@ -412,9 +405,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     public static IntervalSet union(Collection<IntervalSet> intervals) {
         IntervalSet out = new IntervalSet();
-        for (IntervalSet is : intervals) {
-            out.add(is);
-        }
+        intervals.forEach(out::add);
         return out;
     }
 
@@ -485,7 +476,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
         else if (other != null && other instanceof IntervalSet) {
             IntervalSet inter = (IntervalSet) other;
             List<Interval> ointer = new ArrayList<>(inter.getIntervals());
-            List<Interval> tinter = new ArrayList<>(inter.getIntervals());
+            List<Interval> tinter = new ArrayList<>(this.getIntervals());
             if (ointer.size() != tinter.size())
                 return false;
             for (int i = 0; i < tinter.size(); ++i) {
@@ -523,9 +514,9 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
             return -1;
         else if (this.getMin() == other.getMin()) {
             if (this.getMax() == other.getMax())
-                return new Integer(this.size()).compareTo(other.size());
+                return Integer.compare(this.size(), other.size());
             else
-                return new Integer(this.getMax()).compareTo(other.getMax());
+                return Integer.compare(this.getMax(), other.getMax());
         }
         else
             return 1;
