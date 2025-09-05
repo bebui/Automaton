@@ -1,6 +1,6 @@
 /**
  * Automaton
- * Copyright (c) 2015, Julien Menana, All rights reserved.
+ * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +37,21 @@ public class Interval implements Comparable<Interval>,Cloneable {
      */
     int max;
 
+    /**
+     * Returns the lower bound of the interval.
+     * @return the lower bound of the interval.
+     */
+    public int getMin() {
+        return min;
+    }
+
+    /**
+     * Returns the upper bound of the interval.
+     * @return the upper bound of the interval.
+     */
+    public int getMax() {
+        return max;
+    }
 
     /**
      * Constructs a new interval between a lower and an upper bound. <br>
@@ -97,7 +112,7 @@ public class Interval implements Comparable<Interval>,Cloneable {
         else if (this.min > other.min)
             return 1;
         else
-            return new Integer(this.max).compareTo(other.max);
+            return Integer.compare(this.max, other.max);
 
     }
 

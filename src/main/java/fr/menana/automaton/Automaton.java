@@ -1,6 +1,6 @@
 /**
  * Automaton
- * Copyright (c) 2015, Julien Menana, All rights reserved.
+ * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -181,11 +181,9 @@ public class Automaton implements Cloneable {
      * @return a list of all transition in the automaton
      */
     public List<Transition> getAllTransitions() {
-        Set<Transition> transitions = new HashSet<>();
-        for (State state : this.states) {
-            transitions.addAll(state.getTransitions().values().stream().collect(Collectors.toList()));
-        }
-        return transitions.stream().collect(Collectors.toList());
+        return this.states.stream()
+                .flatMap(state -> state.getTransitions().values().stream())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -316,39 +314,28 @@ public class Automaton implements Cloneable {
     @SuppressWarnings("unused")
     public Automaton complement() { return Operation.complement(this);}
 
+    /**
+     * Removes states that are not reachable from the initial state.
+     */
     public void removeDeadStates() {
         Set<State> used = this.getUseFulStates();
-      //  System.out.println(this);
-        for (State s : this.states) {
-            for (Iterator<State> it = s.transitions.keySet().iterator() ; it.hasNext();) {
-                State next = it.next();
-               // System.out.println("St: "+next+" set: "+used+" contains ? "+used.contains(next));
-                if (!used.contains(next)) {
-               //     System.out.println("REM");
-                    it.remove();
-                }
-            }
-        }
-       // System.out.println("DEADSTATE : "+this);
+        this.states.forEach(s -> s.transitions.keySet().removeIf(next -> !used.contains(next)));
         this.reIndex();
-      //  System.out.println("REINDEX : "+this);
     }
 
+    /**
+     * Returns the set of states that can reach an accepting state.
+     * @return a set of useful states
+     */
     public Set<State> getUseFulStates() {
         if (this.getNbStates() == 0)
             return new HashSet<>();
         else {
             Set<State> useful = new HashSet<>();
             Stack<State> toTest = new Stack<>();
-            Map<State,Set<Transition>> reverse = new HashMap<>();
-            List<Transition> trs = this.getAllTransitions();
-            for (Transition tr : trs) {
-                if (!reverse.containsKey(tr.dest)) {
-                    reverse.put(tr.dest,new HashSet<>());
-                }
-                reverse.get(tr.dest).add(tr);
-            }
-            toTest.addAll(this.getAcceptList().stream().collect(Collectors.toList()));
+            Map<State, Set<Transition>> reverse = this.getAllTransitions().stream()
+                    .collect(Collectors.groupingBy(tr -> tr.dest, Collectors.toSet()));
+            toTest.addAll(this.getAcceptList());
             while (!toTest.isEmpty()) {
                 State s = toTest.pop();
                 useful.add(s);
@@ -441,9 +428,7 @@ public class Automaton implements Cloneable {
             ArrayDeque<State> toVisit = new ArrayDeque<>();
             Set<State> visited = new HashSet<>();
             toVisit.push(this.getInitial());
-            for (State s : this.states) {
-                s.index = Integer.MAX_VALUE;
-            }
+            this.states.forEach(s -> s.index = Integer.MAX_VALUE);
             int idx = 0;
             while (!toVisit.isEmpty()) {
                 State s = toVisit.poll();
@@ -458,7 +443,7 @@ public class Automaton implements Cloneable {
             }
             this.initIndex = 0;
             //System.out.println(this.states);
-            Collections.sort(this.states, (o1, o2) -> new Integer(o1.index).compareTo(o2.index));
+            Collections.sort(this.states, (o1, o2) -> Integer.compare(o1.index, o2.index));
             for (State s : this.states)
                 s.transitions.keySet().removeIf(st -> st.index == Integer.MAX_VALUE);
 
@@ -490,8 +475,7 @@ public class Automaton implements Cloneable {
     public String toDot() {
         StringBuilder b = new StringBuilder("digraph Automaton {\n");
         b.append(" rankdir = LR;\n");
-        List<State> states = this.getStates();
-        for (State s : states) {
+        this.getStates().forEach(s -> {
             int idx = s.getIndex();
             b.append(" ").append(idx);
             if (s.isAccept())
@@ -506,7 +490,7 @@ public class Automaton implements Cloneable {
                 b.append(" ").append(idx);
                 appendDot(t, b);
             }
-        }
+        });
         return b.append("}\n").toString();
     }
 
@@ -533,12 +517,10 @@ public class Automaton implements Cloneable {
 
     @Override
     public String toString() {
-        StringBuilder buffer = new StringBuilder();
-        for (State s : states) {
-            for (Transition t : s.transitions.values())
-                buffer.append(t).append("\n");
-        }
-        return buffer.toString();
+        return states.stream()
+                .flatMap(s -> s.getTransitions().values().stream())
+                .map(Transition::toString)
+                .collect(Collectors.joining("\n"));
     }
 
     @Override
