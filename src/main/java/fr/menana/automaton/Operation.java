@@ -1,6 +1,6 @@
 /**
  * Automaton
- * Copyright (c) 2015, Julien Menana, All rights reserved.
+ * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,13 +27,23 @@ import java.util.stream.Collectors;
  */
 public class Operation {
 
+    private Operation() {
+        // Hiding the implicit public one
+    }
+
     /**
      * Enum of the available minimization algorithms <br>
      * Brzozowski performs in O(2^n) where n is the number of states in the automaton, but has a good average case-complexity <br>
      * Hopcroft performs in O(n s log(n))
      */
     public enum MINIMIZATION_ALGO {
+        /**
+         * Brzozowski's algorithm.
+         */
         Brzozowski,
+        /**
+         * Hopcroft's algorithm.
+         */
         Hopcroft,
     }
 

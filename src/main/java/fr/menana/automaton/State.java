@@ -1,6 +1,6 @@
 /**
  * Automaton
- * Copyright (c) 2015, Julien Menana, All rights reserved.
+ * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -148,10 +148,7 @@ public class State { //implements Comparable<State>{
      * @return <code>true</code> if and only if at least one of the given state is an accepting state
      */
     static boolean hasAcceptingState(Collection<State> states) {
-        for (State s : states)
-            if (s.accept)
-                return true;
-        return false;
+        return states.stream().anyMatch(s -> s.accept);
     }
     /**
      * Checks if a set of state contains the initial state
@@ -159,10 +156,7 @@ public class State { //implements Comparable<State>{
      * @return <code>true</code> if and only if at least one of the given state is the initial state
      */
     static boolean hasInitialState(Collection<State> states) {
-        for (State s : states)
-            if (s.initial)
-                return true;
-        return false;
+        return states.stream().anyMatch(s -> s.initial);
     }
 
     /**
@@ -184,17 +178,22 @@ public class State { //implements Comparable<State>{
         return this.transitions.values().stream().filter(tr -> tr.hasEpsilon()).map(tr -> tr.dest).collect(Collectors.toSet());
     }
 
-  /*  public int compareTo(State other) {
-        return new Integer(this.index).compareTo(other.index);
-    }  */
+    /**
+     * Compares this state with the specified state for order.
+     * @param other the state to be compared.
+     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object.
+     */
+    public int compareTo(State other) {
+        return Integer.compare(this.index, other.index);
+    }
 
-
+    /**
+     * Checks if this state has a transition with the given value.
+     * @param value the value to check
+     * @return <code>true</code> if and only if this state has a transition with the given value
+     */
     public boolean hasTransitionWith(int value) {
-        for (Transition tr : this.transitions.values()) {
-            if (tr.values.contains(value))
-                return true;
-        }
-        return false;
+        return this.transitions.values().stream().anyMatch(tr -> tr.values.contains(value));
     }
 
     public boolean equals(Object other) {
