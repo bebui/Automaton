@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -18,22 +18,14 @@
 package fr.menana.automaton.regexp;
 
 import fr.menana.automaton.Automaton;
-import fr.menana.automaton.Util;
 
 /**
- * This class is a parser for regular expression whose alphabet is solely composed of integers. <br>
- * Largely inspired from <a href="http://matt.might.net/articles/parsing-regex-with-recursive-descent/">http://matt.might.net/articles/parsing-regex-with-recursive-descent/</a>
- * Invalid expressions are rejected with an {@link IllegalArgumentException} giving the error position. <br>
- * It supports : <br>
- *    - &lt;x&gt; notation for integer greater than 10 or negative integer. ("12&lt;12&gt;" is the regular expression for 1 followed by 2 followed by 12) <br>
- *    - * notation for Kleene star <br>
- *    - + notation for Kleene plus <br>
- *    - . notation for any integer <br>
- *    - {x,y} notation to enforce the appearance of an expression between x and y times, {x} exactly x times, {x,} at least x times <br>
- *    - ? notation for zero or one <br>
- *    - &amp; notation for intersection, with a lower priority than concatenation and a higher one than | <br>
- *    - ~ notation for complement, applying to the expression that follows with its repetition operators : ~12 is (~1)2 <p>
- * Created by Julien Menana on 05/05/15.
+ * Parser of regular expressions over integers, whose syntax is described in the {@link fr.menana.automaton.regexp package overview}. <br>
+ * A recursive descent parser, inspired from
+ * <a href="https://matt.might.net/articles/parsing-regex-with-recursive-descent/">Matt Might's article</a>.
+ * Invalid expressions are rejected with an {@link IllegalArgumentException} giving the error position.
+ *
+ * @author Julien Menana
  */
 public class RegExpParser {
 
@@ -49,7 +41,7 @@ public class RegExpParser {
     private int pos;
 
     /**
-     * Consturcts a new parser from a string
+     * Constructs a new parser from a string
      * @param input a regular expression as a string
      */
     private RegExpParser(String input) {
@@ -174,7 +166,7 @@ public class RegExpParser {
             if (end < 0)
                 throw error("Missing '>'");
             String number = expression.substring(pos + 1, end);
-            if (!Util.isInteger(number))
+            if (!number.matches("-?[0-9]+"))
                 throw error("Expected an integer between '<' and '>' but found \"" + number + "\"");
             int value;
             try {

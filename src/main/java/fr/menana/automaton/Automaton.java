@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -27,9 +27,39 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Main class to create and manipulate finite automaton. <br>
- * An automaton can be created using primitives of this class or using the regexp parser <p>
- * Created by Julien Menana on 01/05/2015.
+ * A finite automaton whose symbols are integers, deterministic or not. <br>
+ * Each transition carries a set of integer intervals, and possibly an epsilon. An automaton has at most one initial
+ * state and any number of accepting states.
+ *
+ * <h2>From a regular expression</h2>
+ * <pre>{@code
+ * Automaton auto = Automaton.dfaFromString("(1|2)*12(1|2)*");
+ * auto.run(1, 1, 2);    // true
+ * }</pre>
+ * See {@link fr.menana.automaton.regexp the regular expression syntax}.
+ *
+ * <h2>State by state</h2>
+ * <pre>{@code
+ * Automaton auto = new Automaton();           // one or more digits
+ * State s0 = auto.addState();
+ * State s1 = auto.addState();
+ * auto.setInitial(s0);
+ * auto.setAccept(s1);
+ * auto.addTransition(s0, s1, new Interval(0, 9));
+ * auto.addTransition(s1, s1, new Interval(0, 9));
+ * }</pre>
+ * Adding an epsilon transition, or two transitions sharing a value from the same state, makes the automaton
+ * non-deterministic : {@link #isDeterministic()} tells which kind it is.
+ *
+ * <h2>Using it</h2>
+ * Transformations ({@link #determinize()}, {@link #minimize()}, ...) and boolean operations ({@link #union(Automaton)},
+ * {@link #intersection(Automaton)}, ...) return new automata. Questions on the language ({@link #isEmpty()},
+ * {@link #sameLanguage(Automaton)}, ...) do not modify the automaton. To read many words, {@link #compile()} it;
+ * to search inside sequences, use a {@link #searcher()}. The {@link fr.menana.automaton package overview} lists everything.
+ * <p>
+ * An automaton is mutable and not thread safe.
+ *
+ * @author Julien Menana
  */
 public class Automaton implements Cloneable {
 
@@ -40,7 +70,7 @@ public class Automaton implements Cloneable {
     private List<State> states;
 
     /**
-     * index of the intial state in the list
+     * index of the initial state in the list
      */
     private int initIndex;
 
@@ -60,8 +90,10 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Constructs an new automaton from a regular expression.
+     * Constructs the minimal deterministic automaton of a regular expression, see {@link fr.menana.automaton.regexp the regular expression syntax}.
+     * Same as {@link #dfaFromString(String)}
      * @param regexp the regular expression
+     * @throws IllegalArgumentException if the expression is invalid
      */
     public Automaton(String regexp) {
         Automaton auto = Automaton.dfaFromString(regexp);
@@ -385,6 +417,7 @@ public class Automaton implements Cloneable {
      * Returns a new minimal deterministic automaton recognizing the words accepted by this automaton and by another one
      * @param other the other automaton
      * @return the intersection of both languages
+     * @since 2.0.0
      */
     public Automaton intersection(Automaton other) {
         return Operation.intersection(this, other);
@@ -394,6 +427,7 @@ public class Automaton implements Cloneable {
      * Returns a new minimal deterministic automaton recognizing the words accepted by this automaton and not by another one
      * @param other the automaton whose words are removed
      * @return the difference of both languages
+     * @since 2.0.0
      */
     public Automaton difference(Automaton other) {
         return Operation.difference(this, other);
@@ -402,6 +436,7 @@ public class Automaton implements Cloneable {
     /**
      * Returns an equivalent automaton without epsilon transitions, see {@link Operation#removeEpsilon(Automaton)}
      * @return an equivalent automaton without epsilon transitions
+     * @since 2.0.0
      */
     public Automaton removeEpsilon() {
         return Operation.removeEpsilon(this);
@@ -410,6 +445,7 @@ public class Automaton implements Cloneable {
     /**
      * Returns an equivalent automaton with fewer states, without determinizing it, see {@link Operation#reduce(Automaton)}
      * @return a smaller or equal equivalent automaton
+     * @since 2.0.0
      */
     public Automaton reduce() {
         return Operation.reduce(this);
@@ -419,6 +455,7 @@ public class Automaton implements Cloneable {
      * Compiles this automaton into an immutable deterministic automaton, to read many words quickly. <br>
      * Call {@link #minimize()} first to compile the smallest automaton
      * @return the compiled automaton
+     * @since 2.0.0
      */
     public CompiledDfa compile() {
         return CompiledDfa.of(this);
@@ -427,6 +464,7 @@ public class Automaton implements Cloneable {
     /**
      * Prepares the search of the words of this language inside sequences of integers
      * @return a reusable searcher
+     * @since 2.0.0
      */
     public Searcher searcher() {
         return new Searcher(this);
@@ -437,6 +475,7 @@ public class Automaton implements Cloneable {
      * Builds a new {@link Searcher} on each call : use {@link #searcher()} to search several texts
      * @param text the text
      * @return the match, or <code>null</code> if there is none
+     * @since 2.0.0
      */
     public Searcher.Match find(int... text) {
         return searcher().find(text);
@@ -447,6 +486,7 @@ public class Automaton implements Cloneable {
      * Builds a new {@link Searcher} on each call : use {@link #searcher()} to search several texts
      * @param text the text
      * @return <code>true</code> if and only if a factor of the text is accepted
+     * @since 2.0.0
      */
     public boolean contains(int... text) {
         return searcher().contains(text);
@@ -457,6 +497,7 @@ public class Automaton implements Cloneable {
      * Builds a new {@link Searcher} on each call : use {@link #searcher()} to search several texts
      * @param text the text
      * @return the matches in increasing order
+     * @since 2.0.0
      */
     public List<Searcher.Match> findAll(int... text) {
         return searcher().findAll(text);
@@ -465,6 +506,7 @@ public class Automaton implements Cloneable {
     /**
      * Checks if this automaton accepts no word
      * @return <code>true</code> if and only if the language is empty
+     * @since 2.0.0
      */
     public boolean isEmpty() {
         return Languages.shortestWord(this) == null;
@@ -473,6 +515,7 @@ public class Automaton implements Cloneable {
     /**
      * Checks if this automaton accepts finitely many words
      * @return <code>true</code> if and only if the language is finite
+     * @since 2.0.0
      */
     public boolean isFinite() {
         return Languages.isFinite(this);
@@ -481,6 +524,7 @@ public class Automaton implements Cloneable {
     /**
      * Checks if this automaton accepts every word over the integers
      * @return <code>true</code> if and only if the language contains all words
+     * @since 2.0.0
      */
     public boolean isUniversal() {
         return this.complement().isEmpty();
@@ -492,6 +536,7 @@ public class Automaton implements Cloneable {
      * Use {@link #equals(Object)} to compare the structure of two automata
      * @param other the other automaton
      * @return <code>true</code> if and only if both languages are equal
+     * @since 2.0.0
      */
     public boolean sameLanguage(Automaton other) {
         return Languages.sameLanguage(this, other);
@@ -502,6 +547,7 @@ public class Automaton implements Cloneable {
      * Uses antichains, which avoids determinizing the automata
      * @param other the other automaton
      * @return <code>true</code> if and only if the language of this automaton is included in the other one
+     * @since 2.0.0
      */
     public boolean isSubsetOf(Automaton other) {
         return Languages.isSubsetOf(this, other);
@@ -510,6 +556,7 @@ public class Automaton implements Cloneable {
     /**
      * Returns a shortest accepted word. Among words of the same length, the result is not necessarily the smallest one
      * @return a shortest word, or <code>null</code> if the language is empty
+     * @since 2.0.0
      */
     public int[] shortestWord() {
         return Languages.shortestWord(this);
@@ -520,6 +567,7 @@ public class Automaton implements Cloneable {
      * two automata differ
      * @param other the other automaton
      * @return a shortest distinguishing word, or <code>null</code> if both languages are equal
+     * @since 2.0.0
      */
     public int[] counterExample(Automaton other) {
         return Languages.counterExample(this, other);
@@ -529,6 +577,7 @@ public class Automaton implements Cloneable {
      * Counts the accepted words of a given length
      * @param length the length of the words
      * @return the number of accepted words of this length
+     * @since 2.0.0
      */
     public java.math.BigInteger countWords(int length) {
         return Languages.countWords(this, length);
@@ -539,6 +588,7 @@ public class Automaton implements Cloneable {
      * @param length the length of the word
      * @param random the source of randomness
      * @return a random word, or <code>null</code> if no word of this length is accepted
+     * @since 2.0.0
      */
     public int[] randomWord(int length, Random random) {
         return Languages.randomWord(this, length, random);
@@ -549,6 +599,7 @@ public class Automaton implements Cloneable {
      * by increasing length and then in lexicographic order
      * @param maxLength the maximum length of the words
      * @return the accepted words
+     * @since 2.0.0
      */
     public Iterable<int[]> words(int maxLength) {
         return Languages.words(this, maxLength);
@@ -800,9 +851,11 @@ public class Automaton implements Cloneable {
 
 
     /**
-     * Constucts an NFA from a regexp given as a {@link java.lang.String}
+     * Constructs a non-deterministic automaton from a regular expression, see {@link fr.menana.automaton.regexp the regular expression syntax}. <br>
+     * Uses Thompson's construction, linear in the size of the expression
      * @param regexp a regular expression
      * @return a new non-deterministic automaton recognizing the same language as the regular expression
+     * @throws IllegalArgumentException if the expression is invalid
      */
     @SuppressWarnings("unused")
     public static Automaton nfaFromString(String regexp) {
@@ -810,9 +863,10 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Constucts an DFA from a regexp given as a {@link java.lang.String}
+     * Constructs the minimal deterministic automaton of a regular expression, see {@link fr.menana.automaton.regexp the regular expression syntax}.
      * @param regexp a regular expression
-     * @return a new deterministic automaton recognizing the same language as the regular expression
+     * @return a new minimal deterministic automaton recognizing the same language as the regular expression
+     * @throws IllegalArgumentException if the expression is invalid
      */
     public static Automaton dfaFromString(String regexp) {
         return RegExpParser.toDFA(regexp);

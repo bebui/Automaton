@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -22,9 +22,9 @@ import fr.menana.automaton.State;
 
 /**
  * Represents the complement of a regular expression, written <code>~expression</code> :
- * every word over the integers that the expression does not recognize <p>
+ * every word over the integers that the expression does not recognize
  */
-public class RegExpNot extends RegExp {
+class RegExpNot extends RegExp {
 
     private final RegExp internal;
 

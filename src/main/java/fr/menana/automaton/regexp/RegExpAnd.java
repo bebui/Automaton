@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -21,9 +21,9 @@ import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
 
 /**
- * Represents the intersection of two regular expressions, written <code>left&amp;right</code> <p>
+ * Represents the intersection of two regular expressions, written <code>left&amp;right</code>
  */
-public class RegExpAnd extends RegExp {
+class RegExpAnd extends RegExp {
 
     private final RegExp left;
     private final RegExp right;

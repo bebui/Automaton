@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -23,8 +23,9 @@ import java.util.*;
  * This class represents an ordered set of integer values as a set of {@link fr.menana.automaton.Interval} <br>
  * The intervals are stored in a sorted int array <code>[min0, max0, min1, max1, ...]</code>.
  * Stored intervals are disjoint and never adjacent, so that every set has a unique canonical representation.
- * Unions, intersections and complements are computed by merging in linear time, membership tests by binary search <p>
- * Created by Julien Menana on 01/05/2015.
+ * Unions, intersections and complements are computed by merging in linear time, membership tests by binary search
+ *
+ * @author Julien Menana
  */
 public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
 
@@ -44,7 +45,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
     private boolean frozen;
 
     /**
-     * An unmodifiable interval set containting all values between Integer.MIN_VALUE and Integer.MAX_VALUE.
+     * An unmodifiable interval set containing all values between Integer.MIN_VALUE and Integer.MAX_VALUE.
      * Use {@link #clone()} to get a modifiable copy
      */
     public static final IntervalSet ALL = new IntervalSet(new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE}, 1).freeze();
@@ -58,7 +59,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
 
 
     /**
-     * Constucts an empty interval set
+     * Constructs an empty interval set
      */
     public IntervalSet() {
         this.bounds = new int[4];
@@ -318,7 +319,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
 
 
     /**
-     * Returns a new  interval set reprenting the complement in [|Integer.MIN_VALUE,Integer.MAX_VALUE|] of this  interval set
+     * Returns a new  interval set representing the complement in [|Integer.MIN_VALUE,Integer.MAX_VALUE|] of this  interval set
      * @return a new  interval set
      */
     public IntervalSet complement()  {

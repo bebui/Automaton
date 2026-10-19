@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -20,9 +20,12 @@ package fr.menana.automaton;
 import java.util.*;
 
 /**
- * This class consists of static methods to manipulate a finite {@link fr.menana.automaton.Automaton}. <br>
- * The operation that can be performed are minimization, determinization, union, concatenation, reversion and complement <br>
- * Created by Julien Menana on 01/05/2015.
+ * Static methods transforming and combining {@link fr.menana.automaton.Automaton}s : determinization, minimization,
+ * epsilon removal, reduction, union, intersection, difference, concatenation, reversal and complement. <br>
+ * Each operation returns a new automaton and leaves its operands unchanged. The same operations are available as
+ * methods of {@link fr.menana.automaton.Automaton}.
+ *
+ * @author Julien Menana
  */
 public class Operation {
 
@@ -37,11 +40,13 @@ public class Operation {
      */
     public enum MINIMIZATION_ALGO {
         /**
-         * Brzozowski's algorithm.
+         * Brzozowski's algorithm : determinizes the mirror of the mirror of the automaton.
+         * Exponential in the worst case, but often fast in practice
          */
         Brzozowski,
         /**
-         * Hopcroft's algorithm.
+         * Hopcroft-style partition refinement, implemented with the algorithm of Valmari and Lehtinen,
+         * in O(m log n) for n states and m transitions. The default
          */
         Hopcroft,
     }
@@ -54,6 +59,7 @@ public class Operation {
     /**
      * Returns the minimization algorithm used by {@link fr.menana.automaton.Operation#minimize(Automaton)}
      * @return the default minimization algorithm
+     * @since 2.0.0
      */
     public static MINIMIZATION_ALGO getDefaultMinimization() {
         return defaultMinimization;
@@ -63,6 +69,7 @@ public class Operation {
      * Sets the minimization algorithm used by {@link fr.menana.automaton.Operation#minimize(Automaton)} for the whole application. <br>
      * Prefer {@link fr.menana.automaton.Operation#minimize(Automaton, MINIMIZATION_ALGO)} to choose it for a single call
      * @param method the default minimization algorithm
+     * @since 2.0.0
      */
     public static void setDefaultMinimization(MINIMIZATION_ALGO method) {
         defaultMinimization = Objects.requireNonNull(method);
@@ -658,7 +665,7 @@ public class Operation {
 
     /**
      * Returns a new automaton recognizing the concatenation of the languages defined by the {@link fr.menana.automaton.Automaton} given as a parameter
-     * The returned automaton is deterministic if and only if both given automatons already are
+     * The returned automaton is deterministic if and only if both given automata already are
      * @param first the first {@link fr.menana.automaton.Automaton} used for the concatenation
      * @param second the second {@link fr.menana.automaton.Automaton} used for the concatenation
      * @return a new automaton recognizing the concatenation of the languages defined by the {@link fr.menana.automaton.Automaton} parameters
@@ -673,8 +680,9 @@ public class Operation {
      * which is non-deterministic as soon as <code>first</code> has an accepting state
      * @param first the first {@link fr.menana.automaton.Automaton} used for the concatenation
      * @param second the second {@link fr.menana.automaton.Automaton} used for the concatenation
-     * @param minimizeIfDeterministic <code>true</code> to minimize the result when both given automatons are deterministic
+     * @param minimizeIfDeterministic <code>true</code> to minimize the result when both given automata are deterministic
      * @return a new automaton recognizing the concatenation of the languages defined by the {@link fr.menana.automaton.Automaton} parameters
+     * @since 2.0.0
      */
     public static Automaton concatenate(Automaton first, Automaton second, boolean minimizeIfDeterministic) {
         // An automaton without initial state recognizes the empty language, and so does the concatenation
@@ -706,7 +714,7 @@ public class Operation {
 
     /**
      * Returns a new automaton recognizing the union of the languages defined by the {@link fr.menana.automaton.Automaton} given as a parameter
-     * The returned automaton is deterministic if and only if both given automatons already are
+     * The returned automaton is deterministic if and only if both given automata already are
      * @param first the first {@link fr.menana.automaton.Automaton} used for the union
      * @param second the second {@link fr.menana.automaton.Automaton} used for the union
      * @return a new automaton recognizing the union of the languages defined by the {@link fr.menana.automaton.Automaton} parameters
@@ -749,6 +757,7 @@ public class Operation {
      * @param first the first {@link fr.menana.automaton.Automaton}
      * @param second the second {@link fr.menana.automaton.Automaton}
      * @return a minimal deterministic automaton recognizing the words accepted by both automata
+     * @since 2.0.0
      */
     public static Automaton intersection(Automaton first, Automaton second) {
         return Languages.product(first, second, Languages.Product.INTERSECTION).minimize();
@@ -760,6 +769,7 @@ public class Operation {
      * @param first the {@link fr.menana.automaton.Automaton} whose words are kept
      * @param second the {@link fr.menana.automaton.Automaton} whose words are removed
      * @return a minimal deterministic automaton recognizing the words accepted by <code>first</code> and not by <code>second</code>
+     * @since 2.0.0
      */
     public static Automaton difference(Automaton first, Automaton second) {
         return Languages.product(first, second, Languages.Product.DIFFERENCE).minimize();
@@ -772,6 +782,7 @@ public class Operation {
      * The number of transitions can grow quadratically, for instance for <code>(1|2|...|n)*</code>
      * @param automaton the {@link fr.menana.automaton.Automaton}
      * @return an equivalent automaton without epsilon transitions
+     * @since 2.0.0
      */
     public static Automaton removeEpsilon(Automaton automaton) {
         Automaton out = new Automaton();
@@ -825,6 +836,7 @@ public class Operation {
      * Reducing an automaton before determinizing it can make determinization much cheaper
      * @param automaton the {@link fr.menana.automaton.Automaton}
      * @return a smaller or equal equivalent automaton without epsilon transitions
+     * @since 2.0.0
      */
     public static Automaton reduce(Automaton automaton) {
         Automaton a = removeEpsilon(automaton);
