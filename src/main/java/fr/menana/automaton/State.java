@@ -43,7 +43,8 @@ public class State { //implements Comparable<State>{
     boolean accept;
 
     /**
-     * Structure that map all destination state to its {@link fr.menana.automaton.Transition}
+     * Structure that map all destination state to its {@link fr.menana.automaton.Transition}.
+     * A {@link java.util.LinkedHashMap} keeps the iteration order stable from one run to another
      */
     Map<State,Transition> transitions;
 
@@ -51,31 +52,9 @@ public class State { //implements Comparable<State>{
      * Construts a new state
      */
     State() {
-        this.transitions = new HashMap<>();
+        this.transitions = new LinkedHashMap<>();
         this.initial = false;
         this.accept = false;
-    }
-
-    /**
-     * Check if a given word can be read from this state
-     * @param idx the start index in the word
-     * @param word the word being read
-     * @return <code>true</code> if and only if the word ends on an accepting state
-     */
-    boolean run(int idx, int[] word) {
-        if (idx == word.length)
-            return this.accept;
-        int symbol = word[idx];
-        boolean ret = false;
-        for (Transition t : transitions.values()) {
-            if (t.values == null) {
-                ret |= t.dest.run(idx,word);
-            }
-            else if (t.values.contains(symbol)) {
-                ret |= t.dest.run(idx+1,word);
-            }
-        }
-        return ret;
     }
 
     /**
@@ -172,7 +151,7 @@ public class State { //implements Comparable<State>{
     }
 
     Set<State> delta(int value) {
-        return this.transitions.values().stream().filter(tr -> tr.values.contains(value)).map(tr -> tr.dest).collect(Collectors.toSet());
+        return this.transitions.values().stream().filter(tr -> tr.values != null && tr.values.contains(value)).map(tr -> tr.dest).collect(Collectors.toSet());
     }
     Set<State> deltaEpsilon() {
         return this.transitions.values().stream().filter(tr -> tr.hasEpsilon()).map(tr -> tr.dest).collect(Collectors.toSet());
@@ -193,17 +172,32 @@ public class State { //implements Comparable<State>{
      * @return <code>true</code> if and only if this state has a transition with the given value
      */
     public boolean hasTransitionWith(int value) {
-        return this.transitions.values().stream().anyMatch(tr -> tr.values.contains(value));
+        return this.transitions.values().stream().anyMatch(tr -> tr.values != null && tr.values.contains(value));
     }
 
-    public boolean equals(Object other) {
-        if (other == this)
-            return true;
-        else if (other != null && other instanceof State) {
-            State state = (State) other;
-            return (state.index == this.index && state.accept == this.accept && state.initial == this.initial);
+    /**
+     * Returns the destination reached from this state by reading the given value,
+     * assuming this state belongs to a deterministic automaton.
+     * @param value the value to read
+     * @return the destination state, or <code>null</code> if there is none
+     */
+    State step(int value) {
+        for (Transition tr : this.transitions.values()) {
+            if (tr.values != null && tr.values.contains(value))
+                return tr.dest;
         }
-        return false;
+        return null;
+    }
+
+    /**
+     * Checks if this state and the given one have the same index and the same initial and accepting flags.
+     * Used to compare states of two different automata. <br>
+     * States themselves use identity equality, which keeps them consistent as keys of hash based collections
+     * @param other the other state
+     * @return <code>true</code> if and only if both states look the same
+     */
+    boolean sameAs(State other) {
+        return other != null && other.index == this.index && other.accept == this.accept && other.initial == this.initial;
     }
 
 

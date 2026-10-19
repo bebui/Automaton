@@ -227,6 +227,17 @@ public class Automaton implements Cloneable {
     }
 
     /**
+     * Adds a transition known not to overlap any other transition leaving <code>orig</code>.
+     * Skips the determinism check, the caller must guarantee it
+     * @param orig the origin state
+     * @param dest the destination state
+     * @param values the transition values, owned by the transition afterwards
+     */
+    void addDisjointTransition(State orig, State dest, IntervalSet values) {
+        orig.addToTransitionMap(new Transition(orig, dest, values));
+    }
+
+    /**
      * Adds a new epsilon transition from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}. <br>
      * As soon as such a transition is added, the automaton becomes a NFA
      * @param orig the origin {@link fr.menana.automaton.State}
@@ -254,7 +265,51 @@ public class Automaton implements Cloneable {
     @SuppressWarnings("unused")
     public boolean run(int... word)
     {
-        return this.getInitial().run(0, word);
+        State init = this.getInitial();
+        if (init == null)
+            return false;
+        if (this.deterministic) {
+            State current = init;
+            for (int symbol : word) {
+                current = current.step(symbol);
+                if (current == null)
+                    return false;
+            }
+            return current.accept;
+        }
+        // Simulation of the non deterministic automaton on the set of reachable states
+        Set<State> current = epsilonClosure(Collections.singleton(init));
+        for (int symbol : word) {
+            List<State> next = new ArrayList<>();
+            for (State s : current) {
+                for (Transition t : s.transitions.values()) {
+                    if (t.values != null && t.values.contains(symbol))
+                        next.add(t.dest);
+                }
+            }
+            if (next.isEmpty())
+                return false;
+            current = epsilonClosure(next);
+        }
+        return State.hasAcceptingState(current);
+    }
+
+    /**
+     * Computes the set of states reachable from the given states using only epsilon transitions
+     * @param states the start states
+     * @return the epsilon-closure of the given states
+     */
+    private static Set<State> epsilonClosure(Collection<State> states) {
+        Set<State> out = new HashSet<>(states);
+        ArrayDeque<State> toVisit = new ArrayDeque<>(states);
+        while (!toVisit.isEmpty()) {
+            State s = toVisit.poll();
+            for (Transition t : s.transitions.values()) {
+                if (t.epsilon && out.add(t.dest))
+                    toVisit.add(t.dest);
+            }
+        }
+        return out;
     }
 
     /**
@@ -328,33 +383,28 @@ public class Automaton implements Cloneable {
      * @return a set of useful states
      */
     public Set<State> getUseFulStates() {
+        Set<State> useful = new HashSet<>();
         if (this.getNbStates() == 0)
-            return new HashSet<>();
-        else {
-            Set<State> useful = new HashSet<>();
-            Stack<State> toTest = new Stack<>();
-            Map<State, Set<Transition>> reverse = this.getAllTransitions().stream()
-                    .collect(Collectors.groupingBy(tr -> tr.dest, Collectors.toSet()));
-            toTest.addAll(this.getAcceptList());
-            while (!toTest.isEmpty()) {
-                State s = toTest.pop();
-                useful.add(s);
-                if (reverse.containsKey(s)) {
-                    for (Iterator<Transition> it = reverse.get(s).iterator(); it.hasNext(); ) {
-                        Transition tmp = it.next();
-                        if (tmp != null) {
-                            toTest.push(tmp.orig);
-                            it.remove();
-                        }
-                    }
-                }
-
-            }
             return useful;
+        Map<State, List<State>> reverse = new HashMap<>();
+        for (State s : this.states) {
+            for (State dest : s.transitions.keySet())
+                reverse.computeIfAbsent(dest, k -> new ArrayList<>()).add(s);
         }
-
+        ArrayDeque<State> toTest = new ArrayDeque<>();
+        for (State s : this.states) {
+            if (s.accept && useful.add(s))
+                toTest.add(s);
+        }
+        while (!toTest.isEmpty()) {
+            State s = toTest.poll();
+            for (State orig : reverse.getOrDefault(s, Collections.emptyList())) {
+                if (useful.add(orig))
+                    toTest.add(orig);
+            }
+        }
+        return useful;
     }
-
 
     @Override
     public Automaton clone() {
@@ -423,33 +473,26 @@ public class Automaton implements Cloneable {
      * Removes non connected states
      */
     public void reIndex() {
-        if (this.getNbStates() != 0) {
-
-            ArrayDeque<State> toVisit = new ArrayDeque<>();
-            Set<State> visited = new HashSet<>();
-            toVisit.push(this.getInitial());
+        State init = this.getInitial();
+        if (init != null) {
             this.states.forEach(s -> s.index = Integer.MAX_VALUE);
-            int idx = 0;
-            while (!toVisit.isEmpty()) {
-                State s = toVisit.poll();
-                if (!visited.contains(s)) {
-                    visited.add(s);
-                    s.index = idx++;
-                    Set<State> nexts = new HashSet<>(s.getTransitions().keySet());
-                    nexts.removeAll(visited);
-                    toVisit.addAll(nexts);
+            List<State> ordered = new ArrayList<>(this.states.size());
+            // Breadth first numbering from the initial state
+            init.index = 0;
+            ordered.add(init);
+            for (int i = 0; i < ordered.size(); ++i) {
+                for (State next : ordered.get(i).transitions.keySet()) {
+                    if (next.index == Integer.MAX_VALUE) {
+                        next.index = ordered.size();
+                        ordered.add(next);
+                    }
                 }
-
             }
             this.initIndex = 0;
-            //System.out.println(this.states);
-            Collections.sort(this.states, (o1, o2) -> Integer.compare(o1.index, o2.index));
-            for (State s : this.states)
+            for (State s : ordered)
                 s.transitions.keySet().removeIf(st -> st.index == Integer.MAX_VALUE);
-
-            this.states.removeIf(s -> s.index == Integer.MAX_VALUE);
+            this.states = ordered;
         }
-
     }
 
     /**
@@ -537,8 +580,11 @@ public class Automaton implements Cloneable {
         //orig.toDotty("orig.dot");
         if (orig.getNbStates() != auto.getNbStates())
             return false;
+        Comparator<Transition> byStates = Comparator.<Transition>comparingInt(tr -> tr.orig.index).thenComparingInt(tr -> tr.dest.index);
         List<Transition> myTr = orig.getAllTransitions();
         List<Transition> oTr  = auto.getAllTransitions();
+        myTr.sort(byStates);
+        oTr.sort(byStates);
         return myTr.equals(oTr);
     }
 

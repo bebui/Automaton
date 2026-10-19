@@ -18,19 +18,25 @@
 package fr.menana.automaton;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * This class represents an ordered set of integer values as a set of {@link fr.menana.automaton.Interval} <br>
- * The {@link fr.menana.automaton.Interval} are stored using a TreeSet to preserve ordering <p>
+ * The intervals are stored in a sorted int array <code>[min0, max0, min1, max1, ...]</code>.
+ * Stored intervals are disjoint and never adjacent, so that every set has a unique canonical representation.
+ * Unions, intersections and complements are computed by merging in linear time, membership tests by binary search <p>
  * Created by Julien Menana on 01/05/2015.
  */
 public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
 
     /**
-     * The container of this set
+     * The bounds of the intervals of this set : interval i is [bounds[2i], bounds[2i+1]]
      */
-    private TreeSet<Interval> container;
+    private int[] bounds;
+
+    /**
+     * The number of intervals in this set
+     */
+    private int count;
 
     /**
      * A static reference to an interval set containting all values between Integer.MIN_VALUE and Integer.MAX_VALUE
@@ -51,14 +57,61 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * Constucts an empty interval set
      */
     public IntervalSet() {
-        this.container = new TreeSet<>();
+        this.bounds = new int[4];
+        this.count = 0;
     }
 
+    private IntervalSet(int[] bounds, int count) {
+        this.bounds = bounds;
+        this.count = count;
+    }
 
-    private void mergeContigus(Interval a, Interval b)
-    {
-        a.max = b.max;
-        container.remove(b);
+    /**
+     * Returns the number of disjoint intervals in this set
+     * @return the number of intervals
+     */
+    int intervalCount() {
+        return count;
+    }
+
+    /**
+     * Returns the lower bound of the i-th interval of this set
+     * @param i the interval position
+     * @return its lower bound
+     */
+    int minAt(int i) {
+        return bounds[2 * i];
+    }
+
+    /**
+     * Returns the upper bound of the i-th interval of this set
+     * @param i the interval position
+     * @return its upper bound
+     */
+    int maxAt(int i) {
+        return bounds[2 * i + 1];
+    }
+
+    private void ensureCapacity(int intervals) {
+        if (bounds.length < 2 * intervals)
+            bounds = Arrays.copyOf(bounds, Math.max(2 * intervals, 2 * bounds.length));
+    }
+
+    /**
+     * Appends an interval located strictly after every interval of this set.
+     * Merges it with the last interval if they are contiguous.
+     * @param min the lower bound
+     * @param max the upper bound
+     */
+    void append(int min, int max) {
+        if (count > 0 && (long) bounds[2 * count - 1] + 1 >= min) {
+            bounds[2 * count - 1] = Math.max(bounds[2 * count - 1], max);
+            return;
+        }
+        ensureCapacity(count + 1);
+        bounds[2 * count] = min;
+        bounds[2 * count + 1] = max;
+        count++;
     }
 
     /**
@@ -78,42 +131,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     @SuppressWarnings("unused")
     public boolean add(int value) {
-        Interval tmp = new Interval(value, value);
-        Interval floor = container.floor(tmp);
-        Interval ceiling = container.ceiling(tmp);
-
-        if (floor == null) {
-            if (ceiling == null || value < ceiling.min - 1)
-                container.add(tmp);
-            else if (value == ceiling.min - 1)
-                ceiling.min = value;
-        }
-        else if (ceiling == null) {
-            if (floor.max == value - 1)
-                floor.max = value;
-            else if (value > floor.max)
-                container.add(tmp);
-        }
-        else {
-            if (floor.contains(value) || ceiling.contains(value))
-                return false;
-            else if (floor.max == value - 1 ) {
-                floor.max = value;
-                if (floor.max == ceiling.min - 1)
-                    mergeContigus(floor, ceiling);
-            }
-            else if (ceiling.min == value + 1) {
-                ceiling.min = value;
-                if (floor.max == ceiling.min - 1)
-                    mergeContigus(floor, ceiling);
-            }
-            else
-                container.add(tmp);
-
-        }
-
-
-        return true;
+        return this.add(value, value);
     }
 
     /**
@@ -122,17 +140,15 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * @return <code>true</code> if and only if the values were added
      */
     public boolean add(IntervalSet intervalSet) {
-        boolean ret = false;
-        if (intervalSet == null)
+        if (intervalSet == null || intervalSet.count == 0)
             return false;
-        for (Interval i : intervalSet.container) {
-            //System.out.println("on a "+this);
-           // System.out.println("on ajoute "+i);
-            ret |= this.add(i);
-           // System.out.println("on obtient "+this);
-           // System.out.println();
-        }
-        return ret;
+        if (intervalSet.count == 1)
+            return this.add(intervalSet.bounds[0], intervalSet.bounds[1]);
+        IntervalSet merged = merge(this, intervalSet);
+        boolean changed = !merged.equals(this);
+        this.bounds = merged.bounds;
+        this.count = merged.count;
+        return changed;
     }
 
     /**
@@ -141,68 +157,48 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * @return <code>true</code> if and only if the values were added
      */
     public boolean add(Interval interval) {
+        return this.add(interval.min, interval.max);
+    }
 
-        //System.transitions.println(this);
-        Interval floor = container.floor(interval);
-        Interval ceiling = container.ceiling(interval);
-       // System.out.println("VAL : " + interval);//
-        //System.out.println("FLOOR : " + floor);
-       // System.out.println("CEILING : " + ceiling);
-
-        if (floor == null && ceiling == null) {
-            container.add(interval);
+    /**
+     * Adds the interval [min, max] to this set, merging it with the overlapping or contiguous intervals
+     * @param min the lower bound
+     * @param max the upper bound
+     * @return <code>true</code> if and only if values were added
+     */
+    private boolean add(int min, int max) {
+        // first interval whose max is >= min - 1
+        int lo = 0, hi = count;
+        while (lo < hi) {
+            int mid = (lo + hi) >>> 1;
+            if ((long) bounds[2 * mid + 1] + 1 < min) lo = mid + 1; else hi = mid;
         }
-        else if (floor == null) {
-            if (interval.max < ((long) ceiling.min) - 1)
-                container.add(interval);
-            else if (interval.min < ceiling.min) {
-                ceiling.min = interval.min;
-                return this.add(interval);
-            }
+        int first = lo;
+        // first interval whose min is > max + 1
+        hi = count;
+        while (lo < hi) {
+            int mid = (lo + hi) >>> 1;
+            if (bounds[2 * mid] <= (long) max + 1) lo = mid + 1; else hi = mid;
         }
-        else if (ceiling == null) {
-            if (interval.min <= ((long) floor.max) + 1) {
-                floor.max = Math.max(interval.max,floor.max);
-            }
-            else
-                container.add(interval);
+        int last = lo - 1;
+        if (first > last) {
+            ensureCapacity(count + 1);
+            System.arraycopy(bounds, 2 * first, bounds, 2 * first + 2, 2 * (count - first));
+            bounds[2 * first] = min;
+            bounds[2 * first + 1] = max;
+            count++;
+            return true;
         }
-        else if (floor.contains(interval) || ceiling.contains(interval)) {
-            return false;
+        int newMin = Math.min(min, bounds[2 * first]);
+        int newMax = Math.max(max, bounds[2 * last + 1]);
+        boolean changed = first != last || newMin != bounds[2 * first] || newMax != bounds[2 * first + 1];
+        bounds[2 * first] = newMin;
+        bounds[2 * first + 1] = newMax;
+        if (last > first) {
+            System.arraycopy(bounds, 2 * last + 2, bounds, 2 * first + 2, 2 * (count - last - 1));
+            count -= last - first;
         }
-        else if (!floor.intersects(interval) && !ceiling.intersects(interval)) {
-            if (floor.max == ((long) interval.min) - 1 && ceiling.min == ((long) interval.max) + 1) {
-                floor.max = ceiling.max;
-                container.remove(ceiling);
-            }
-            else if (floor.max == ((long) interval.min) - 1)
-                floor.max = interval.max;
-            else if (ceiling.min == ((long) interval.max) + 1)
-                ceiling.min = interval.min;
-            else
-                container.add(interval);
-        }
-
-        else if (ceiling.max < interval.max) {
-            container.remove(ceiling);
-            return this.add(interval);
-        }
-        else if (interval.min <= ((long)floor.max) + 1) {
-            floor.max = interval.max;
-            if (((long)interval.max) +1 >= ceiling.min) {
-                floor.max = ceiling.max;
-                container.remove(ceiling);
-            }
-        }
-        else if (interval.max <= ceiling.max) {
-            ceiling.min = interval.min;
-        }
-        else
-            container.add(interval);
-
-
-        return true;
-
+        return changed;
     }
 
 
@@ -212,8 +208,9 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     @SuppressWarnings("unused")
     public void remove(IntervalSet intervalSet) {
-        this.container = this.intersection(intervalSet.complement()).container;
-
+        IntervalSet res = this.intersection(intervalSet.complement());
+        this.bounds = res.bounds;
+        this.count = res.count;
     }
 
     /**
@@ -223,17 +220,14 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     public boolean contains(int value)
     {
-        Interval tmp = new Interval(value, value);
-        Interval floor = container.floor(tmp);
-        Interval ceiling = container.ceiling(tmp);
-        if (floor == ceiling)
-            return floor != null;
-        else if (floor != null && floor.contains(value))
-            return true;
-        else if (ceiling != null && ceiling.contains(value))
-            return true;
+        int lo = 0, hi = count - 1;
+        while (lo <= hi) {
+            int mid = (lo + hi) >>> 1;
+            if (bounds[2 * mid + 1] < value) lo = mid + 1;
+            else if (bounds[2 * mid] > value) hi = mid - 1;
+            else return true;
+        }
         return false;
-
     }
 
     /**
@@ -242,7 +236,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     public boolean isEmpty()
     {
-        return this.container.isEmpty();
+        return this.count == 0;
     }
 
     /**
@@ -253,11 +247,14 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
     public boolean intersects(IntervalSet intervalSet) {
         if (intervalSet == null)
             return false;
-        return intervalSet.container.stream().anyMatch(i -> {
-            Interval floor = container.floor(i);
-            Interval ceiling = container.ceiling(i);
-            return i.intersects(floor) || i.intersects(ceiling);
-        });
+        int i = 0, j = 0;
+        int[] a = this.bounds, b = intervalSet.bounds;
+        while (i < this.count && j < intervalSet.count) {
+            if (a[2 * i + 1] < b[2 * j]) i++;
+            else if (b[2 * j + 1] < a[2 * i]) j++;
+            else return true;
+        }
+        return false;
     }
 
     /**
@@ -269,9 +266,13 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
     {
         if (interval == null)
             return false;
-        Interval floor = container.floor(interval);
-        Interval ceiling = container.ceiling(interval);
-        return interval.intersects(floor) || interval.intersects(ceiling);
+        // first interval whose max is >= interval.min
+        int lo = 0, hi = count;
+        while (lo < hi) {
+            int mid = (lo + hi) >>> 1;
+            if (bounds[2 * mid + 1] < interval.min) lo = mid + 1; else hi = mid;
+        }
+        return lo < count && bounds[2 * lo] <= interval.max;
     }
 
 
@@ -282,13 +283,19 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     public IntervalSet intersection(IntervalSet intervalSet)
     {
-        IntervalSet intervals = new IntervalSet();
-        if (intervalSet == null || intervalSet.container == null || this.container == null)
-            return intervals;
-        for (Interval oi : intervalSet.container) {
-            this.container.stream().filter(ti -> oi.intersects(ti)).forEach(ti -> intervals.add(oi.intersection(ti)));
+        IntervalSet out = new IntervalSet();
+        if (intervalSet == null)
+            return out;
+        int i = 0, j = 0;
+        int[] a = this.bounds, b = intervalSet.bounds;
+        while (i < this.count && j < intervalSet.count) {
+            int min = Math.max(a[2 * i], b[2 * j]);
+            int max = Math.min(a[2 * i + 1], b[2 * j + 1]);
+            if (min <= max)
+                out.append(min, max);
+            if (a[2 * i + 1] < b[2 * j + 1]) i++; else j++;
         }
-        return intervals;
+        return out;
     }
 
 
@@ -298,30 +305,14 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     public IntervalSet complement()  {
         IntervalSet ret = new IntervalSet();
-        if (this.container == null || this.container.isEmpty()) {
-            ret.add(new Interval(Integer.MIN_VALUE,Integer.MAX_VALUE));
-            return ret;
+        long next = Integer.MIN_VALUE;
+        for (int i = 0; i < count; i++) {
+            if (bounds[2 * i] > next)
+                ret.append((int) next, bounds[2 * i] - 1);
+            next = (long) bounds[2 * i + 1] + 1;
         }
-        Interval last = null;
-        for (Interval i : this.container)
-        {
-            if (i.min != Integer.MIN_VALUE && last == null) {
-                ret.add(new Interval(Integer.MIN_VALUE,i.min -1));
-                if (i.max != Integer.MAX_VALUE)
-                    last = new Interval(i.max + 1, Integer.MAX_VALUE);
-            }
-            else if (i.min != Integer.MIN_VALUE) {
-                last.max = i.min - 1;
-                ret.add(last);
-                if (i.max != Integer.MAX_VALUE)
-                    last = new Interval(i.max + 1,Integer.MAX_VALUE);
-            }
-            else if (i.max != Integer.MAX_VALUE) {
-                last = new Interval(i.max + 1,Integer.MAX_VALUE);
-            }
-        }
-        if (last != null)
-            ret.add(last);
+        if (next <= Integer.MAX_VALUE)
+            ret.append((int) next, Integer.MAX_VALUE);
         return ret;
     }
 
@@ -346,26 +337,55 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     @SuppressWarnings("unused")
     public IntervalSet union(IntervalSet... others) {
-        List<IntervalSet> list = new ArrayList<>(Arrays.asList(others));
-        list.add(this);
-        return IntervalSet.union(list);
+        IntervalSet out = this.clone();
+        for (IntervalSet other : others)
+            out.add(other);
+        return out;
+    }
+
+    /**
+     * Merges two interval sets in linear time
+     * @param left the first set
+     * @param right the second set
+     * @return a new interval set containing the values of both sets
+     */
+    private static IntervalSet merge(IntervalSet left, IntervalSet right) {
+        IntervalSet out = new IntervalSet(new int[2 * (left.count + right.count)], 0);
+        int i = 0, j = 0;
+        int[] a = left.bounds, b = right.bounds;
+        while (i < left.count || j < right.count) {
+            if (j == right.count || (i < left.count && a[2 * i] <= b[2 * j])) {
+                out.append(a[2 * i], a[2 * i + 1]);
+                i++;
+            } else {
+                out.append(b[2 * j], b[2 * j + 1]);
+                j++;
+            }
+        }
+        return out;
     }
 
     /**
      * Returns the minimum value of this set of intervals
      * @return the minimum value of this set
+     * @throws NoSuchElementException if this set is empty
      */
     public int getMin() {
-        return this.container.first().min;
+        if (count == 0)
+            throw new NoSuchElementException();
+        return bounds[0];
     }
 
 
     /**
      * Returns the maximum value of this set of intervals
      * @return the maximum value of this set
+     * @throws NoSuchElementException if this set is empty
      */
     public int getMax() {
-        return this.container.last().max;
+        if (count == 0)
+            throw new NoSuchElementException();
+        return bounds[2 * count - 1];
     }
 
     /**
@@ -373,7 +393,10 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * @return the cardinality of this set
      */
     public int size() {
-        return this.container.stream().mapToInt(Interval::size).sum();
+        int size = 0;
+        for (int i = 0; i < count; i++)
+            size += bounds[2 * i + 1] - bounds[2 * i] + 1;
+        return size;
     }
 
 
@@ -381,7 +404,13 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
 
     @Override
     public String toString() {
-        return container.toString();
+        StringBuilder b = new StringBuilder("[");
+        for (int i = 0; i < count; i++) {
+            if (i > 0)
+                b.append(", ");
+            b.append(new Interval(bounds[2 * i], bounds[2 * i + 1]));
+        }
+        return b.append("]").toString();
     }
 
     @Override
@@ -389,9 +418,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
         IntervalSet clone = null;
         try {
             clone = (IntervalSet) super.clone();
-            clone.container = this.container.stream()
-                    .map(Interval::clone)
-                    .collect(Collectors.toCollection(TreeSet::new));
+            clone.bounds = Arrays.copyOf(this.bounds, Math.max(2 * this.count, 2));
         } catch (CloneNotSupportedException ignored) {
 
         }
@@ -410,11 +437,15 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
     }
 
     /**
-     * Returns the {@link java.util.TreeSet} container of {@link fr.menana.automaton.Interval}
+     * Returns a sorted set containing a copy of the {@link fr.menana.automaton.Interval} of this set.
+     * Modifying the returned set does not modify this interval set.
      * @return a sorted set of {@link fr.menana.automaton.Interval}
      */
     public TreeSet<Interval> getIntervals() {
-        return container;
+        TreeSet<Interval> out = new TreeSet<>();
+        for (int i = 0; i < count; i++)
+            out.add(new Interval(bounds[2 * i], bounds[2 * i + 1]));
+        return out;
     }
 
 
@@ -445,27 +476,11 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     public static IntervalSet fromIntArray(int... values)
     {
-        Arrays.sort(values);
+        int[] sorted = values.clone();
+        Arrays.sort(sorted);
         IntervalSet set = new IntervalSet();
-        Interval tmp = null;
-        int last = Integer.MAX_VALUE;
-        for (int value : values)
-        {
-            if (tmp == null) {
-                tmp = new Interval(value, Integer.MAX_VALUE);
-            }
-            else if (value - 1 != last) {
-                tmp.max = last;
-                set.add(tmp);
-                tmp = new Interval(value,Integer.MAX_VALUE);
-            }
-            last = value;
-
-        }
-        if (tmp != null && tmp.max == Integer.MAX_VALUE) {
-            tmp.max = last;
-            set.add(tmp);
-        }
+        for (int value : sorted)
+            set.append(value, value);
         return set;
     }
 
@@ -473,19 +488,25 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
     public boolean equals(Object other) {
         if (other == this)
             return true;
-        else if (other != null && other instanceof IntervalSet) {
+        else if (other instanceof IntervalSet) {
             IntervalSet inter = (IntervalSet) other;
-            List<Interval> ointer = new ArrayList<>(inter.getIntervals());
-            List<Interval> tinter = new ArrayList<>(this.getIntervals());
-            if (ointer.size() != tinter.size())
+            if (inter.count != this.count)
                 return false;
-            for (int i = 0; i < tinter.size(); ++i) {
-                if (!ointer.get(i).equals(tinter.get(i)))
+            for (int i = 0; i < 2 * count; ++i) {
+                if (inter.bounds[i] != this.bounds[i])
                     return false;
             }
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int h = 1;
+        for (int i = 0; i < 2 * count; ++i)
+            h = 31 * h + bounds[i];
+        return h;
     }
 
 
@@ -498,16 +519,6 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
         IntervalSet set = new IntervalSet();
         set.add(values);
         return set;
-    }
-
-    /**
-     * Main method for testing purposes.
-     * @param args command line arguments
-     */
-    public static void main(String[] args) {
-        IntervalSet set = IntervalSet.fromIntArray(1,2,3);
-        IntervalSet set2 = IntervalSet.fromIntArray(2,3,4);
-        System.out.println(set.intersection(set2));
     }
 
     @Override

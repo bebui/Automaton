@@ -156,7 +156,7 @@ public class Interval implements Comparable<Interval>,Cloneable {
 
     @Override
     public int hashCode() {
-        return this.min * this.max;
+        return 31 * this.min + this.max;
     }
 
     /**

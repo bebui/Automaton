@@ -18,7 +18,6 @@
 package fr.menana.automaton;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * This class consists of static methods to manipulate a finite {@link fr.menana.automaton.Automaton}. <br>
@@ -78,100 +77,182 @@ public class Operation {
     }
 
     /**
-     * Minimizes the given {@link fr.menana.automaton.Automaton} using Hopcroft algorithm
+     * Minimizes the given {@link fr.menana.automaton.Automaton} using Hopcroft algorithm. <br>
+     * Runs in O(k n log n) where n is the number of states and k the number of symbol classes
      * @param base the {@link fr.menana.automaton.Automaton} to minimize
      * @return a minimal {@link fr.menana.automaton.Automaton}
      */
     public static Automaton minimizeHopcroft(Automaton base) {
         base = base.isDeterministic() ? base.clone() : base.determinize();
-        if (base.getNbStates() == 0)
+        if (base == null || base.getNbStates() == 0 || base.getInitial() == null)
             return new Automaton();
         base.removeDeadStates();
-        Set<Interval> alphabet = new TreeSet<>();
-        List<Transition> allTransitions = base.getAllTransitions();
-        for (Transition tr : allTransitions) {
-            alphabet.addAll(tr.getIntervals());
+        List<State> states = base.getStates();
+        int n = states.size();
+        if (states.stream().noneMatch(State::isAccept)) {
+            Automaton out = new Automaton();
+            out.setInitial(out.addState());
+            return out;
         }
-        alphabet = getDisjunction(alphabet);
 
-        Set<Set<State>> p = new HashSet<>();
-        Set<Set<State>> w = new HashSet<>();
-        Set<State> acceptSet = new HashSet<>(base.getAcceptList());
-        Set<State> nonAcceptSet = new HashSet<>(base.getNonAcceptList());
-        if (!acceptSet.isEmpty())
-            p.add(acceptSet);
-        if (!nonAcceptSet.isEmpty())
-            p.add(nonAcceptSet);
+        List<IntervalSet> sets = new ArrayList<>();
+        for (State s : states)
+            for (Transition tr : s.transitions.values())
+                sets.add(tr.values);
+        Alphabet alphabet = Alphabet.of(sets);
+        int k = alphabet.size();
 
-        w.add(acceptSet);
-        w.add(nonAcceptSet);
+        // Complete transition table, state n being a non accepting sink
+        int nbStates = n + 1;
+        int sink = n;
+        int[] delta = new int[nbStates * k];
+        Arrays.fill(delta, sink);
+        for (State s : states) {
+            for (Transition tr : s.transitions.values()) {
+                if (tr.values == null)
+                    continue;
+                for (int c : alphabet.classesOf(tr.values))
+                    delta[s.index * k + c] = tr.dest.index;
+            }
+        }
 
-        while (!w.isEmpty()) {
-            Set<State> a = w.iterator().next();
-            w.remove(a);
-            for (Interval interval : alphabet) {
-                Set<State> x = allTransitions.stream().filter(tr -> a.contains(tr.dest) && tr.values.intersects(interval)).map(tr -> tr.orig).collect(Collectors.toSet());
-                if (!x.isEmpty()) {
-                    for (Set<State> y : new HashSet<>(p)) {
-                        Set<State> inter = intersection(x, y);
-                        Set<State> comp = minus(y, x);
-                        if (!inter.isEmpty() && !comp.isEmpty()) {
-                            p.remove(y);
-                            p.add(inter);
-                            p.add(comp);
-                            if (w.contains(y)) {
-                                w.remove(y);
-                                w.add(inter);
-                                w.add(comp);
-                            } else if (inter.size() <= comp.size()) {
-                                w.add(inter);
-                            } else {
-                                w.add(comp);
-                            }
-                        }
+        // Inverse transitions : sources of (t, c) are invSrc[invStart[t*k+c] .. invStart[t*k+c+1]-1]
+        int[] invStart = new int[nbStates * k + 1];
+        for (int i = 0; i < delta.length; i++)
+            invStart[delta[i] * k + i % k + 1]++;
+        for (int i = 0; i < nbStates * k; i++)
+            invStart[i + 1] += invStart[i];
+        int[] invSrc = new int[delta.length];
+        int[] fill = Arrays.copyOf(invStart, nbStates * k);
+        for (int i = 0; i < delta.length; i++)
+            invSrc[fill[delta[i] * k + i % k]++] = i / k;
+
+        // Partition : the states of block b are elems[first[b] .. end[b]-1]
+        int[] elems = new int[nbStates];
+        int[] loc = new int[nbStates];
+        int[] blockOf = new int[nbStates];
+        int[] first = new int[nbStates];
+        int[] end = new int[nbStates];
+        int[] marked = new int[nbStates];
+        int pos = 0;
+        for (State s : states) {
+            if (s.accept) {
+                elems[pos] = s.index;
+                loc[s.index] = pos++;
+            }
+        }
+        int nbAccept = pos;
+        for (int s = 0; s < nbStates; s++) {
+            if (s == sink || !states.get(s).accept) {
+                elems[pos] = s;
+                loc[s] = pos++;
+                blockOf[s] = 1;
+            }
+        }
+        first[0] = 0;
+        end[0] = nbAccept;
+        first[1] = nbAccept;
+        end[1] = nbStates;
+        int nbBlocks = 2;
+
+        // Waiting splitters (block, class)
+        boolean[] waiting = new boolean[nbStates * k];
+        int[] stack = new int[nbStates * k];
+        int top = 0;
+        int smallest = nbAccept <= nbStates - nbAccept ? 0 : 1;
+        for (int c = 0; c < k; c++) {
+            waiting[smallest * k + c] = true;
+            stack[top++] = smallest * k + c;
+        }
+
+        int[] splitter = new int[nbStates];
+        int[] touched = new int[nbStates];
+        while (top > 0) {
+            int pair = stack[--top];
+            waiting[pair] = false;
+            int b = pair / k;
+            int c = pair % k;
+            int size = end[b] - first[b];
+            System.arraycopy(elems, first[b], splitter, 0, size);
+
+            // Moves the predecessors of the splitter at the beginning of their block
+            int nbTouched = 0;
+            for (int i = 0; i < size; i++) {
+                int key = splitter[i] * k + c;
+                for (int j = invStart[key]; j < invStart[key + 1]; j++) {
+                    int s = invSrc[j];
+                    int bs = blockOf[s];
+                    int m = first[bs] + marked[bs];
+                    if (loc[s] >= m) {
+                        int other = elems[m];
+                        elems[m] = s;
+                        elems[loc[s]] = other;
+                        loc[other] = loc[s];
+                        loc[s] = m;
+                        if (marked[bs]++ == 0)
+                            touched[nbTouched++] = bs;
                     }
                 }
             }
 
-        }
-        Automaton out = new Automaton();
-        Map<Set<State>,State> setToNewState = new HashMap<>();
-        Map<State,Set<State>> oldStateToSet = new HashMap<>();
-        State newInit = null;
-        for (Set<State> group : p) {
-         //   System.out.println(group);
-            State newState = out.addState();
-            setToNewState.put(group, newState);
-            if (State.hasAcceptingState(group))
-                out.setAccept(newState);
-            if (State.hasInitialState(group))
-                newInit = newState;
-            for (State s : group) {
-                oldStateToSet.put(s,group);
-            }
-        }
-        for (Set<State> group : p) {
-            State newState = setToNewState.get(group);
-            for (State oldState : group) {
-                for (Transition tr : oldState.getTransitions().values()) {
-                    out.addTransition(newState,setToNewState.get(oldStateToSet.get(tr.dest)), tr.values.clone());
+            for (int t = 0; t < nbTouched; t++) {
+                int bs = touched[t];
+                int nbMarked = marked[bs];
+                marked[bs] = 0;
+                int bsSize = end[bs] - first[bs];
+                if (nbMarked == bsSize)
+                    continue;
+                // The smallest part becomes the new block
+                int nb = nbBlocks++;
+                if (nbMarked <= bsSize - nbMarked) {
+                    first[nb] = first[bs];
+                    end[nb] = first[bs] + nbMarked;
+                    first[bs] = end[nb];
+                } else {
+                    first[nb] = first[bs] + nbMarked;
+                    end[nb] = end[bs];
+                    end[bs] = first[nb];
+                }
+                for (int p = first[nb]; p < end[nb]; p++)
+                    blockOf[elems[p]] = nb;
+                for (int a = 0; a < k; a++) {
+                    if (!waiting[nb * k + a]) {
+                        waiting[nb * k + a] = true;
+                        stack[top++] = nb * k + a;
+                    }
                 }
             }
         }
-        out.setInitial(newInit);
 
-        out.reIndex();
-
-
-        return out;
-    }
-
-    private static Set<State> intersection(Collection<State> left, Collection<State> right) {
-        return left.stream().filter(right::contains).collect(Collectors.toSet());
-    }
-    private static Set<State> minus(Collection<State> left, Collection<State> right) {
-        Set<State> out = new HashSet<>(left);
-        right.forEach(out::remove);
+        // Builds the quotient automaton, numbering the blocks in breadth first order
+        Automaton out = new Automaton();
+        State[] blockState = new State[nbBlocks];
+        int sinkBlock = blockOf[sink];
+        int initBlock = blockOf[base.getInitial().index];
+        List<Integer> queue = new ArrayList<>();
+        blockState[initBlock] = out.addState();
+        queue.add(initBlock);
+        for (int q = 0; q < queue.size(); q++) {
+            int b = queue.get(q);
+            int r = elems[first[b]];
+            State from = blockState[b];
+            if (states.get(r).accept)
+                out.setAccept(from);
+            Map<Integer, IntervalSet> byTarget = new LinkedHashMap<>();
+            for (int c = 0; c < k; c++) {
+                int tb = blockOf[delta[r * k + c]];
+                if (tb == sinkBlock)
+                    continue;
+                if (blockState[tb] == null) {
+                    blockState[tb] = out.addState();
+                    queue.add(tb);
+                }
+                alphabet.appendTo(byTarget.computeIfAbsent(tb, x -> new IntervalSet()), c);
+            }
+            for (Map.Entry<Integer, IntervalSet> e : byTarget.entrySet())
+                out.addDisjointTransition(from, blockState[e.getKey()], e.getValue());
+        }
+        out.setInitial(blockState[initBlock]);
         return out;
     }
 
@@ -196,7 +277,7 @@ public class Operation {
      * Determinizes a given {@link fr.menana.automaton.Automaton} using the subset construction algorithm.<br>
      * If the {@link fr.menana.automaton.Automaton} is already deterministic, return a clone.
      * @param nfa a non-deterministic {@link fr.menana.automaton.Automaton}
-     * @return  a minimal {@link fr.menana.automaton.Automaton}
+     * @return  a deterministic {@link fr.menana.automaton.Automaton}
      */
     public static Automaton determinize(Automaton nfa) {
         if (nfa.isDeterministic())
@@ -205,188 +286,195 @@ public class Operation {
         if (nfa.getInitial() == null)
             return null;
 
-        Automaton dfa = new Automaton();
+        List<State> states = nfa.getStates();
+        int n = states.size();
+        Map<State, Integer> ids = new HashMap<>(2 * n);
+        for (int i = 0; i < n; i++)
+            ids.put(states.get(i), i);
 
+        List<IntervalSet> sets = new ArrayList<>();
+        for (State s : states)
+            for (Transition tr : s.transitions.values())
+                sets.add(tr.values);
+        Alphabet alphabet = Alphabet.of(sets);
+        int k = alphabet.size();
 
-        Set<Set<State>> toVisit = new HashSet<>();
-
-        Set<State> start = closure(nfa.getInitial());
-
-
-        State dfaInit = dfa.addState();
-        dfaInit.initial = true;
-        dfaInit.accept = State.hasAcceptingState(start);
-        if (dfaInit.accept)
-            dfa.setAccept(dfaInit);
-
-        Map<Set<State>,State> association = new HashMap<>();
-        association.put(start, dfaInit);
-
-        toVisit.add(start);
-        Set<Set<State>> visited = new HashSet<>();
-
-        while (!toVisit.isEmpty()) {
-            Iterator<Set<State>> it = toVisit.iterator();
-
-
-            Set<State> current = it.next();
-            it.remove();
-            visited.add(current);
-            //System.out.println("CURRENT : " + current);
-
-            Set<Interval> intervals = new TreeSet<>();
-            for (State s : current) {
-                for (Transition tr : s.transitions.values()) {
-                    intervals.addAll(tr.getIntervals());
+        // Symbol edges (class, destination) and epsilon edges of each state, stored contiguously
+        int[] edgeStart = new int[n + 1];
+        int[] epsStart = new int[n + 1];
+        List<int[]> classes = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int nbEdges = 0, nbEps = 0;
+            for (Transition tr : states.get(i).transitions.values()) {
+                if (tr.values != null) {
+                    int[] cl = alphabet.classesOf(tr.values);
+                    classes.add(cl);
+                    nbEdges += cl.length;
                 }
+                if (tr.epsilon)
+                    nbEps++;
             }
-
-            Set<Interval> intervalAlphabet = getDisjunction(intervals);
-            for (Interval i : intervalAlphabet) {
-                Set<State> next = move(current, i);
-                if (!next.isEmpty()) {
-                    State dfaState = association.get(next);
-                    if (dfaState == null) {
-                        dfaState = dfa.addState();
-                        dfaState.accept = State.hasAcceptingState(next);
-                        if (dfaState.accept)
-                            dfa.setAccept(dfaState);
-                        association.put(next, dfaState);
+            edgeStart[i + 1] = edgeStart[i] + nbEdges;
+            epsStart[i + 1] = epsStart[i] + nbEps;
+        }
+        int[] edgeClass = new int[edgeStart[n]];
+        int[] edgeDest = new int[edgeStart[n]];
+        int[] epsDest = new int[epsStart[n]];
+        int e = 0, eps = 0, cl = 0;
+        for (int i = 0; i < n; i++) {
+            for (Transition tr : states.get(i).transitions.values()) {
+                int dest = ids.get(tr.dest);
+                if (tr.values != null) {
+                    for (int c : classes.get(cl++)) {
+                        edgeClass[e] = c;
+                        edgeDest[e++] = dest;
                     }
-                    dfa.addTransition(association.get(current), dfaState, i.clone());
-                    if (!toVisit.contains(next) && !visited.contains(next))
-                        toVisit.add(next);
                 }
+                if (tr.epsilon)
+                    epsDest[eps++] = dest;
             }
         }
 
-        dfa.setInitial(dfaInit);
-        dfa.reIndex();
+        // Only states having symbol transitions or accepting matter in a subset
+        boolean[] relevant = new boolean[n];
+        for (int i = 0; i < n; i++)
+            relevant[i] = states.get(i).accept || edgeStart[i + 1] > edgeStart[i];
 
+        Closure closure = new Closure(n, epsStart, epsDest, relevant);
+
+        Automaton dfa = new Automaton();
+        Map<Subset, State> association = new HashMap<>();
+        List<int[]> toVisit = new ArrayList<>();
+
+        Subset start = closure.of(new int[]{ids.get(nfa.getInitial())}, 1);
+        State dfaInit = dfa.addState();
+        dfa.setInitial(dfaInit);
+        association.put(start, dfaInit);
+        toVisit.add(start.states);
+
+        // Destinations reached by each class from the current subset
+        int[][] buckets = new int[k][];
+        int[] bucketSize = new int[k];
+        int[] touched = new int[k];
+
+        for (int v = 0; v < toVisit.size(); v++) {
+            int[] current = toVisit.get(v);
+            State from = dfa.getStates().get(v);
+            int nbTouched = 0;
+            for (int s : current) {
+                if (states.get(s).accept)
+                    from.accept = true;
+                for (int i = edgeStart[s]; i < edgeStart[s + 1]; i++) {
+                    int c = edgeClass[i];
+                    if (bucketSize[c] == 0) {
+                        touched[nbTouched++] = c;
+                        if (buckets[c] == null)
+                            buckets[c] = new int[4];
+                    } else if (bucketSize[c] == buckets[c].length) {
+                        buckets[c] = Arrays.copyOf(buckets[c], 2 * bucketSize[c]);
+                    }
+                    buckets[c][bucketSize[c]++] = edgeDest[i];
+                }
+            }
+            Arrays.sort(touched, 0, nbTouched);
+            Map<State, IntervalSet> byTarget = new LinkedHashMap<>();
+            for (int t = 0; t < nbTouched; t++) {
+                int c = touched[t];
+                Subset next = closure.of(buckets[c], bucketSize[c]);
+                bucketSize[c] = 0;
+                if (next.states.length == 0)
+                    continue;
+                State dfaState = association.get(next);
+                if (dfaState == null) {
+                    dfaState = dfa.addState();
+                    association.put(next, dfaState);
+                    toVisit.add(next.states);
+                }
+                alphabet.appendTo(byTarget.computeIfAbsent(dfaState, x -> new IntervalSet()), c);
+            }
+            for (Map.Entry<State, IntervalSet> entry : byTarget.entrySet())
+                dfa.addDisjointTransition(from, entry.getKey(), entry.getValue());
+        }
 
         return dfa;
     }
 
     /**
-     * Get the minimal ? list of {@link fr.menana.automaton.Interval} representing the same set of values as the given collection of overlapping {@link fr.menana.automaton.Interval}
-     * @param intervals a collection of overlapping {@link Interval}
-     * @return a set of non overlapping {@link fr.menana.automaton.Interval}
+     * A set of NFA states identified by their sorted indexes, used as a key of the subset construction
      */
-    private static TreeSet<Interval> getDisjunction(Collection<Interval> intervals) {
-        boolean somethingDone = true;
-        if (intervals.isEmpty())
-            somethingDone = false;
-        List<Interval> stack = new ArrayList<>(intervals.size());
-        stack.addAll(intervals.stream().map(Interval::clone).collect(Collectors.toList()));
-        List<Interval> toAdd = new ArrayList<>();
-        List<Interval> toRemove = new ArrayList<>();
-        int index = 0;
-        while(somethingDone) {
-            toAdd.clear();
-            Interval inter= stack.get(index);
-            for (int i = 0 ; i < stack.size() ; ++i) {
-                if (i != index) {
-                    Interval other = stack.get(i);
-                    Interval intersection = inter.intersection(other);
-                    if (intersection != null  && !intersection.equals(inter)) {
-                        if (!stack.contains(intersection))
-                            toAdd.add(intersection);
-                        toRemove.add(inter);
-                        List<Interval> comp = other.complement();
-                        for (Interval o : comp) {
-                            Interval compInter = inter.intersection(o);
-                            if (compInter != null && !stack.contains(compInter))
-                                toAdd.add(compInter);
-                        }
-                        break;
+    private static final class Subset {
+        final int[] states;
+        final int hash;
+
+        Subset(int[] states) {
+            this.states = states;
+            this.hash = Arrays.hashCode(states);
+        }
+
+        @Override
+        public int hashCode() {
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            return other instanceof Subset && ((Subset) other).hash == hash && Arrays.equals(((Subset) other).states, states);
+        }
+    }
+
+    /**
+     * Computes epsilon-closures, reusing its buffers from one call to another
+     */
+    private static final class Closure {
+        private final int[] epsStart;
+        private final int[] epsDest;
+        private final boolean[] relevant;
+        private final int[] seen;
+        private final int[] stack;
+        private final int[] result;
+        private int generation;
+
+        Closure(int n, int[] epsStart, int[] epsDest, boolean[] relevant) {
+            this.epsStart = epsStart;
+            this.epsDest = epsDest;
+            this.relevant = relevant;
+            this.seen = new int[n];
+            this.stack = new int[n];
+            this.result = new int[n];
+        }
+
+        /**
+         * Returns the relevant states of the epsilon-closure of the given states
+         * @param from the start states
+         * @param size the number of start states to consider in <code>from</code>
+         * @return the closure as a subset
+         */
+        Subset of(int[] from, int size) {
+            generation++;
+            int top = 0, nb = 0;
+            for (int i = 0; i < size; i++) {
+                if (seen[from[i]] != generation) {
+                    seen[from[i]] = generation;
+                    stack[top++] = from[i];
+                }
+            }
+            while (top > 0) {
+                int s = stack[--top];
+                if (relevant[s])
+                    result[nb++] = s;
+                for (int i = epsStart[s]; i < epsStart[s + 1]; i++) {
+                    int d = epsDest[i];
+                    if (seen[d] != generation) {
+                        seen[d] = generation;
+                        stack[top++] = d;
                     }
                 }
             }
-
-            if (!toAdd.isEmpty() || !toRemove.isEmpty() ) {
-                stack.removeAll(toRemove);
-                stack.addAll(0, toAdd);
-                toAdd.clear();
-                toRemove.clear();
-                index = 0;
-            }
-            else if (index == stack.size() - 1) {
-                somethingDone = false;
-            }
-            else {
-                ++index;
-            }
+            int[] out = Arrays.copyOf(result, nb);
+            Arrays.sort(out);
+            return new Subset(out);
         }
-        // Cloning the interval within the result to avoid side effects
-        return new TreeSet<>(stack.stream().map(Interval::clone).collect(Collectors.toSet()));
-
-
-
     }
-
-    /**
-     * Computes the epsilon-closure of a given {@link fr.menana.automaton.State}
-     * @param state the {@link fr.menana.automaton.State} from whom to compute the epsilon-closure
-     * @return the epsilon-closure of the given {@link fr.menana.automaton.State}
-     */
-    private static Set<State> closure(State state) {
-        return closure(Collections.singleton(state));
-    }
-
-    /**
-     * Computes the epsilon-closure of a given collection of {@link fr.menana.automaton.State}
-     * @param states the collection of {@link fr.menana.automaton.State} from whom to compute the epsilon-closure
-     * @return the epsilon-closure of the given collection of {@link fr.menana.automaton.State}
-     */
-    private static Set<State> closure(Collection<State> states) {
-        Set<State> out = new HashSet<>();
-        Set<State> toRem = new HashSet<>();
-        out.addAll(states);
-
-        while (true) {
-            Set<State> toAdd = new HashSet<>();
-            for (State s : out) {
-                boolean onlyEpsilon = !s.transitions.isEmpty();
-                for (Transition t : s.transitions.values())
-                    if (t.hasEpsilon()) {
-                        if (!out.contains(t.dest))
-                            toAdd.add(t.dest);
-                        if (t.values != null && !t.values.isEmpty())
-                            onlyEpsilon = false;
-                    } else if (t.values != null && !t.values.isEmpty())
-                        onlyEpsilon = false;
-                if (onlyEpsilon)
-                    toRem.add(s);
-            }
-
-            if (toAdd.isEmpty())
-                break;
-            else
-                out.addAll(toAdd);
-        }
-        out.removeAll(toRem);
-
-        return out;
-
-
-    }
-
-    /**
-     * Returns a set of {@link fr.menana.automaton.State} that can be reached from a given collection of {@link fr.menana.automaton.State}
-     * using one of the integer value of the given {@link fr.menana.automaton.Interval}
-     * @param states a collection of origin {@link fr.menana.automaton.State}
-     * @param symbol an {@link fr.menana.automaton.Interval} of integer values
-     * @return the set of reached {@link fr.menana.automaton.State}
-     */
-    private static Set<State> move(Collection<State> states,Interval symbol){
-        Set<State> out = new HashSet<>();
-        for (State s :states) {
-            out.addAll(s.transitions.values().stream().filter(tr -> tr.values != null && tr.values.intersects(symbol)).map(tr -> tr.dest).collect(Collectors.toList()));
-        }
-        return closure(out);
-
-    }
-
 
     /**
      * Returns a new {@link fr.menana.automaton.Automaton} that recognizes the mirror of the language defined by the given {@link fr.menana.automaton.Automaton}
@@ -424,6 +512,19 @@ public class Operation {
      * @return a new automaton recognizing the concatenation of the languages defined by the {@link fr.menana.automaton.Automaton} parameters
      */
     public static Automaton concatenate(Automaton first, Automaton second) {
+        return concatenate(first, second, true);
+    }
+
+    /**
+     * Returns a new automaton recognizing the concatenation of the languages defined by the {@link fr.menana.automaton.Automaton} given as a parameter. <br>
+     * Unless minimization is requested, the states of <code>first</code> keep their index in the returned automaton,
+     * which is non-deterministic as soon as <code>first</code> has an accepting state
+     * @param first the first {@link fr.menana.automaton.Automaton} used for the concatenation
+     * @param second the second {@link fr.menana.automaton.Automaton} used for the concatenation
+     * @param minimizeIfDeterministic <code>true</code> to minimize the result when both given automatons are deterministic
+     * @return a new automaton recognizing the concatenation of the languages defined by the {@link fr.menana.automaton.Automaton} parameters
+     */
+    public static Automaton concatenate(Automaton first, Automaton second, boolean minimizeIfDeterministic) {
         Automaton out = first.clone();
         Map<State, State> map = new HashMap<>();
         for (State s : second.getStates()) {
@@ -445,7 +546,7 @@ public class Operation {
                     out.addEpsilonTransition(map.get(tr.orig),map.get(tr.dest));
             }
         }
-        return (first.isDeterministic() && second.isDeterministic()?out.minimize():out) ;
+        return (minimizeIfDeterministic && first.isDeterministic() && second.isDeterministic()?out.minimize():out) ;
     }
 
     /**

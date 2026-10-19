@@ -19,6 +19,7 @@ package fr.menana.automaton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represents a transition carrying values and/or epsilon from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} <br>
@@ -133,7 +134,12 @@ public class Transition {
         if (other == null || !(other instanceof Transition))
             return false;
         Transition tr = (Transition) other;
-        return tr.orig.equals(this.orig) && tr.dest.equals(this.dest) && tr.epsilon == this.epsilon && tr.values.equals(this.values);
+        return tr.orig.sameAs(this.orig) && tr.dest.sameAs(this.dest) && tr.epsilon == this.epsilon && Objects.equals(tr.values, this.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orig.index, dest.index, epsilon, values);
     }
 
 
