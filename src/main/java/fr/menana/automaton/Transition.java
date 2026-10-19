@@ -30,17 +30,18 @@ public class Transition {
     /**
      * The origin {@link fr.menana.automaton.State} of this transition
      */
-    public State orig;
+    State orig;
 
     /**
      * The destination {@link fr.menana.automaton.State} of this transition
      */
-    public State dest;
+    State dest;
 
     /**
-     * the values carried by this transition represented as an {@link fr.menana.automaton.IntervalSet}
+     * the values carried by this transition represented as an {@link fr.menana.automaton.IntervalSet},
+     * <code>null</code> for a pure epsilon transition
      */
-    public IntervalSet values;
+    IntervalSet values;
 
     /**
      * Inidicates if this transition carries an epsilon
@@ -104,6 +105,48 @@ public class Transition {
     {
         this(orig,dest,(IntervalSet) null);
         this.epsilon = true;
+    }
+
+    /**
+     * Returns the origin {@link fr.menana.automaton.State} of this transition
+     * @return the origin state
+     */
+    public State getOrig() {
+        return orig;
+    }
+
+    /**
+     * Returns the destination {@link fr.menana.automaton.State} of this transition
+     * @return the destination state
+     */
+    public State getDest() {
+        return dest;
+    }
+
+    /**
+     * Returns a copy of the values carried by this transition.
+     * Modifying the returned set does not modify the automaton.
+     * @return the values, or <code>null</code> if this transition only carries an epsilon
+     */
+    public IntervalSet getValues() {
+        return values == null ? null : values.clone();
+    }
+
+    /**
+     * Checks if this transition carries values, as opposed to a pure epsilon transition
+     * @return <code>true</code> if and only if the transition carries at least one value
+     */
+    public boolean hasValues() {
+        return values != null && !values.isEmpty();
+    }
+
+    /**
+     * Checks if this transition can be taken by reading the given value
+     * @param value the value to read
+     * @return <code>true</code> if and only if the transition carries the value
+     */
+    public boolean accepts(int value) {
+        return values != null && values.contains(value);
     }
 
     /**

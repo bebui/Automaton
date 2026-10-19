@@ -23,12 +23,13 @@ import fr.menana.automaton.Util;
 /**
  * This class is a parser for regular expression whose alphabet is solely composed of integers. <br>
  * Largely inspired from <a href="http://matt.might.net/articles/parsing-regex-with-recursive-descent/">http://matt.might.net/articles/parsing-regex-with-recursive-descent/</a>
+ * Invalid expressions are rejected with an {@link IllegalArgumentException} giving the error position. <br>
  * It supports : <br>
  *    - &lt;x&gt; notation for integer greater than 10 or negative integer. ("12&lt;12&gt;" is the regular expression for 1 followed by 2 followed by 12) <br>
  *    - * notation for Kleene star <br>
  *    - + notation for Kleene plus <br>
  *    - . notation for any integer <br>
- *    - {x,y} notation to enforce the appearance of an expression between x and y times <br>
+ *    - {x,y} notation to enforce the appearance of an expression between x and y times, {x} exactly x times, {x,} at least x times <br>
  *    - ? notation for zero or one. <p>
  * Created by Julien Menana on 05/05/15.
  */
@@ -36,51 +37,52 @@ public class RegExpParser {
 
 
     /**
-     * The input to consume and form the regular expression
+     * The whole regular expression, used to report error positions
      */
-    private String input;
+    private final String expression;
+
+    /**
+     * Position of the next character to read in the expression
+     */
+    private int pos;
 
     /**
      * Consturcts a new parser from a string
      * @param input a regular expression as a string
      */
     private RegExpParser(String input) {
-        this.input = input;
+        this.expression = input;
+        this.pos = 0;
     }
 
-
-    private String peek() {
-        if (input.charAt(0) == '<') {
-            return input.substring(1,input.indexOf('>',1));
-        }
-        return input.substring(0,1) ;
-    }
-
-    private void eat(String c) {
-        if (peek().equals(c)) {
-            if (c.length() == 1)
-                this.input = this.input.substring(c.length());
-            else
-                this.input = this.input.substring(c.length()+2);
-        }
-        else
-            throw new RuntimeException("Expected: " + c + "; got: " + peek()) ;
-    }
-
-    private String next() {
-        String c = peek() ;
-        eat(c) ;
-        return c ;
+    private IllegalArgumentException error(String message) {
+        return new IllegalArgumentException(message + " at position " + pos + " in \"" + expression + "\"");
     }
 
     private boolean more() {
-        return !input.isEmpty();
+        return pos < expression.length();
     }
+
+    /**
+     * Checks if the next character is the given operator
+     */
+    private boolean peekIs(char operator) {
+        return more() && expression.charAt(pos) == operator;
+    }
+
+    private void eat(char operator) {
+        if (!more())
+            throw error("Expected '" + operator + "' but reached the end");
+        if (expression.charAt(pos) != operator)
+            throw error("Expected '" + operator + "' but found '" + expression.charAt(pos) + "'");
+        pos++;
+    }
+
     private RegExp regex() {
         RegExp term = term() ;
 
-        if (more() && peek().equals("|")) {
-            eat ("|") ;
+        if (peekIs('|')) {
+            eat ('|') ;
             RegExp regex = regex() ;
             return new RegExpOr(term,regex) ;
         } else {
@@ -91,7 +93,7 @@ public class RegExpParser {
     private RegExp term() {
         RegExp factor = RegExp.blank ;
 
-        while (more() && !peek().equals(")") && !peek().equals("|")) {
+        while (more() && !peekIs(')') && !peekIs('|')) {
             RegExp nextFactor = factor() ;
             factor = new RegExpSequence(factor,nextFactor) ;
         }
@@ -103,52 +105,70 @@ public class RegExpParser {
 
         RegExp base = base() ;
 
-        while (more() && peek().equals("*")) {
-            eat("*") ;
+        while (peekIs('*')) {
+            eat('*') ;
             base = new RegExpKleeneStar(base) ;
         }
-        while (more() && peek().equals("+")) {
-            eat("+") ;
+        while (peekIs('+')) {
+            eat('+') ;
             base = new RegExpKleenePlus(base) ;
         }
-        while (more() && peek().equals("?")) {
-            eat("?") ;
+        while (peekIs('?')) {
+            eat('?') ;
             base = new RegExpKleeneRange(base,"0,1");
         }
-        if (more() && peek().equals("{")) {
-            eat("{");
-            StringBuilder b = new StringBuilder();
-            while (more() && !peek().equals("}")) {
-                String s = peek();
-                b.append(s);
-                eat(s);
+        if (peekIs('{')) {
+            int end = expression.indexOf('}', pos);
+            if (end < 0)
+                throw error("Missing '}'");
+            String range = expression.substring(pos + 1, end);
+            try {
+                base = new RegExpKleeneRange(base, range);
+            } catch (IllegalArgumentException e) {
+                throw error(e.getMessage());
             }
-            eat("}");
-            base = new RegExpKleeneRange(base,b.toString());
+            pos = end + 1;
         }
 
         return base ;
     }
 
     private RegExp base() {
-        if (peek().equals("(")) {
-            eat("(");
+        if (!more())
+            throw error("Unexpected end of expression");
+        char c = expression.charAt(pos);
+        if (c == '(') {
+            eat('(');
             RegExp r = regex() ;
-            eat(")") ;
+            eat(')') ;
             return r ;
         }
+        else if (c == '.') {
+            eat('.');
+            return new RegExpAny();
+        }
+        else if (c == '<') {
+            int end = expression.indexOf('>', pos);
+            if (end < 0)
+                throw error("Missing '>'");
+            String number = expression.substring(pos + 1, end);
+            if (!Util.isInteger(number))
+                throw error("Expected an integer between '<' and '>' but found \"" + number + "\"");
+            int value;
+            try {
+                value = Integer.parseInt(number);
+            } catch (NumberFormatException e) {
+                throw error("Integer out of range: " + number);
+            }
+            pos = end + 1;
+            return new RegExpInt(value);
+        }
+        else if (c >= '0' && c <= '9') {
+            pos++;
+            return new RegExpInt(c - '0');
+        }
         else {
-            String next = next();
-            if (Util.isInteger(next)) {
-                return new RegExpInt(Integer.parseInt(next));
-            }
-            else if (next.equals(".")) {
-                return new RegExpAny();
-            }
-            else {
-                throw new RuntimeException("Char allowed are int and . for any int");
-            }
-
+            throw error("Unexpected character '" + c + "', allowed symbols are digits, <integer> and .");
         }
     }
 
@@ -182,7 +202,10 @@ public class RegExpParser {
 
 
     private RegExp parse() {
-        return this.regex();
+        RegExp regexp = this.regex();
+        if (more())
+            throw error("Unexpected '" + expression.charAt(pos) + "'");
+        return regexp;
     }
 
 

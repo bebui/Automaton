@@ -191,11 +191,11 @@ public class Automaton implements Cloneable {
      * The values are represented by an {@link fr.menana.automaton.IntervalSet}
      * @param orig the origin {@link fr.menana.automaton.State}
      * @param dest the destination {@link fr.menana.automaton.State}
-     * @param values the symbols of the transition as an {@link fr.menana.automaton.IntervalSet}
+     * @param values the symbols of the transition as an {@link fr.menana.automaton.IntervalSet}, copied by the automaton
      */
     public void addTransition(State orig, State dest, IntervalSet values)
     {
-        Transition t = new Transition(orig,dest,values);
+        Transition t = new Transition(orig,dest,values.clone());
 
         deterministic &= !orig.addTransition(t);
     }
@@ -566,26 +566,51 @@ public class Automaton implements Cloneable {
                 .collect(Collectors.joining("\n"));
     }
 
+    /**
+     * Checks if the given object is an automaton with the same structure once dead states are removed :
+     * same number of states, same accepting states and same transitions between states of same index. <br>
+     * Two automata recognizing the same language are not necessarily equal, compare their minimal automata for that
+     * @param other the object to compare
+     * @return <code>true</code> if and only if both automata have the same structure
+     */
     @Override
     public boolean equals(Object other) {
         if (this == other)
             return true;
-        if (other == null || ! (other instanceof Automaton))
+        if (!(other instanceof Automaton))
             return false;
-        Automaton auto = ((Automaton) other).clone();
-        Automaton orig = this.clone();
-        auto.removeDeadStates();
-        orig.removeDeadStates();
-        //auto.toDotty("auto.dot");
-        //orig.toDotty("orig.dot");
+        Automaton auto = ((Automaton) other).withoutDeadStates();
+        Automaton orig = this.withoutDeadStates();
         if (orig.getNbStates() != auto.getNbStates())
             return false;
+        for (int i = 0; i < orig.getNbStates(); i++)
+            if (orig.states.get(i).accept != auto.states.get(i).accept)
+                return false;
         Comparator<Transition> byStates = Comparator.<Transition>comparingInt(tr -> tr.orig.index).thenComparingInt(tr -> tr.dest.index);
         List<Transition> myTr = orig.getAllTransitions();
         List<Transition> oTr  = auto.getAllTransitions();
         myTr.sort(byStates);
         oTr.sort(byStates);
         return myTr.equals(oTr);
+    }
+
+    @Override
+    public int hashCode() {
+        Automaton auto = this.withoutDeadStates();
+        int h = auto.getNbStates();
+        for (State s : auto.states)
+            h = 31 * h + (s.accept ? 1 : 0);
+        // Order independent, like the comparison of transitions in equals
+        int transitions = 0;
+        for (Transition tr : auto.getAllTransitions())
+            transitions += tr.hashCode();
+        return 31 * h + transitions;
+    }
+
+    private Automaton withoutDeadStates() {
+        Automaton auto = this.clone();
+        auto.removeDeadStates();
+        return auto;
     }
 
 

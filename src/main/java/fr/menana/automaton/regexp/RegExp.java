@@ -30,7 +30,7 @@ public abstract class RegExp {
     /**
      * Singleton for epsilon regular expression
      */
-    public static RegExp blank = new RegExpEpsilon();
+    public static final RegExp blank = new RegExpEpsilon();
 
     @Override
     public abstract String toString();

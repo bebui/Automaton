@@ -33,16 +33,22 @@ public class RegExpKleenePlus extends RegExp {
     private RegExp internal;
 
     /**
+     * The regular expression repeated one or more times
+     */
+    private RegExp repeated;
+
+    /**
      * Constructs a new regular expression with the Kleene plus symbol
      * @param internal the regular expression the Kleene plus is applied
      */
     RegExpKleenePlus(RegExp internal) {
+        this.repeated = internal;
         this.internal = new RegExpSequence(internal, new RegExpKleeneStar(internal));
     }
 
     @Override
     public String toString() {
-        return "(" + this.internal.toString() + ")*";
+        return "(" + this.repeated.toString() + ")+";
     }
 
     @Override

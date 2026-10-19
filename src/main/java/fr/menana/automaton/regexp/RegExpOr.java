@@ -18,7 +18,6 @@
 package fr.menana.automaton.regexp;
 
 import fr.menana.automaton.Automaton;
-import fr.menana.automaton.IntervalSet;
 import fr.menana.automaton.State;
 import fr.menana.automaton.Transition;
 
@@ -70,12 +69,11 @@ public class RegExpOr extends RegExp {
             }
             for (State s : a.getStates()) {
                 for (Transition tr : s.getTransitions().values()) {
-                    if (tr.values != null) {
-                        IntervalSet set = tr.values.clone();
-                        auto.addTransition(asso.get(tr.orig), asso.get(tr.dest), set);
+                    if (tr.hasValues()) {
+                        auto.addTransition(asso.get(tr.getOrig()), asso.get(tr.getDest()), tr.getValues());
                     }
                     if (tr.hasEpsilon())
-                        auto.addEpsilonTransition(asso.get(tr.orig),asso.get(tr.dest));
+                        auto.addEpsilonTransition(asso.get(tr.getOrig()),asso.get(tr.getDest()));
                 }
             }
             auto.addEpsilonTransition(s1,asso.get(a.getInitial()));

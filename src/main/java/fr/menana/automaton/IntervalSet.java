@@ -39,18 +39,22 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
     private int count;
 
     /**
-     * A static reference to an interval set containting all values between Integer.MIN_VALUE and Integer.MAX_VALUE
+     * <code>true</code> if this set cannot be modified
      */
-    public static IntervalSet ALL = new IntervalSet();
-    static {
-        ALL.add(new Interval(Integer.MIN_VALUE,Integer.MAX_VALUE));
-    }
+    private boolean frozen;
 
     /**
-     * A static reference to an empty interval set
+     * An unmodifiable interval set containting all values between Integer.MIN_VALUE and Integer.MAX_VALUE.
+     * Use {@link #clone()} to get a modifiable copy
+     */
+    public static final IntervalSet ALL = new IntervalSet(new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE}, 1).freeze();
+
+    /**
+     * An unmodifiable empty interval set.
+     * Use {@link #clone()} to get a modifiable copy
      */
     @SuppressWarnings("unused")
-    public static IntervalSet EMPTY = new IntervalSet();
+    public static final IntervalSet EMPTY = new IntervalSet().freeze();
 
 
     /**
@@ -64,6 +68,16 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
     private IntervalSet(int[] bounds, int count) {
         this.bounds = bounds;
         this.count = count;
+    }
+
+    private IntervalSet freeze() {
+        this.frozen = true;
+        return this;
+    }
+
+    private void checkModifiable() {
+        if (frozen)
+            throw new UnsupportedOperationException("This interval set cannot be modified, use a clone");
     }
 
     /**
@@ -104,6 +118,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * @param max the upper bound
      */
     void append(int min, int max) {
+        checkModifiable();
         if (count > 0 && (long) bounds[2 * count - 1] + 1 >= min) {
             bounds[2 * count - 1] = Math.max(bounds[2 * count - 1], max);
             return;
@@ -140,6 +155,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * @return <code>true</code> if and only if the values were added
      */
     public boolean add(IntervalSet intervalSet) {
+        checkModifiable();
         if (intervalSet == null || intervalSet.count == 0)
             return false;
         if (intervalSet.count == 1)
@@ -167,6 +183,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * @return <code>true</code> if and only if values were added
      */
     private boolean add(int min, int max) {
+        checkModifiable();
         // first interval whose max is >= min - 1
         int lo = 0, hi = count;
         while (lo < hi) {
@@ -208,6 +225,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     @SuppressWarnings("unused")
     public void remove(IntervalSet intervalSet) {
+        checkModifiable();
         IntervalSet res = this.intersection(intervalSet.complement());
         this.bounds = res.bounds;
         this.count = res.count;
@@ -389,13 +407,13 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
     }
 
     /**
-     * Returns the cardinality of this set
+     * Returns the cardinality of this set, up to 2^32 for {@link #ALL}
      * @return the cardinality of this set
      */
-    public int size() {
-        int size = 0;
+    public long size() {
+        long size = 0;
         for (int i = 0; i < count; i++)
-            size += bounds[2 * i + 1] - bounds[2 * i] + 1;
+            size += (long) bounds[2 * i + 1] - bounds[2 * i] + 1;
         return size;
     }
 
@@ -419,6 +437,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
         try {
             clone = (IntervalSet) super.clone();
             clone.bounds = Arrays.copyOf(this.bounds, Math.max(2 * this.count, 2));
+            clone.frozen = false;
         } catch (CloneNotSupportedException ignored) {
 
         }
@@ -529,7 +548,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
             return -1;
         else if (this.getMin() == other.getMin()) {
             if (this.getMax() == other.getMax())
-                return Integer.compare(this.size(), other.size());
+                return Long.compare(this.size(), other.size());
             else
                 return Integer.compare(this.getMax(), other.getMax());
         }

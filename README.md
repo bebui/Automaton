@@ -58,10 +58,14 @@ auto.run(2, 1);      // false
 | `a*` | zero or more |
 | `a+` | one or more |
 | `a?` | zero or one |
-| `a{n}`, `a{n,m}` | between n and m repetitions |
+| `a{n}` | exactly n repetitions |
+| `a{n,m}` | between n and m repetitions |
+| `a{n,}`, `a{,m}` | at least n, at most m repetitions |
 | `( )` | grouping |
 
-Each character is a symbol: `12` is the symbol 1 followed by the symbol 2, while `<12>` is the single symbol 12. Single digit symbols must be written without angle brackets (`5`, not `<5>`).
+Each character is a symbol: `12` is the symbol 1 followed by the symbol 2, while `<12>` is the single symbol 12. Any integer can be written between angle brackets, `<5>` is the same as `5`.
+
+An invalid expression throws an `IllegalArgumentException` giving the position of the error, for instance `Expected ')' but reached the end at position 2 in "(1"`.
 
 ```java
 Automaton a = Automaton.dfaFromString("<10><-3>.*");
@@ -87,7 +91,9 @@ auto.run(4, 2);      // true
 auto.run();          // false
 ```
 
-`addTransition` also accepts single values (`auto.addTransition(s0, s1, 1, 2, 3)`) or an `IntervalSet`. `addEpsilonTransition(s0, s1)` adds an ε-transition and makes the automaton non-deterministic.
+`addTransition` also accepts single values (`auto.addTransition(s0, s1, 1, 2, 3)`) or an `IntervalSet`, which is copied. `addEpsilonTransition(s0, s1)` adds an ε-transition and makes the automaton non-deterministic.
+
+Transitions are read with `state.getTransitions()`; `Transition.getValues()` returns a copy, so an automaton can only be changed through its own methods. `IntervalSet.ALL` and `IntervalSet.EMPTY` are read-only: call `clone()` to get a modifiable set.
 
 ## Operations
 
@@ -108,12 +114,14 @@ Automaton m = d.minimize();
 
 Union and concatenation of two deterministic automata return a minimal deterministic automaton.
 
-`minimize()` uses Hopcroft's algorithm by default. Brzozowski's algorithm can be selected per call or globally:
+`minimize()` uses Hopcroft's algorithm by default. Brzozowski's algorithm can be selected per call or for the whole application:
 
 ```java
 Operation.minimize(d, Operation.MINIMIZATION_ALGO.Brzozowski);
-Operation.minimization_method = Operation.MINIMIZATION_ALGO.Brzozowski;
+Operation.setDefaultMinimization(Operation.MINIMIZATION_ALGO.Brzozowski);
 ```
+
+`complement()` works on deterministic and non-deterministic automata: the latter are determinized first.
 
 ## Visualization
 

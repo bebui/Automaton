@@ -59,16 +59,14 @@ public class Interval implements Comparable<Interval>,Cloneable {
      *
      * @param min the lower bound
      * @param max the upper bound
+     * @throws IllegalArgumentException if <code>min</code> is greater than <code>max</code>
      */
     public Interval(int min, int max)
     {
+        if (min > max)
+            throw new IllegalArgumentException("Empty interval: min (" + min + ") > max (" + max + ")");
         this.min = min;
         this.max = max;
-        if (this.min > this.max) {
-            System.err.println("min > max, on echange les valeurs");
-            this.min = max;
-            this.max = min;
-        }
     }
 
     /**

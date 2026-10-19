@@ -49,16 +49,33 @@ public class Operation {
     /**
      * The minimization algorithm to use when {@link fr.menana.automaton.Operation#minimize(Automaton)} is called
      */
-    public static MINIMIZATION_ALGO minimization_method = MINIMIZATION_ALGO.Hopcroft;
+    private static volatile MINIMIZATION_ALGO defaultMinimization = MINIMIZATION_ALGO.Hopcroft;
+
+    /**
+     * Returns the minimization algorithm used by {@link fr.menana.automaton.Operation#minimize(Automaton)}
+     * @return the default minimization algorithm
+     */
+    public static MINIMIZATION_ALGO getDefaultMinimization() {
+        return defaultMinimization;
+    }
+
+    /**
+     * Sets the minimization algorithm used by {@link fr.menana.automaton.Operation#minimize(Automaton)} for the whole application. <br>
+     * Prefer {@link fr.menana.automaton.Operation#minimize(Automaton, MINIMIZATION_ALGO)} to choose it for a single call
+     * @param method the default minimization algorithm
+     */
+    public static void setDefaultMinimization(MINIMIZATION_ALGO method) {
+        defaultMinimization = Objects.requireNonNull(method);
+    }
 
     /**
      * Returns a new minimal {@link fr.menana.automaton.Automaton} that recognizes the same language as the given {@link fr.menana.automaton.Automaton}<br>
-     * The algorithm used is set by the variable {@link fr.menana.automaton.Operation#minimization_method}
+     * The algorithm used is set by {@link fr.menana.automaton.Operation#setDefaultMinimization(MINIMIZATION_ALGO)}
      * @param base the {@link fr.menana.automaton.Automaton} to minimize
      * @return an equivalent minimal  automaton
      */
     public static Automaton minimize(Automaton base) {
-        return minimize(base, minimization_method);
+        return minimize(base, defaultMinimization);
     }
 
     /**
@@ -276,6 +293,7 @@ public class Operation {
     /**
      * Determinizes a given {@link fr.menana.automaton.Automaton} using the subset construction algorithm.<br>
      * If the {@link fr.menana.automaton.Automaton} is already deterministic, return a clone.
+     * If it has no initial state, returns an empty automaton.
      * @param nfa a non-deterministic {@link fr.menana.automaton.Automaton}
      * @return  a deterministic {@link fr.menana.automaton.Automaton}
      */
@@ -284,7 +302,7 @@ public class Operation {
             return nfa.clone();
 
         if (nfa.getInitial() == null)
-            return null;
+            return new Automaton();
 
         List<State> states = nfa.getStates();
         int n = states.size();
@@ -484,6 +502,8 @@ public class Operation {
     public static Automaton revert(Automaton automaton) {
         Map<State, State> map = new HashMap<>();
         Automaton out = new Automaton();
+        if (automaton.getInitial() == null)
+            return out;
         for (State s : automaton.getStates()) {
             map.put(s, out.addState());
         }
@@ -491,7 +511,10 @@ public class Operation {
             for (Transition t : s.transitions.values())
             {
                 State d = t.dest;
-                out.addTransition(map.get(d),map.get(s),t.values.clone());
+                if (t.values != null)
+                    out.addTransition(map.get(d),map.get(s),t.values);
+                if (t.epsilon)
+                    out.addEpsilonTransition(map.get(d),map.get(s));
             }
         }
         out.setAccept(map.get(automaton.getInitial()));
@@ -525,6 +548,9 @@ public class Operation {
      * @return a new automaton recognizing the concatenation of the languages defined by the {@link fr.menana.automaton.Automaton} parameters
      */
     public static Automaton concatenate(Automaton first, Automaton second, boolean minimizeIfDeterministic) {
+        // An automaton without initial state recognizes the empty language, and so does the concatenation
+        if (first.getInitial() == null || second.getInitial() == null)
+            return new Automaton();
         Automaton out = first.clone();
         Map<State, State> map = new HashMap<>();
         for (State s : second.getStates()) {
@@ -540,7 +566,7 @@ public class Operation {
         for (State s : second.getStates()) {
             for (Transition tr : s.getTransitions().values()) {
                 if (tr.values != null) {
-                    out.addTransition(map.get(tr.orig),map.get(tr.dest),tr.values.clone());
+                    out.addTransition(map.get(tr.orig),map.get(tr.dest),tr.values);
                 }
                 if (tr.hasEpsilon())
                     out.addEpsilonTransition(map.get(tr.orig),map.get(tr.dest));
@@ -569,7 +595,7 @@ public class Operation {
         for (State s : second.getStates()) {
             for (Transition tr : s.getTransitions().values()) {
                 if (tr.values != null) {
-                    out.addTransition(map.get(tr.orig),map.get(tr.dest),tr.values.clone());
+                    out.addTransition(map.get(tr.orig),map.get(tr.dest),tr.values);
                 }
                 if (tr.hasEpsilon())
                     out.addEpsilonTransition(map.get(tr.orig),map.get(tr.dest));
@@ -591,7 +617,14 @@ public class Operation {
      * @return a new automaton recognizing the complementary language of the given  {@link fr.menana.automaton.Automaton}
      */
     public static Automaton complement(Automaton automaton) {
-        Automaton out = automaton.clone();
+        // Swapping accepting states is only valid on a deterministic automaton
+        Automaton out;
+        if (automaton.getInitial() == null)
+            out = new Automaton();
+        else
+            out = automaton.isDeterministic() ? automaton.clone() : automaton.determinize();
+        if (out.getInitial() == null)
+            out.setInitial(out.addState());
         State poubelle = out.addState();
         Map<State,IntervalSet> toAdd = new HashMap<>();
         for (State s : out.getStates()) {
@@ -605,7 +638,8 @@ public class Operation {
             toAdd.put(s,set);
         }
         for (Map.Entry<State,IntervalSet> couple : toAdd.entrySet()) {
-            out.addTransition(couple.getKey(),poubelle,couple.getValue());
+            if (!couple.getValue().isEmpty())
+                out.addTransition(couple.getKey(),poubelle,couple.getValue());
         }
         out.setAccept(poubelle);
         return out;
