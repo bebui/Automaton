@@ -24,15 +24,15 @@
     <url>https://github.com/bebui/Automaton</url>
 
     <description>
-        Automaton is a Free and Open-Source Library dedicated to create and manipulate determinist and non-deterministic finite automaton.
-        Alphabet are solely composed of integers.
+        A Java library to create and manipulate deterministic and non-deterministic finite automata whose symbols are
+        integers : regular expressions, determinization, minimization, boolean operations, language queries and search.
     </description>
     <licenses>
         <license>
             <name>
                 The GNU Lesser General Public License, version 3.0 (LGPL-3.0)
             </name>
-            <url>http://opensource.org/licenses/LGPL-3.0</url>
+            <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
         </license>
     </licenses>
     <developers>
@@ -43,21 +43,10 @@
     </developers>
     <scm>
         <connection>scm:git:git@github.com:bebui/Automaton.git</connection>
-        <url>scm:git:git://github.com/bebui/Automaton</url>
+        <url>https://github.com/bebui/Automaton</url>
         <developerConnection>scm:git:git@github.com:bebui/Automaton.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 
     <build>
         <plugins>
@@ -112,5 +101,39 @@
         </plugins>
     </build>
 
-
+    <profiles>
+        <!-- Signs the artifacts and publishes them on Maven Central : mvn -P release deploy -->
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.8</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.11.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <!-- The deployment is uploaded and validated, then published by hand on central.sonatype.com -->
+                            <autoPublish>false</autoPublish>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
