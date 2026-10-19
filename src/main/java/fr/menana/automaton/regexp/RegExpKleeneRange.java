@@ -18,6 +18,7 @@
 package fr.menana.automaton.regexp;
 
 import fr.menana.automaton.Automaton;
+import fr.menana.automaton.Operation;
 import fr.menana.automaton.State;
 
 import java.util.ArrayList;
@@ -77,12 +78,12 @@ public class RegExpKleeneRange extends RegExp {
     public Automaton toNFA() {
         Automaton auto = new RegExpEpsilon().toNFA();
         for (int i = 0 ; i < this.min ; ++i) {
-            auto = auto.concatenate(this.internal.toNFA());
+            auto = Operation.concatenate(auto, this.internal.toNFA(), false);
         }
         List<Integer> finalIndexes = new ArrayList<>();
         for (int i = this.min ; i < this.max ; ++i) {
             finalIndexes.addAll(auto.getAcceptList().stream().map(State::getIndex).collect(Collectors.toList()));
-            auto = auto.concatenate(this.internal.toNFA());
+            auto = Operation.concatenate(auto, this.internal.toNFA(), false);
         }
         State accept = auto.addState();
         for (int i : finalIndexes)
