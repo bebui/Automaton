@@ -70,8 +70,12 @@ public class State { //implements Comparable<State>{
             this.addToTransitionMap(transition);
             return false;
         }
-        for (Transition t : transitions.values())
-            intersect |= transition.values.intersects(t.values);
+        for (Transition t : transitions.values()) {
+            if (transition.values.intersects(t.values)) {
+                intersect = true;
+                break;
+            }
+        }
         this.addToTransitionMap(transition);
         return intersect;
     }

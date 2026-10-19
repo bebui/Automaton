@@ -47,24 +47,11 @@ public class RegExpKleeneStar extends RegExp {
     }
 
     @Override
-    public Automaton toNFA() {
-        Automaton auto = this.internal.toNFA();
-        State init = auto.addState();
-        State end  = auto.addState();
-
-        State oldInit = auto.getInitial();
-
-
-        auto.addEpsilonTransition(init, end);
-        auto.addEpsilonTransition(init,oldInit);
-
-        for (State s : auto.getAcceptList()) {
-            auto.addEpsilonTransition(s,oldInit);
-            auto.setAccept(s, false);
-            auto.addEpsilonTransition(s,end);
-        }
-        auto.setInitial(init);
-        auto.setAccept(end);
-        return auto;
+    State build(Automaton auto, State start) {
+        // The loop goes through a fresh state, so that it never adds paths to other expressions sharing start
+        State loop = auto.addState();
+        auto.addEpsilonTransition(start, loop);
+        auto.addEpsilonTransition(this.internal.build(auto, loop), loop);
+        return loop;
     }
 }

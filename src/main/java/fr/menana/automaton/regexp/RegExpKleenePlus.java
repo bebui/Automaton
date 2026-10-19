@@ -18,6 +18,7 @@
 package fr.menana.automaton.regexp;
 
 import fr.menana.automaton.Automaton;
+import fr.menana.automaton.State;
 
 /**
  * Represents a regular expression element composed of a regular expression with a Kleene plus symbol. <br>
@@ -52,7 +53,7 @@ public class RegExpKleenePlus extends RegExp {
     }
 
     @Override
-    public Automaton toNFA() {
-        return this.internal.toNFA();
+    State build(Automaton auto, State start) {
+        return this.internal.build(auto, start);
     }
 }

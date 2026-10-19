@@ -197,7 +197,7 @@ public class Automaton implements Cloneable {
     {
         Transition t = new Transition(orig,dest,values.clone());
 
-        deterministic &= !orig.addTransition(t);
+        addChecked(t);
     }
 
     /**
@@ -210,7 +210,7 @@ public class Automaton implements Cloneable {
     public void addTransition(State orig, State dest, Interval values)
     {
         Transition t = new Transition(orig,dest,values);
-        deterministic &= !orig.addTransition(t);
+        addChecked(t);
     }
 
     /**
@@ -223,7 +223,19 @@ public class Automaton implements Cloneable {
     public void addTransition(State orig, State dest, int... values) {
         Transition t = new Transition(orig,dest,values);
 
-        deterministic &= !orig.addTransition(t);
+        addChecked(t);
+    }
+
+    /**
+     * Adds a transition, checking whether it keeps the automaton deterministic. <br>
+     * The overlap check with the other transitions of the origin state is skipped once the automaton is non-deterministic
+     * @param t the transition to add
+     */
+    private void addChecked(Transition t) {
+        if (deterministic)
+            deterministic = !t.orig.addTransition(t);
+        else
+            t.orig.addToTransitionMap(t);
     }
 
     /**
