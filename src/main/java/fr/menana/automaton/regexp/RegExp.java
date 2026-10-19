@@ -19,6 +19,10 @@ package fr.menana.automaton.regexp;
 
 import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
+import fr.menana.automaton.Transition;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract class for regular expression. <p>
@@ -58,4 +62,32 @@ public abstract class RegExp {
      * @return the state reached once the expression has been read
      */
     abstract State build(Automaton auto, State start);
+
+    /**
+     * Copies an automaton into the automaton being built, as a fragment starting at a given state
+     * @param auto the automaton being built
+     * @param start the state from which the copied automaton is entered
+     * @param copied the automaton to copy
+     * @return the state reached when the copied automaton accepts
+     */
+    static State embed(Automaton auto, State start, Automaton copied) {
+        State end = auto.addState();
+        if (copied.getInitial() == null)
+            return end;
+        Map<State, State> map = new HashMap<>();
+        for (State s : copied.getStates())
+            map.put(s, auto.addState());
+        for (State s : copied.getStates()) {
+            for (Transition tr : s.getTransitions().values()) {
+                if (tr.hasValues())
+                    auto.addTransition(map.get(s), map.get(tr.getDest()), tr.getValues());
+                if (tr.hasEpsilon())
+                    auto.addEpsilonTransition(map.get(s), map.get(tr.getDest()));
+            }
+            if (s.isAccept())
+                auto.addEpsilonTransition(map.get(s), end);
+        }
+        auto.addEpsilonTransition(start, map.get(copied.getInitial()));
+        return end;
+    }
 }

@@ -382,6 +382,179 @@ public class Automaton implements Cloneable {
     public Automaton complement() { return Operation.complement(this);}
 
     /**
+     * Returns a new minimal deterministic automaton recognizing the words accepted by this automaton and by another one
+     * @param other the other automaton
+     * @return the intersection of both languages
+     */
+    public Automaton intersection(Automaton other) {
+        return Operation.intersection(this, other);
+    }
+
+    /**
+     * Returns a new minimal deterministic automaton recognizing the words accepted by this automaton and not by another one
+     * @param other the automaton whose words are removed
+     * @return the difference of both languages
+     */
+    public Automaton difference(Automaton other) {
+        return Operation.difference(this, other);
+    }
+
+    /**
+     * Returns an equivalent automaton without epsilon transitions, see {@link Operation#removeEpsilon(Automaton)}
+     * @return an equivalent automaton without epsilon transitions
+     */
+    public Automaton removeEpsilon() {
+        return Operation.removeEpsilon(this);
+    }
+
+    /**
+     * Returns an equivalent automaton with fewer states, without determinizing it, see {@link Operation#reduce(Automaton)}
+     * @return a smaller or equal equivalent automaton
+     */
+    public Automaton reduce() {
+        return Operation.reduce(this);
+    }
+
+    /**
+     * Compiles this automaton into an immutable deterministic automaton, to read many words quickly. <br>
+     * Call {@link #minimize()} first to compile the smallest automaton
+     * @return the compiled automaton
+     */
+    public CompiledDfa compile() {
+        return CompiledDfa.of(this);
+    }
+
+    /**
+     * Prepares the search of the words of this language inside sequences of integers
+     * @return a reusable searcher
+     */
+    public Searcher searcher() {
+        return new Searcher(this);
+    }
+
+    /**
+     * Returns the leftmost-longest factor of a text that belongs to this language. <br>
+     * Builds a new {@link Searcher} on each call : use {@link #searcher()} to search several texts
+     * @param text the text
+     * @return the match, or <code>null</code> if there is none
+     */
+    public Searcher.Match find(int... text) {
+        return searcher().find(text);
+    }
+
+    /**
+     * Checks if a factor of a text belongs to this language. <br>
+     * Builds a new {@link Searcher} on each call : use {@link #searcher()} to search several texts
+     * @param text the text
+     * @return <code>true</code> if and only if a factor of the text is accepted
+     */
+    public boolean contains(int... text) {
+        return searcher().contains(text);
+    }
+
+    /**
+     * Returns the successive non overlapping leftmost-longest matches of a text. <br>
+     * Builds a new {@link Searcher} on each call : use {@link #searcher()} to search several texts
+     * @param text the text
+     * @return the matches in increasing order
+     */
+    public List<Searcher.Match> findAll(int... text) {
+        return searcher().findAll(text);
+    }
+
+    /**
+     * Checks if this automaton accepts no word
+     * @return <code>true</code> if and only if the language is empty
+     */
+    public boolean isEmpty() {
+        return Languages.shortestWord(this) == null;
+    }
+
+    /**
+     * Checks if this automaton accepts finitely many words
+     * @return <code>true</code> if and only if the language is finite
+     */
+    public boolean isFinite() {
+        return Languages.isFinite(this);
+    }
+
+    /**
+     * Checks if this automaton accepts every word over the integers
+     * @return <code>true</code> if and only if the language contains all words
+     */
+    public boolean isUniversal() {
+        return this.complement().isEmpty();
+    }
+
+    /**
+     * Checks if this automaton and another one recognize the same language, whatever their structure. <br>
+     * Uses the algorithm of Hopcroft and Karp on their deterministic automata, in almost linear time.
+     * Use {@link #equals(Object)} to compare the structure of two automata
+     * @param other the other automaton
+     * @return <code>true</code> if and only if both languages are equal
+     */
+    public boolean sameLanguage(Automaton other) {
+        return Languages.sameLanguage(this, other);
+    }
+
+    /**
+     * Checks if every word accepted by this automaton is accepted by another one. <br>
+     * Uses antichains, which avoids determinizing the automata
+     * @param other the other automaton
+     * @return <code>true</code> if and only if the language of this automaton is included in the other one
+     */
+    public boolean isSubsetOf(Automaton other) {
+        return Languages.isSubsetOf(this, other);
+    }
+
+    /**
+     * Returns a shortest accepted word. Among words of the same length, the result is not necessarily the smallest one
+     * @return a shortest word, or <code>null</code> if the language is empty
+     */
+    public int[] shortestWord() {
+        return Languages.shortestWord(this);
+    }
+
+    /**
+     * Returns a shortest word accepted by exactly one of this automaton and another one, which helps understanding why
+     * two automata differ
+     * @param other the other automaton
+     * @return a shortest distinguishing word, or <code>null</code> if both languages are equal
+     */
+    public int[] counterExample(Automaton other) {
+        return Languages.counterExample(this, other);
+    }
+
+    /**
+     * Counts the accepted words of a given length
+     * @param length the length of the words
+     * @return the number of accepted words of this length
+     */
+    public java.math.BigInteger countWords(int length) {
+        return Languages.countWords(this, length);
+    }
+
+    /**
+     * Draws an accepted word of a given length, uniformly among all the accepted words of that length
+     * @param length the length of the word
+     * @param random the source of randomness
+     * @return a random word, or <code>null</code> if no word of this length is accepted
+     */
+    public int[] randomWord(int length, Random random) {
+        return Languages.randomWord(this, length, random);
+    }
+
+    /**
+     * Enumerates lazily the accepted words of length at most <code>maxLength</code>,
+     * by increasing length and then in lexicographic order
+     * @param maxLength the maximum length of the words
+     * @return the accepted words
+     */
+    public Iterable<int[]> words(int maxLength) {
+        return Languages.words(this, maxLength);
+    }
+
+    /**
      * Removes states that are not reachable from the initial state.
      */
     public void removeDeadStates() {

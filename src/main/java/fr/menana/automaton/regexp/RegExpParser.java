@@ -30,7 +30,9 @@ import fr.menana.automaton.Util;
  *    - + notation for Kleene plus <br>
  *    - . notation for any integer <br>
  *    - {x,y} notation to enforce the appearance of an expression between x and y times, {x} exactly x times, {x,} at least x times <br>
- *    - ? notation for zero or one. <p>
+ *    - ? notation for zero or one <br>
+ *    - &amp; notation for intersection, with a lower priority than concatenation and a higher one than | <br>
+ *    - ~ notation for complement, applying to the expression that follows with its repetition operators : ~12 is (~1)2 <p>
  * Created by Julien Menana on 05/05/15.
  */
 public class RegExpParser {
@@ -79,12 +81,24 @@ public class RegExpParser {
     }
 
     private RegExp regex() {
-        RegExp term = term() ;
+        RegExp intersection = intersection() ;
 
         if (peekIs('|')) {
             eat ('|') ;
             RegExp regex = regex() ;
-            return new RegExpOr(term,regex) ;
+            return new RegExpOr(intersection,regex) ;
+        } else {
+            return intersection ;
+        }
+    }
+
+    private RegExp intersection() {
+        RegExp term = term() ;
+
+        if (peekIs('&')) {
+            eat ('&') ;
+            RegExp intersection = intersection() ;
+            return new RegExpAnd(term,intersection) ;
         } else {
             return term ;
         }
@@ -93,12 +107,20 @@ public class RegExpParser {
     private RegExp term() {
         RegExp factor = RegExp.blank ;
 
-        while (more() && !peekIs(')') && !peekIs('|')) {
-            RegExp nextFactor = factor() ;
+        while (more() && !peekIs(')') && !peekIs('|') && !peekIs('&')) {
+            RegExp nextFactor = complement() ;
             factor = new RegExpSequence(factor,nextFactor) ;
         }
 
         return factor ;
+    }
+
+    private RegExp complement() {
+        if (peekIs('~')) {
+            eat('~');
+            return new RegExpNot(complement());
+        }
+        return factor();
     }
 
     private RegExp factor() {

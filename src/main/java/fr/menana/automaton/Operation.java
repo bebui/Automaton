@@ -716,6 +716,9 @@ public class Operation {
             return second.clone();
         else if (second.getInitial() == null)
             return first.clone();
+        // Two deterministic automata : the product stays deterministic and avoids a determinization
+        if (first.isDeterministic() && second.isDeterministic())
+            return Languages.product(first, second, Languages.Product.UNION).minimize();
         Automaton out = first.clone();
         Map<State, State> map = new HashMap<>();
         for (State s : second.getStates()) {
@@ -738,6 +741,143 @@ public class Operation {
         out.addEpsilonTransition(init, map.get(second.getInitial()));
         out.setInitial(init);
         return (first.isDeterministic() && second.isDeterministic()?out.minimize():out) ;
+    }
+
+    /**
+     * Returns a new automaton recognizing the intersection of the languages of the given automata. <br>
+     * Built as the product of their deterministic automata, exploring only reachable pairs of states, then minimized
+     * @param first the first {@link fr.menana.automaton.Automaton}
+     * @param second the second {@link fr.menana.automaton.Automaton}
+     * @return a minimal deterministic automaton recognizing the words accepted by both automata
+     */
+    public static Automaton intersection(Automaton first, Automaton second) {
+        return Languages.product(first, second, Languages.Product.INTERSECTION).minimize();
+    }
+
+    /**
+     * Returns a new automaton recognizing the words of a language that are not in another one. <br>
+     * Built as the product of their deterministic automata, then minimized
+     * @param first the {@link fr.menana.automaton.Automaton} whose words are kept
+     * @param second the {@link fr.menana.automaton.Automaton} whose words are removed
+     * @return a minimal deterministic automaton recognizing the words accepted by <code>first</code> and not by <code>second</code>
+     */
+    public static Automaton difference(Automaton first, Automaton second) {
+        return Languages.product(first, second, Languages.Product.DIFFERENCE).minimize();
+    }
+
+    /**
+     * Returns a new automaton without epsilon transitions recognizing the same language. <br>
+     * Its states are the initial state and the targets of the transitions reading a symbol : applied to the automaton
+     * of a regular expression, it gives the position (Glushkov) automaton, with one state per symbol of the expression plus one.
+     * The number of transitions can grow quadratically, for instance for <code>(1|2|...|n)*</code>
+     * @param automaton the {@link fr.menana.automaton.Automaton}
+     * @return an equivalent automaton without epsilon transitions
+     */
+    public static Automaton removeEpsilon(Automaton automaton) {
+        Automaton out = new Automaton();
+        State init = automaton.getInitial();
+        if (init == null)
+            return out;
+        List<State> states = automaton.getStates();
+        int n = states.size();
+        // New state for the initial state and for every target of a symbol transition
+        State[] copy = new State[n];
+        copy[init.index] = out.addState();
+        out.setInitial(copy[init.index]);
+        for (State s : states)
+            for (Transition tr : s.transitions.values())
+                if (tr.values != null && copy[tr.dest.index] == null)
+                    copy[tr.dest.index] = out.addState();
+        int[] seen = new int[n];
+        int[] stack = new int[n];
+        int generation = 0;
+        for (int i = 0; i < n; i++) {
+            if (copy[i] == null)
+                continue;
+            State from = copy[i];
+            // Every symbol transition of the epsilon-closure of the state leaves its copy
+            generation++;
+            int top = 0;
+            seen[i] = generation;
+            stack[top++] = i;
+            while (top > 0) {
+                State s = states.get(stack[--top]);
+                if (s.accept)
+                    out.setAccept(from);
+                for (Transition tr : s.transitions.values()) {
+                    if (tr.values != null)
+                        out.addTransition(from, copy[tr.dest.index], tr.values);
+                    if (tr.epsilon && seen[tr.dest.index] != generation) {
+                        seen[tr.dest.index] = generation;
+                        stack[top++] = tr.dest.index;
+                    }
+                }
+            }
+        }
+        out.removeDeadStates();
+        return out;
+    }
+
+    /**
+     * Returns a new automaton recognizing the same language with fewer states, without determinizing it. <br>
+     * Removes the epsilon transitions, then merges the states that are bisimilar : states with the same acceptance
+     * whose transitions reach the same groups of states on the same symbols. The result may still be non-deterministic.
+     * Reducing an automaton before determinizing it can make determinization much cheaper
+     * @param automaton the {@link fr.menana.automaton.Automaton}
+     * @return a smaller or equal equivalent automaton without epsilon transitions
+     */
+    public static Automaton reduce(Automaton automaton) {
+        Automaton a = removeEpsilon(automaton);
+        List<State> states = a.getStates();
+        int n = states.size();
+        if (n == 0)
+            return a;
+        List<IntervalSet> sets = new ArrayList<>();
+        for (State s : states)
+            for (Transition tr : s.transitions.values())
+                sets.add(tr.values);
+        Alphabet alphabet = Alphabet.of(sets);
+        // Transitions (source, class, destination)
+        int m = 0;
+        int[][] classes = new int[sets.size()][];
+        for (int i = 0; i < classes.length; i++) {
+            classes[i] = alphabet.classesOf(sets.get(i));
+            m += classes[i].length;
+        }
+        int[] src = new int[m], lab = new int[m], dst = new int[m];
+        int t = 0, cl = 0;
+        for (State s : states)
+            for (Transition tr : s.transitions.values())
+                for (int c : classes[cl++]) {
+                    src[t] = s.index;
+                    lab[t] = c;
+                    dst[t++] = tr.dest.index;
+                }
+        int[] block = Bisimulation.coarsest(n, src, lab, dst, alphabet.size(), states);
+        int nbBlocks = 0;
+        for (int b : block)
+            nbBlocks = Math.max(nbBlocks, b + 1);
+        if (nbBlocks == n)
+            return a;
+        // Quotient automaton
+        Automaton out = new Automaton();
+        State[] blockState = new State[nbBlocks];
+        for (int b = 0; b < nbBlocks; b++)
+            blockState[b] = out.addState();
+        boolean[] done = new boolean[nbBlocks];
+        for (State s : states) {
+            int b = block[s.index];
+            if (done[b])
+                continue;
+            done[b] = true;
+            if (s.accept)
+                out.setAccept(blockState[b]);
+            for (Transition tr : s.transitions.values())
+                out.addTransition(blockState[b], blockState[block[tr.dest.index]], tr.values);
+        }
+        out.setInitial(blockState[block[a.getInitial().index]]);
+        out.reIndex();
+        return out;
     }
 
     /**
