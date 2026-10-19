@@ -57,21 +57,55 @@ public class RegExpKleeneRange extends RegExp {
     }
 
     /**
-     * Parse a range or a integer into min and max
-     * @param intRange a integer range in the form X or X,Y
+     * Value of {@link #max} when the number of repetitions is not bounded
+     */
+    static final int UNBOUNDED = -1;
+
+    /**
+     * Parses the range given between braces : "n" (exactly n times), "n,m" (between n and m times),
+     * "n," (at least n times) or ",m" (at most m times)
+     * @param intRange the range
+     * @throws IllegalArgumentException if the range is malformed
      */
     private void  parse(String intRange) {
-        String[] splitted = intRange.split(",");
-        this.min = Integer.parseInt(splitted[0]);
-        if (splitted.length > 1)
-            this.max = Integer.parseInt(splitted[1]);
-        else
+        int comma = intRange.indexOf(',');
+        if (comma != intRange.lastIndexOf(','))
+            throw new IllegalArgumentException("Invalid repetition {" + intRange + "}");
+        if (comma < 0) {
+            this.min = parseBound(intRange, intRange);
             this.max = this.min;
+        } else {
+            String low = intRange.substring(0, comma);
+            String high = intRange.substring(comma + 1);
+            if (low.isEmpty() && high.isEmpty())
+                throw new IllegalArgumentException("Invalid repetition {" + intRange + "}");
+            this.min = low.isEmpty() ? 0 : parseBound(low, intRange);
+            this.max = high.isEmpty() ? UNBOUNDED : parseBound(high, intRange);
+        }
+        if (this.max != UNBOUNDED && this.max < this.min)
+            throw new IllegalArgumentException("Invalid repetition {" + intRange + "}: " + this.max + " < " + this.min);
+    }
+
+    private static int parseBound(String bound, String intRange) {
+        try {
+            int value = Integer.parseInt(bound);
+            if (value >= 0)
+                return value;
+        } catch (NumberFormatException ignored) {
+        }
+        throw new IllegalArgumentException("Invalid repetition {" + intRange + "}");
     }
 
     @Override
     public String toString() {
-        return this.internal.toString()+"{"+(this.max==this.min?this.min:(this.min+","+this.max))+"}";
+        String range;
+        if (this.max == UNBOUNDED)
+            range = this.min + ",";
+        else if (this.max == this.min)
+            range = Integer.toString(this.min);
+        else
+            range = this.min + "," + this.max;
+        return "(" + this.internal.toString() + "){" + range + "}";
     }
 
     @Override
@@ -80,6 +114,8 @@ public class RegExpKleeneRange extends RegExp {
         for (int i = 0 ; i < this.min ; ++i) {
             auto = Operation.concatenate(auto, this.internal.toNFA(), false);
         }
+        if (this.max == UNBOUNDED)
+            return Operation.concatenate(auto, new RegExpKleeneStar(this.internal).toNFA(), false);
         List<Integer> finalIndexes = new ArrayList<>();
         for (int i = this.min ; i < this.max ; ++i) {
             finalIndexes.addAll(auto.getAcceptList().stream().map(State::getIndex).collect(Collectors.toList()));

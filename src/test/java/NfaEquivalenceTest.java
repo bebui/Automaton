@@ -26,8 +26,8 @@ public class NfaEquivalenceTest {
             Set<State> next = new HashSet<>();
             for (State s : current)
                 for (Transition t : s.getTransitions().values())
-                    if (t.values != null && t.values.contains(symbol))
-                        next.add(t.dest);
+                    if (t.accepts(symbol))
+                        next.add(t.getDest());
             current = closure(next);
         }
         return current.stream().anyMatch(State::isAccept);
@@ -38,8 +38,8 @@ public class NfaEquivalenceTest {
         Deque<State> todo = new ArrayDeque<>(states);
         while (!todo.isEmpty())
             for (Transition t : todo.poll().getTransitions().values())
-                if (t.hasEpsilon() && out.add(t.dest))
-                    todo.add(t.dest);
+                if (t.hasEpsilon() && out.add(t.getDest()))
+                    todo.add(t.getDest());
         return out;
     }
 

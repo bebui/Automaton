@@ -6,16 +6,12 @@ import org.junit.Test;
 import java.util.Random;
 import java.util.Stack;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Julien Menana on 11/05/2015.
  */
 public class RandomTest {
-
-    private static Automaton random() {
-        return random(new Random().nextLong());
-    }
 
     private static Automaton random(long seed) {
         Random r = new Random(seed);
@@ -53,139 +49,55 @@ public class RandomTest {
 
     }
 
-    private void printBar(int cur, int max) {
-        StringBuilder builder = new StringBuilder("[");
-        for (int l = 1 ; l <= cur ; ++l) {
-            builder.append('*');
-        }
-        for (int l = cur + 1 ; l<= max ; ++l) {
-            builder.append(" ");
-        }
-        builder.append("]\r");
-        System.out.print(builder);
-
+    private static int[] randomBinaryWord(Random r) {
+        String word = Integer.toBinaryString(r.nextInt());
+        int[] symbols = new int[word.length()];
+        for (int k = 0; k < word.length(); k++)
+            symbols[k] = word.charAt(k) - '0';
+        return symbols;
     }
 
     /**
-     * Generates thousand random automaton which accept language composed with the alphabet {0,1}
-     * Checks if minimized automaton with Brzozowski or Hopcroft accepts the same randomly generated 10000 words
+     * Generates random automata which accept languages over the alphabet {0,1}.
+     * Checks if minimized automaton with Brzozowski or Hopcroft accepts the same randomly generated 8000 words.
+     * Seeds are fixed so that a failure can be reproduced
      */
     @Test
     public void randomBinaryMinTest() {
-        System.out.println("Random binary automaton minimization test: ");
-        long totalhop = 0;
-        long totalbrz = 0;
-        Random r = new Random();
-
+        Random r = new Random(1);
         for (int i = 0 ; i < 250; ++i) {
-            printBar((i+1)/25,10);
-            Automaton auto = random();//.determinize();
-
-            // System.out.print(i+"("+auto.getNbStates()+")");
-            //System.out.print(" => HOP : ");
-            long tick = System.currentTimeMillis();
+            String seed = "automaton seed " + i;
+            Automaton auto = random(i);
             Automaton hop = Operation.minimizeHopcroft(auto);
-            long thop = System.currentTimeMillis() - tick;
-            totalhop+= thop;
-            // System.out.print(thop + "ms");
-            // hop.toDotty("hop.dot");
-
-            //System.out.print(", BRZ : ");
-            tick = System.currentTimeMillis();
             Automaton brz = Operation.minimizeBrzozowski(auto);
-            long tbrz = System.currentTimeMillis()-tick;
-            totalbrz += tbrz;
-            //System.out.print(tbrz + "ms");
-
-            //   boolean eq = brz.equals(hop);
-
-            //  System.out.println(", nbS : " + hop.getNbStates() + " " + (hop.getNbStates() == brz.getNbStates()));
-
-
-            boolean eq = true;
-
+            assertEquals(seed, brz.getNbStates(), hop.getNbStates());
             for (int j = 0 ; j < 8000 ; ++j) {
-
-                System.out.print("");
-
-                String word = Integer.toBinaryString(r.nextInt());
-                char[] parts = word.toCharArray();
-                int[] iParts = new int[parts.length];
-                int k = 0;
-                for (char s : parts)
-                    iParts[k++] = Integer.parseInt(s + "");
-
-                boolean bhop = hop.run(iParts);
-                boolean bbrz = brz.run(iParts);
-                boolean baut = auto.run(iParts);
-                eq &= bhop == bbrz;
-                assertTrue(eq);
-
-                eq &= bhop == baut;
-                assertTrue(eq);
+                int[] word = randomBinaryWord(r);
+                boolean expected = auto.run(word);
+                assertEquals(seed, expected, hop.run(word));
+                assertEquals(seed, expected, brz.run(word));
             }
-            if (!eq) {
-                System.out.println("PB: "+i);
-                auto.toDotty("det" + i + ".dot");
-                brz.toDotty("brz" + i + ".dot");
-                hop.toDotty("hop" + i + ".dot");
-            }
-
         }
-        System.out.println("\nDone");
-
-
     }
 
+    /**
+     * Checks that the complement of random automata accepts exactly the words the automata reject
+     */
     @Test
     public void randomComplementTest() {
-        System.out.println("Random binary automaton complement test: ");
-        Random r = new Random();
-
+        Random r = new Random(2);
         for (int i = 0; i < 250; ++i) {
-
-            printBar((i + 1) / 25, 10);
-            Automaton auto = random();//.determinize();
-            Automaton comp = auto.complement();
-
-            Automaton hop = Operation.minimizeHopcroft(auto);
-            Automaton compHop = Operation.minimizeHopcroft(comp);
-            Automaton hopComp = hop.complement().minimize();
-
-
-            boolean eq = true;
-
+            String seed = "automaton seed " + (1000 + i);
+            Automaton auto = random(1000 + i);
+            Automaton compHop = Operation.minimizeHopcroft(auto.complement());
+            Automaton hopComp = auto.minimize().complement().minimize();
+            assertEquals(seed, compHop.getNbStates(), hopComp.getNbStates());
             for (int j = 0; j < 8000; ++j) {
-
-                System.out.print("");
-
-                String word = Integer.toBinaryString(r.nextInt());
-                char[] parts = word.toCharArray();
-                int[] iParts = new int[parts.length];
-                int k = 0;
-                for (char s : parts)
-                    iParts[k++] = Integer.parseInt(s + "");
-
-                boolean bhop = hop.run(iParts);
-                boolean bcompHop = compHop.run(iParts);
-                boolean bhopComp = hopComp.run(iParts);
-                eq &= bhop != bcompHop;
-                assertTrue(eq);
-
-                eq &= bcompHop == bhopComp;
-                assertTrue(eq);
+                int[] word = randomBinaryWord(r);
+                boolean expected = !auto.run(word);
+                assertEquals(seed, expected, compHop.run(word));
+                assertEquals(seed, expected, hopComp.run(word));
             }
-            if (!eq) {
-                System.out.println("PB: " + i);
-                auto.toDotty("det" + i + ".dot");
-                hop.toDotty("hop" + i + ".dot");
-                compHop.toDotty("chop" + i + ".dot");
-                hopComp.toDotty("hcop" + i + ".dot");
-
-            }
-
         }
-        System.out.println("\nDone");
     }
 }
-
