@@ -18,12 +18,8 @@
 package fr.menana.automaton.regexp;
 
 import fr.menana.automaton.Automaton;
-import fr.menana.automaton.Operation;
 import fr.menana.automaton.State;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Represents a regular expression that is repeated a number of time in a given range  <p>
@@ -109,29 +105,22 @@ public class RegExpKleeneRange extends RegExp {
     }
 
     @Override
-    public Automaton toNFA() {
-        Automaton auto = new RegExpEpsilon().toNFA();
-        for (int i = 0 ; i < this.min ; ++i) {
-            auto = Operation.concatenate(auto, this.internal.toNFA(), false);
-        }
+    State build(Automaton auto, State start) {
+        State current = start;
+        for (int i = 0 ; i < this.min ; ++i)
+            current = this.internal.build(auto, current);
         if (this.max == UNBOUNDED)
-            return Operation.concatenate(auto, new RegExpKleeneStar(this.internal).toNFA(), false);
-        List<Integer> finalIndexes = new ArrayList<>();
+            return new RegExpKleeneStar(this.internal).build(auto, current);
+        if (this.max == this.min)
+            return current;
+        // Every state reached after min to max repetitions leads to the end
+        State end = auto.addState();
         for (int i = this.min ; i < this.max ; ++i) {
-            finalIndexes.addAll(auto.getAcceptList().stream().map(State::getIndex).collect(Collectors.toList()));
-            auto = Operation.concatenate(auto, this.internal.toNFA(), false);
+            auto.addEpsilonTransition(current, end);
+            current = this.internal.build(auto, current);
         }
-        State accept = auto.addState();
-        for (int i : finalIndexes)
-            auto.addEpsilonTransition(auto.getStates().get(i),accept);
-        for (State s : auto.getAcceptList()) {
-            auto.addEpsilonTransition(s,accept);
-            auto.setAccept(s,false);
-        }
-        auto.setAccept(accept);
-
-        return auto;
-
+        auto.addEpsilonTransition(current, end);
+        return end;
     }
 
 

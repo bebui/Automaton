@@ -33,7 +33,7 @@ public class Operation {
     /**
      * Enum of the available minimization algorithms <br>
      * Brzozowski performs in O(2^n) where n is the number of states in the automaton, but has a good average case-complexity <br>
-     * Hopcroft performs in O(n s log(n))
+     * Hopcroft performs in O(m log(n)) where m is the number of transitions, using Valmari and Lehtinen's refinement
      */
     public enum MINIMIZATION_ALGO {
         /**
@@ -94,183 +94,312 @@ public class Operation {
     }
 
     /**
-     * Minimizes the given {@link fr.menana.automaton.Automaton} using Hopcroft algorithm. <br>
-     * Runs in O(k n log n) where n is the number of states and k the number of symbol classes
+     * Minimizes the given {@link fr.menana.automaton.Automaton} by partition refinement. <br>
+     * Uses the algorithm of Valmari and Lehtinen, a variant of Hopcroft's algorithm that refines the
+     * partition of the states and the partition of the transitions together. It runs in O(m log n),
+     * where n is the number of states and m the number of transitions, and works directly on partial automata
      * @param base the {@link fr.menana.automaton.Automaton} to minimize
      * @return a minimal {@link fr.menana.automaton.Automaton}
      */
     public static Automaton minimizeHopcroft(Automaton base) {
-        base = base.isDeterministic() ? base.clone() : base.determinize();
-        if (base == null || base.getNbStates() == 0 || base.getInitial() == null)
+        if (!base.isDeterministic())
+            base = base.determinize();
+        if (base.getInitial() == null)
             return new Automaton();
-        base.removeDeadStates();
-        List<State> states = base.getStates();
+
+        // Live states : reachable from the initial state and leading to an accepting state, numbered from 0 to n-1
+        List<State> all = base.getStates();
+        int[] live = liveStates(base);
+        List<State> states = new ArrayList<>();
+        for (State s : all)
+            if (live[s.index] >= 0)
+                states.add(s);
         int n = states.size();
-        if (states.stream().noneMatch(State::isAccept)) {
+        if (live[base.getInitial().index] < 0) {
             Automaton out = new Automaton();
             out.setInitial(out.addState());
             return out;
         }
 
+        // Transitions (tail, label, head) between live states, one per symbol class
         List<IntervalSet> sets = new ArrayList<>();
         for (State s : states)
             for (Transition tr : s.transitions.values())
-                sets.add(tr.values);
+                if (live[tr.dest.index] >= 0)
+                    sets.add(tr.values);
         Alphabet alphabet = Alphabet.of(sets);
         int k = alphabet.size();
-
-        // Complete transition table, state n being a non accepting sink
-        int nbStates = n + 1;
-        int sink = n;
-        int[] delta = new int[nbStates * k];
-        Arrays.fill(delta, sink);
+        int[][] classes = new int[sets.size()][];
+        int m = 0;
+        for (int i = 0; i < classes.length; i++) {
+            classes[i] = alphabet.classesOf(sets.get(i));
+            m += classes[i].length;
+        }
+        int[] tail = new int[m];
+        int[] label = new int[m];
+        int[] head = new int[m];
+        int t = 0, cl = 0;
         for (State s : states) {
             for (Transition tr : s.transitions.values()) {
-                if (tr.values == null)
+                if (live[tr.dest.index] < 0)
                     continue;
-                for (int c : alphabet.classesOf(tr.values))
-                    delta[s.index * k + c] = tr.dest.index;
-            }
-        }
-
-        // Inverse transitions : sources of (t, c) are invSrc[invStart[t*k+c] .. invStart[t*k+c+1]-1]
-        int[] invStart = new int[nbStates * k + 1];
-        for (int i = 0; i < delta.length; i++)
-            invStart[delta[i] * k + i % k + 1]++;
-        for (int i = 0; i < nbStates * k; i++)
-            invStart[i + 1] += invStart[i];
-        int[] invSrc = new int[delta.length];
-        int[] fill = Arrays.copyOf(invStart, nbStates * k);
-        for (int i = 0; i < delta.length; i++)
-            invSrc[fill[delta[i] * k + i % k]++] = i / k;
-
-        // Partition : the states of block b are elems[first[b] .. end[b]-1]
-        int[] elems = new int[nbStates];
-        int[] loc = new int[nbStates];
-        int[] blockOf = new int[nbStates];
-        int[] first = new int[nbStates];
-        int[] end = new int[nbStates];
-        int[] marked = new int[nbStates];
-        int pos = 0;
-        for (State s : states) {
-            if (s.accept) {
-                elems[pos] = s.index;
-                loc[s.index] = pos++;
-            }
-        }
-        int nbAccept = pos;
-        for (int s = 0; s < nbStates; s++) {
-            if (s == sink || !states.get(s).accept) {
-                elems[pos] = s;
-                loc[s] = pos++;
-                blockOf[s] = 1;
-            }
-        }
-        first[0] = 0;
-        end[0] = nbAccept;
-        first[1] = nbAccept;
-        end[1] = nbStates;
-        int nbBlocks = 2;
-
-        // Waiting splitters (block, class)
-        boolean[] waiting = new boolean[nbStates * k];
-        int[] stack = new int[nbStates * k];
-        int top = 0;
-        int smallest = nbAccept <= nbStates - nbAccept ? 0 : 1;
-        for (int c = 0; c < k; c++) {
-            waiting[smallest * k + c] = true;
-            stack[top++] = smallest * k + c;
-        }
-
-        int[] splitter = new int[nbStates];
-        int[] touched = new int[nbStates];
-        while (top > 0) {
-            int pair = stack[--top];
-            waiting[pair] = false;
-            int b = pair / k;
-            int c = pair % k;
-            int size = end[b] - first[b];
-            System.arraycopy(elems, first[b], splitter, 0, size);
-
-            // Moves the predecessors of the splitter at the beginning of their block
-            int nbTouched = 0;
-            for (int i = 0; i < size; i++) {
-                int key = splitter[i] * k + c;
-                for (int j = invStart[key]; j < invStart[key + 1]; j++) {
-                    int s = invSrc[j];
-                    int bs = blockOf[s];
-                    int m = first[bs] + marked[bs];
-                    if (loc[s] >= m) {
-                        int other = elems[m];
-                        elems[m] = s;
-                        elems[loc[s]] = other;
-                        loc[other] = loc[s];
-                        loc[s] = m;
-                        if (marked[bs]++ == 0)
-                            touched[nbTouched++] = bs;
-                    }
+                for (int c : classes[cl]) {
+                    tail[t] = live[s.index];
+                    label[t] = c;
+                    head[t++] = live[tr.dest.index];
                 }
+                cl++;
             }
+        }
 
-            for (int t = 0; t < nbTouched; t++) {
-                int bs = touched[t];
-                int nbMarked = marked[bs];
-                marked[bs] = 0;
-                int bsSize = end[bs] - first[bs];
-                if (nbMarked == bsSize)
-                    continue;
-                // The smallest part becomes the new block
-                int nb = nbBlocks++;
-                if (nbMarked <= bsSize - nbMarked) {
-                    first[nb] = first[bs];
-                    end[nb] = first[bs] + nbMarked;
-                    first[bs] = end[nb];
-                } else {
-                    first[nb] = first[bs] + nbMarked;
-                    end[nb] = end[bs];
-                    end[bs] = first[nb];
+        // Blocks : partition of the states, initially accepting / non accepting
+        Partition blocks = new Partition(n);
+        for (State s : states)
+            if (s.accept)
+                blocks.mark(live[s.index]);
+        blocks.split();
+
+        // Cords : partition of the transitions by label
+        int[] byLabel = new int[k + 1];
+        for (int i = 0; i < m; i++)
+            byLabel[label[i] + 1]++;
+        for (int c = 0; c < k; c++)
+            byLabel[c + 1] += byLabel[c];
+        int[] order = new int[m];
+        int[] fill = Arrays.copyOf(byLabel, k);
+        for (int i = 0; i < m; i++)
+            order[fill[label[i]]++] = i;
+        Partition cords = new Partition(order, byLabel);
+
+        // Transitions grouped by head : those going into q are into[intoStart[q] .. intoStart[q+1]-1]
+        int[] intoStart = new int[n + 1];
+        for (int i = 0; i < m; i++)
+            intoStart[head[i] + 1]++;
+        for (int q = 0; q < n; q++)
+            intoStart[q + 1] += intoStart[q];
+        int[] into = new int[m];
+        fill = Arrays.copyOf(intoStart, n);
+        for (int i = 0; i < m; i++)
+            into[fill[head[i]]++] = i;
+
+        // Every cord splits the blocks, every block except the first one splits the cords
+        int b = 1, c = 0;
+        while (c < cords.z) {
+            for (int i = cords.first[c]; i < cords.past[c]; i++)
+                blocks.mark(tail[cords.elems[i]]);
+            blocks.split();
+            c++;
+            while (b < blocks.z) {
+                for (int i = blocks.first[b]; i < blocks.past[b]; i++) {
+                    int q = blocks.elems[i];
+                    for (int j = intoStart[q]; j < intoStart[q + 1]; j++)
+                        cords.mark(into[j]);
                 }
-                for (int p = first[nb]; p < end[nb]; p++)
-                    blockOf[elems[p]] = nb;
-                for (int a = 0; a < k; a++) {
-                    if (!waiting[nb * k + a]) {
-                        waiting[nb * k + a] = true;
-                        stack[top++] = nb * k + a;
-                    }
-                }
+                cords.split();
+                b++;
             }
         }
 
         // Builds the quotient automaton, numbering the blocks in breadth first order
         Automaton out = new Automaton();
-        State[] blockState = new State[nbBlocks];
-        int sinkBlock = blockOf[sink];
-        int initBlock = blockOf[base.getInitial().index];
-        List<Integer> queue = new ArrayList<>();
+        State[] blockState = new State[blocks.z];
+        IntervalSet[] toBlock = new IntervalSet[blocks.z];
+        int[] targets = new int[blocks.z];
+        int initBlock = blocks.setOf[live[base.getInitial().index]];
+        int[] queue = new int[blocks.z];
+        int queued = 0;
         blockState[initBlock] = out.addState();
-        queue.add(initBlock);
-        for (int q = 0; q < queue.size(); q++) {
-            int b = queue.get(q);
-            int r = elems[first[b]];
-            State from = blockState[b];
-            if (states.get(r).accept)
+        queue[queued++] = initBlock;
+        for (int q = 0; q < queued; q++) {
+            int block = queue[q];
+            State representative = states.get(blocks.elems[blocks.first[block]]);
+            State from = blockState[block];
+            if (representative.accept)
                 out.setAccept(from);
-            Map<Integer, IntervalSet> byTarget = new LinkedHashMap<>();
-            for (int c = 0; c < k; c++) {
-                int tb = blockOf[delta[r * k + c]];
-                if (tb == sinkBlock)
+            int nbTargets = 0;
+            for (Transition tr : representative.transitions.values()) {
+                if (tr.values == null || live[tr.dest.index] < 0)
                     continue;
-                if (blockState[tb] == null) {
-                    blockState[tb] = out.addState();
-                    queue.add(tb);
+                int target = blocks.setOf[live[tr.dest.index]];
+                if (blockState[target] == null) {
+                    blockState[target] = out.addState();
+                    queue[queued++] = target;
                 }
-                alphabet.appendTo(byTarget.computeIfAbsent(tb, x -> new IntervalSet()), c);
+                if (toBlock[target] == null) {
+                    toBlock[target] = tr.values.clone();
+                    targets[nbTargets++] = target;
+                } else {
+                    toBlock[target].add(tr.values);
+                }
             }
-            for (Map.Entry<Integer, IntervalSet> e : byTarget.entrySet())
-                out.addDisjointTransition(from, blockState[e.getKey()], e.getValue());
+            for (int i = 0; i < nbTargets; i++) {
+                out.addDisjointTransition(from, blockState[targets[i]], toBlock[targets[i]]);
+                toBlock[targets[i]] = null;
+            }
         }
         out.setInitial(blockState[initBlock]);
         return out;
+    }
+
+    /**
+     * Numbers the states of an automaton without epsilon transitions that are reachable from the initial state
+     * and from which an accepting state can be reached
+     * @param auto the automaton, whose state indexes are their positions
+     * @return for each state index, its number among live states, or -1 if the state is not live
+     */
+    private static int[] liveStates(Automaton auto) {
+        List<State> states = auto.getStates();
+        int n = states.size();
+        // Forward and backward adjacency as index arrays
+        int[] outStart = new int[n + 1];
+        int[] inStart = new int[n + 1];
+        for (State s : states) {
+            for (Transition tr : s.transitions.values()) {
+                outStart[s.index + 1]++;
+                inStart[tr.dest.index + 1]++;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            outStart[i + 1] += outStart[i];
+            inStart[i + 1] += inStart[i];
+        }
+        int[] outDest = new int[outStart[n]];
+        int[] inOrig = new int[inStart[n]];
+        int[] inFill = Arrays.copyOf(inStart, n);
+        for (State s : states) {
+            int o = outStart[s.index];
+            for (Transition tr : s.transitions.values()) {
+                outDest[o++] = tr.dest.index;
+                inOrig[inFill[tr.dest.index]++] = s.index;
+            }
+        }
+        boolean[] reached = new boolean[n];
+        int[] stack = new int[n];
+        int top = 0;
+        reached[auto.getInitial().index] = true;
+        stack[top++] = auto.getInitial().index;
+        while (top > 0) {
+            int s = stack[--top];
+            for (int i = outStart[s]; i < outStart[s + 1]; i++) {
+                if (!reached[outDest[i]]) {
+                    reached[outDest[i]] = true;
+                    stack[top++] = outDest[i];
+                }
+            }
+        }
+        boolean[] useful = new boolean[n];
+        for (State s : states) {
+            if (s.accept && reached[s.index]) {
+                useful[s.index] = true;
+                stack[top++] = s.index;
+            }
+        }
+        while (top > 0) {
+            int s = stack[--top];
+            for (int i = inStart[s]; i < inStart[s + 1]; i++) {
+                int o = inOrig[i];
+                if (reached[o] && !useful[o]) {
+                    useful[o] = true;
+                    stack[top++] = o;
+                }
+            }
+        }
+        int[] live = new int[n];
+        int nb = 0;
+        for (int i = 0; i < n; i++)
+            live[i] = useful[i] ? nb++ : -1;
+        return live;
+    }
+
+    /**
+     * Refinable partition of the integers 0 .. n-1, as described by Valmari and Lehtinen. <br>
+     * The elements of set s are elems[first[s] .. past[s]-1]. Marked elements of a set are moved to its beginning
+     */
+    private static final class Partition {
+        int z;
+        final int[] elems;
+        final int[] loc;
+        final int[] setOf;
+        final int[] first;
+        final int[] past;
+        private final int[] marked;
+        private final int[] touched;
+        private int nbTouched;
+
+        /**
+         * Creates a partition with a single set containing all the elements
+         * @param n the number of elements
+         */
+        Partition(int n) {
+            elems = new int[n];
+            loc = new int[n];
+            setOf = new int[n];
+            first = new int[n + 1];
+            past = new int[n + 1];
+            marked = new int[n + 1];
+            touched = new int[n + 1];
+            for (int i = 0; i < n; i++)
+                elems[i] = loc[i] = i;
+            z = n > 0 ? 1 : 0;
+            past[0] = n;
+        }
+
+        /**
+         * Creates a partition from elements grouped in consecutive ranges, empty ranges being ignored
+         * @param order the elements, grouped
+         * @param bounds group g is order[bounds[g] .. bounds[g+1]-1]
+         */
+        Partition(int[] order, int[] bounds) {
+            this(order.length);
+            System.arraycopy(order, 0, elems, 0, order.length);
+            z = 0;
+            for (int g = 0; g + 1 < bounds.length; g++) {
+                if (bounds[g] == bounds[g + 1])
+                    continue;
+                first[z] = bounds[g];
+                past[z] = bounds[g + 1];
+                for (int i = bounds[g]; i < bounds[g + 1]; i++) {
+                    loc[elems[i]] = i;
+                    setOf[elems[i]] = z;
+                }
+                z++;
+            }
+        }
+
+        void mark(int e) {
+            int s = setOf[e], i = loc[e], j = first[s] + marked[s];
+            if (i < j)
+                return;
+            elems[i] = elems[j];
+            loc[elems[i]] = i;
+            elems[j] = e;
+            loc[e] = j;
+            if (marked[s]++ == 0)
+                touched[nbTouched++] = s;
+        }
+
+        /**
+         * Splits every touched set into its marked and unmarked elements, the smallest part becoming a new set
+         */
+        void split() {
+            while (nbTouched > 0) {
+                int s = touched[--nbTouched], j = first[s] + marked[s];
+                if (j == past[s]) {
+                    marked[s] = 0;
+                    continue;
+                }
+                if (marked[s] <= past[s] - j) {
+                    first[z] = first[s];
+                    past[z] = first[s] = j;
+                } else {
+                    past[z] = past[s];
+                    first[z] = past[s] = j;
+                }
+                for (int i = first[z]; i < past[z]; i++)
+                    setOf[elems[i]] = z;
+                marked[s] = marked[z++] = 0;
+            }
+        }
     }
 
     /**
@@ -587,6 +716,9 @@ public class Operation {
             return second.clone();
         else if (second.getInitial() == null)
             return first.clone();
+        // Two deterministic automata : the product stays deterministic and avoids a determinization
+        if (first.isDeterministic() && second.isDeterministic())
+            return Languages.product(first, second, Languages.Product.UNION).minimize();
         Automaton out = first.clone();
         Map<State, State> map = new HashMap<>();
         for (State s : second.getStates()) {
@@ -609,6 +741,143 @@ public class Operation {
         out.addEpsilonTransition(init, map.get(second.getInitial()));
         out.setInitial(init);
         return (first.isDeterministic() && second.isDeterministic()?out.minimize():out) ;
+    }
+
+    /**
+     * Returns a new automaton recognizing the intersection of the languages of the given automata. <br>
+     * Built as the product of their deterministic automata, exploring only reachable pairs of states, then minimized
+     * @param first the first {@link fr.menana.automaton.Automaton}
+     * @param second the second {@link fr.menana.automaton.Automaton}
+     * @return a minimal deterministic automaton recognizing the words accepted by both automata
+     */
+    public static Automaton intersection(Automaton first, Automaton second) {
+        return Languages.product(first, second, Languages.Product.INTERSECTION).minimize();
+    }
+
+    /**
+     * Returns a new automaton recognizing the words of a language that are not in another one. <br>
+     * Built as the product of their deterministic automata, then minimized
+     * @param first the {@link fr.menana.automaton.Automaton} whose words are kept
+     * @param second the {@link fr.menana.automaton.Automaton} whose words are removed
+     * @return a minimal deterministic automaton recognizing the words accepted by <code>first</code> and not by <code>second</code>
+     */
+    public static Automaton difference(Automaton first, Automaton second) {
+        return Languages.product(first, second, Languages.Product.DIFFERENCE).minimize();
+    }
+
+    /**
+     * Returns a new automaton without epsilon transitions recognizing the same language. <br>
+     * Its states are the initial state and the targets of the transitions reading a symbol : applied to the automaton
+     * of a regular expression, it gives the position (Glushkov) automaton, with one state per symbol of the expression plus one.
+     * The number of transitions can grow quadratically, for instance for <code>(1|2|...|n)*</code>
+     * @param automaton the {@link fr.menana.automaton.Automaton}
+     * @return an equivalent automaton without epsilon transitions
+     */
+    public static Automaton removeEpsilon(Automaton automaton) {
+        Automaton out = new Automaton();
+        State init = automaton.getInitial();
+        if (init == null)
+            return out;
+        List<State> states = automaton.getStates();
+        int n = states.size();
+        // New state for the initial state and for every target of a symbol transition
+        State[] copy = new State[n];
+        copy[init.index] = out.addState();
+        out.setInitial(copy[init.index]);
+        for (State s : states)
+            for (Transition tr : s.transitions.values())
+                if (tr.values != null && copy[tr.dest.index] == null)
+                    copy[tr.dest.index] = out.addState();
+        int[] seen = new int[n];
+        int[] stack = new int[n];
+        int generation = 0;
+        for (int i = 0; i < n; i++) {
+            if (copy[i] == null)
+                continue;
+            State from = copy[i];
+            // Every symbol transition of the epsilon-closure of the state leaves its copy
+            generation++;
+            int top = 0;
+            seen[i] = generation;
+            stack[top++] = i;
+            while (top > 0) {
+                State s = states.get(stack[--top]);
+                if (s.accept)
+                    out.setAccept(from);
+                for (Transition tr : s.transitions.values()) {
+                    if (tr.values != null)
+                        out.addTransition(from, copy[tr.dest.index], tr.values);
+                    if (tr.epsilon && seen[tr.dest.index] != generation) {
+                        seen[tr.dest.index] = generation;
+                        stack[top++] = tr.dest.index;
+                    }
+                }
+            }
+        }
+        out.removeDeadStates();
+        return out;
+    }
+
+    /**
+     * Returns a new automaton recognizing the same language with fewer states, without determinizing it. <br>
+     * Removes the epsilon transitions, then merges the states that are bisimilar : states with the same acceptance
+     * whose transitions reach the same groups of states on the same symbols. The result may still be non-deterministic.
+     * Reducing an automaton before determinizing it can make determinization much cheaper
+     * @param automaton the {@link fr.menana.automaton.Automaton}
+     * @return a smaller or equal equivalent automaton without epsilon transitions
+     */
+    public static Automaton reduce(Automaton automaton) {
+        Automaton a = removeEpsilon(automaton);
+        List<State> states = a.getStates();
+        int n = states.size();
+        if (n == 0)
+            return a;
+        List<IntervalSet> sets = new ArrayList<>();
+        for (State s : states)
+            for (Transition tr : s.transitions.values())
+                sets.add(tr.values);
+        Alphabet alphabet = Alphabet.of(sets);
+        // Transitions (source, class, destination)
+        int m = 0;
+        int[][] classes = new int[sets.size()][];
+        for (int i = 0; i < classes.length; i++) {
+            classes[i] = alphabet.classesOf(sets.get(i));
+            m += classes[i].length;
+        }
+        int[] src = new int[m], lab = new int[m], dst = new int[m];
+        int t = 0, cl = 0;
+        for (State s : states)
+            for (Transition tr : s.transitions.values())
+                for (int c : classes[cl++]) {
+                    src[t] = s.index;
+                    lab[t] = c;
+                    dst[t++] = tr.dest.index;
+                }
+        int[] block = Bisimulation.coarsest(n, src, lab, dst, alphabet.size(), states);
+        int nbBlocks = 0;
+        for (int b : block)
+            nbBlocks = Math.max(nbBlocks, b + 1);
+        if (nbBlocks == n)
+            return a;
+        // Quotient automaton
+        Automaton out = new Automaton();
+        State[] blockState = new State[nbBlocks];
+        for (int b = 0; b < nbBlocks; b++)
+            blockState[b] = out.addState();
+        boolean[] done = new boolean[nbBlocks];
+        for (State s : states) {
+            int b = block[s.index];
+            if (done[b])
+                continue;
+            done[b] = true;
+            if (s.accept)
+                out.setAccept(blockState[b]);
+            for (Transition tr : s.transitions.values())
+                out.addTransition(blockState[b], blockState[block[tr.dest.index]], tr.values);
+        }
+        out.setInitial(blockState[block[a.getInitial().index]]);
+        out.reIndex();
+        return out;
     }
 
     /**

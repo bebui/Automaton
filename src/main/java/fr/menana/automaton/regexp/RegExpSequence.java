@@ -19,10 +19,9 @@ package fr.menana.automaton.regexp;
 
 import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
-import fr.menana.automaton.Transition;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /** Represents a sequence or concatenation of two regular expressions <p>
  * Created by Julien Menana on 05/05/2015.
@@ -55,34 +54,17 @@ public class RegExpSequence extends RegExp {
     }
 
     @Override
-    public Automaton toNFA() {
-        Automaton auto = this.left.toNFA();
-        Automaton second = this.right.toNFA();
-
-        Map<State,State> asso = new HashMap<>();
-        for (State s : second.getStates())
-        {
-            asso.put(s,auto.addState());
+    State build(Automaton auto, State start) {
+        // Sequences built by the parser are nested on the left : walks them without recursion
+        Deque<RegExp> parts = new ArrayDeque<>();
+        RegExp current = this;
+        while (current instanceof RegExpSequence) {
+            parts.push(((RegExpSequence) current).right);
+            current = ((RegExpSequence) current).left;
         }
-        for (State s : second.getStates())
-        {
-            for (Transition tr : s.getTransitions().values()) {
-                if (tr.hasValues()) {
-                    auto.addTransition(asso.get(tr.getOrig()), asso.get(tr.getDest()), tr.getValues());
-                }
-                if (tr.hasEpsilon())
-                    auto.addEpsilonTransition(asso.get(tr.getOrig()),asso.get(tr.getDest()));
-            }
-        }
-        for (State s : auto.getAcceptList()) {
-            auto.addEpsilonTransition(s,asso.get(second.getInitial()));
-            auto.setAccept(s, false);
-        }
-        for (State s : second.getAcceptList()) {
-            auto.setAccept(asso.get(s));
-        }
-
-        return auto;
-
+        State end = current.build(auto, start);
+        for (RegExp part : parts)
+            end = part.build(auto, end);
+        return end;
     }
 }

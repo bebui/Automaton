@@ -19,10 +19,7 @@ package fr.menana.automaton.regexp;
 
 import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
-import fr.menana.automaton.Transition;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Represents a regular expression constructed by the union of two regular expressions <p>
@@ -55,34 +52,15 @@ public class RegExpOr extends RegExp {
     }
 
     @Override
-    public Automaton toNFA() {
-        Automaton auto = new Automaton();
-        State s1 = auto.addState();
-        State s2 = auto.addState();
-
-        Automaton[] choice = new Automaton[]{left.toNFA(), right.toNFA()};
-
-        for (Automaton a : choice) {
-            Map<State,State> asso = new HashMap<>();
-            for (State s : a.getStates()) {
-                asso.put(s,auto.addState());
-            }
-            for (State s : a.getStates()) {
-                for (Transition tr : s.getTransitions().values()) {
-                    if (tr.hasValues()) {
-                        auto.addTransition(asso.get(tr.getOrig()), asso.get(tr.getDest()), tr.getValues());
-                    }
-                    if (tr.hasEpsilon())
-                        auto.addEpsilonTransition(asso.get(tr.getOrig()),asso.get(tr.getDest()));
-                }
-            }
-            auto.addEpsilonTransition(s1,asso.get(a.getInitial()));
-            for (State s : a.getAcceptList()) {
-                auto.addEpsilonTransition(asso.get(s), s2);
-            }
+    State build(Automaton auto, State start) {
+        // Alternatives built by the parser are nested on the right : walks them without recursion
+        State end = auto.addState();
+        RegExp current = this;
+        while (current instanceof RegExpOr) {
+            auto.addEpsilonTransition(((RegExpOr) current).left.build(auto, start), end);
+            current = ((RegExpOr) current).right;
         }
-        auto.setInitial(s1);
-        auto.setAccept(s2);
-        return auto;
+        auto.addEpsilonTransition(current.build(auto, start), end);
+        return end;
     }
 }

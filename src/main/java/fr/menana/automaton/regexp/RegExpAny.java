@@ -40,13 +40,9 @@ public class RegExpAny extends RegExp {
     }
 
     @Override
-    public Automaton toNFA() {
-        Automaton auto = new Automaton();
-        State s1 = auto.addState();
-        State s2 = auto.addState();
-        auto.setInitial(s1);
-        auto.setAccept(s2);
-        auto.addTransition(s1,s2, IntervalSet.ALL);
-        return auto;
+    State build(Automaton auto, State start) {
+        State end = auto.addState();
+        auto.addTransition(start, end, IntervalSet.ALL);
+        return end;
     }
 }

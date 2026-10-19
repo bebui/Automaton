@@ -4,11 +4,13 @@ A Java library to create and manipulate deterministic and non-deterministic fini
 
 Transitions are labelled with sets of integer intervals, so an automaton can work on any `int` alphabet — from `Integer.MIN_VALUE` to `Integer.MAX_VALUE` — without enumerating it.
 
-- Build automata by hand or from a regular expression
-- Determinization (subset construction)
-- Minimization (Hopcroft or Brzozowski)
-- Union, concatenation, complement, reversal
-- Word recognition and Graphviz export
+- Build automata by hand or from a regular expression, with intersection and complement
+- Determinization, minimization (Hopcroft-style partition refinement or Brzozowski), ε-removal, reduction of NFAs
+- Union, intersection, difference, concatenation, complement, reversal
+- Language queries: emptiness, finiteness, equivalence, inclusion, shortest word, counter-examples
+- Counting, uniform random generation and enumeration of words
+- Fast word recognition with compiled automata, search inside sequences
+- Graphviz export
 
 ## Installation
 
@@ -61,7 +63,11 @@ auto.run(2, 1);      // false
 | `a{n}` | exactly n repetitions |
 | `a{n,m}` | between n and m repetitions |
 | `a{n,}`, `a{,m}` | at least n, at most m repetitions |
+| `a&b` | intersection: words matching both |
+| `~a` | complement: every word not matching `a` |
 | `( )` | grouping |
+
+Priorities, from the strongest: repetitions (`* + ? {}`), complement `~`, concatenation, intersection `&`, alternative `|`. For instance `~12` is `(~1)2` and `1&1|2` is `(1&1)|2`.
 
 Each character is a symbol: `12` is the symbol 1 followed by the symbol 2, while `<12>` is the single symbol 12. Any integer can be written between angle brackets, `<5>` is the same as `5`.
 
@@ -112,9 +118,16 @@ Automaton d = Automaton.nfaFromString("(1|2)*1(1|2)(1|2)").determinize();
 Automaton m = d.minimize();
 ```
 
-Union and concatenation of two deterministic automata return a minimal deterministic automaton.
+Union and concatenation of two deterministic automata, intersection and difference return a minimal deterministic automaton. Union, intersection and difference are built as products of deterministic automata, exploring only the reachable pairs of states.
 
-`minimize()` uses Hopcroft's algorithm by default. Brzozowski's algorithm can be selected per call or for the whole application:
+```java
+Automaton both = a.intersection(b);      // words of a and b
+Automaton only = a.difference(b);        // words of a that are not in b
+Automaton noEps = Automaton.nfaFromString("(1|2)*1").removeEpsilon();   // position automaton, no ε
+Automaton small = Automaton.nfaFromString("(1|2)*1").reduce();          // merges bisimilar states
+```
+
+`minimize()` uses Hopcroft-style partition refinement by default. Brzozowski's algorithm can be selected per call or for the whole application:
 
 ```java
 Operation.minimize(d, Operation.MINIMIZATION_ALGO.Brzozowski);
@@ -122,6 +135,59 @@ Operation.setDefaultMinimization(Operation.MINIMIZATION_ALGO.Brzozowski);
 ```
 
 `complement()` works on deterministic and non-deterministic automata: the latter are determinized first.
+
+## Language queries
+
+```java
+Automaton a = Automaton.dfaFromString("(1|2)*1");
+Automaton b = Automaton.dfaFromString("(1|2)*1(1|2)*");
+
+a.isEmpty();             // false
+a.isFinite();            // false
+a.isUniversal();         // false
+a.isSubsetOf(b);         // true, without determinizing
+a.sameLanguage(b);       // false, whatever the structure of the automata
+a.counterExample(b);     // [1, 2]: a shortest word accepted by only one of them
+a.shortestWord();        // [1]
+```
+
+`equals` compares the structure of two automata, `sameLanguage` compares their languages.
+
+## Counting and generating words
+
+```java
+Automaton a = Automaton.dfaFromString("(1|2)*1");
+
+a.countWords(3);                   // 4, as a BigInteger
+a.randomWord(3, new Random());     // one of the 4 words, uniformly
+for (int[] word : a.words(2))      // [1], [1, 1], [2, 1]: by length, then lexicographic
+    System.out.println(Arrays.toString(word));
+```
+
+## Fast recognition
+
+`compile()` turns an automaton into an immutable deterministic automaton stored in arrays. Reading a symbol is a binary search among the transitions of the current state, 2 to 3 times faster than `Automaton.run`, and the result can be shared between threads.
+
+```java
+CompiledDfa dfa = Automaton.dfaFromString("(1|2)*12").compile();
+dfa.run(2, 1, 2);                  // true
+
+int state = dfa.getInitialState(); // or read symbols one by one
+state = dfa.step(state, 1);
+dfa.isAccept(state);
+```
+
+## Searching
+
+A `Searcher` finds the factors of a sequence that belong to a language. Matches are leftmost-longest, and each search is linear in the length of the sequence.
+
+```java
+Searcher searcher = Automaton.dfaFromString("12+").searcher();
+
+searcher.find(3, 1, 2, 2, 4);      // Match[start=1, end=4]
+searcher.contains(3, 1, 3);        // false
+searcher.findAll(1, 2, 0, 1, 2, 2);// [Match[start=0, end=2], Match[start=3, end=6]]
+```
 
 ## Visualization
 
@@ -139,13 +205,20 @@ dot -Tpng auto.dot -o auto.png
 
 | Operation | Complexity |
 |---|---|
+| Regular expression to NFA | O(size of the expression) (Thompson's construction) |
 | Determinization | proportional to the number of states of the resulting DFA (exponential in the worst case) |
-| Hopcroft minimization | O(k · n log n), n states, k symbol classes |
+| Minimization (default) | O(m log n), n states, m transitions per symbol class (Valmari–Lehtinen) |
 | Brzozowski minimization | exponential in the worst case, often fast in practice |
-| `run` on a deterministic automaton | O(length · t), t outgoing transitions per state |
+| Union, intersection, difference | proportional to the reachable pairs of states of the product |
+| `sameLanguage` | almost linear in the size of the deterministic automata (Hopcroft–Karp) |
+| `isSubsetOf` | antichains, without determinization |
+| `reduce` | O(m log n) (Paige–Tarjan) |
+| `CompiledDfa.run` | O(length · log t), t outgoing transitions per state |
+| `run` on a deterministic automaton | O(length · t) |
 | `run` on a non-deterministic automaton | O(length · number of states) |
+| `Searcher.find` | O(length of the text + length of the match) |
 
-Symbol classes are the maximal intervals of values that every transition treats in the same way, so k stays small even when transitions cover large ranges.
+Symbol classes are the maximal intervals of values that every transition treats in the same way, so their number stays small even when transitions cover large ranges.
 
 ## Building and testing
 
@@ -153,7 +226,7 @@ Symbol classes are the maximal intervals of values that every transition treats 
 mvn clean install
 ```
 
-The test suite compares determinization and both minimization algorithms against an independent simulation of thousands of random non-deterministic automata.
+The test suite compares the library with independent references: a simulation of thousands of random non-deterministic automata, an interpreter of regular expressions written in the tests, and the enumeration of all short words.
 
 ## License
 

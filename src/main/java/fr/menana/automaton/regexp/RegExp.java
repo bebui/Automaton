@@ -18,6 +18,11 @@
 package fr.menana.automaton.regexp;
 
 import fr.menana.automaton.Automaton;
+import fr.menana.automaton.State;
+import fr.menana.automaton.Transition;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract class for regular expression. <p>
@@ -36,8 +41,53 @@ public abstract class RegExp {
     public abstract String toString();
 
     /**
-     * Returns the non-deterministic {@link fr.menana.automaton.Automaton} that represents the language accepted by this regular expression
+     * Returns the non-deterministic {@link fr.menana.automaton.Automaton} that represents the language accepted by this regular expression. <br>
+     * Uses Thompson's construction : the automaton is built in a single pass, in time linear in the size of the expression
      * @return a non deterministic {@link fr.menana.automaton.Automaton} equivalent to this regular expression
      */
-    public abstract Automaton toNFA();
+    public Automaton toNFA() {
+        Automaton auto = new Automaton();
+        State start = auto.addState();
+        auto.setInitial(start);
+        auto.setAccept(this.build(auto, start));
+        return auto;
+    }
+
+    /**
+     * Adds to an automaton the states and transitions recognizing this expression. <br>
+     * The fragment starts at a given state and ends at the returned state. A fragment never adds
+     * transitions going into <code>start</code>, so that several fragments can share it
+     * @param auto the automaton being built
+     * @param start the state from which the expression is read
+     * @return the state reached once the expression has been read
+     */
+    abstract State build(Automaton auto, State start);
+
+    /**
+     * Copies an automaton into the automaton being built, as a fragment starting at a given state
+     * @param auto the automaton being built
+     * @param start the state from which the copied automaton is entered
+     * @param copied the automaton to copy
+     * @return the state reached when the copied automaton accepts
+     */
+    static State embed(Automaton auto, State start, Automaton copied) {
+        State end = auto.addState();
+        if (copied.getInitial() == null)
+            return end;
+        Map<State, State> map = new HashMap<>();
+        for (State s : copied.getStates())
+            map.put(s, auto.addState());
+        for (State s : copied.getStates()) {
+            for (Transition tr : s.getTransitions().values()) {
+                if (tr.hasValues())
+                    auto.addTransition(map.get(s), map.get(tr.getDest()), tr.getValues());
+                if (tr.hasEpsilon())
+                    auto.addEpsilonTransition(map.get(s), map.get(tr.getDest()));
+            }
+            if (s.isAccept())
+                auto.addEpsilonTransition(map.get(s), end);
+        }
+        auto.addEpsilonTransition(start, map.get(copied.getInitial()));
+        return end;
+    }
 }
