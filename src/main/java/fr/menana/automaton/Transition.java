@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -22,8 +22,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class represents a transition carrying values and/or epsilon from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State} <br>
- * Created by Julien Menana on 01/05/2015.
+ * This class represents a transition carrying values and/or epsilon from an origin {@link fr.menana.automaton.State} to a destination {@link fr.menana.automaton.State}
+ *
+ * @author Julien Menana
  */
 public class Transition {
 
@@ -44,7 +45,7 @@ public class Transition {
     IntervalSet values;
 
     /**
-     * Inidicates if this transition carries an epsilon
+     * Indicates if this transition carries an epsilon
      */
     boolean epsilon;
 
@@ -110,6 +111,7 @@ public class Transition {
     /**
      * Returns the origin {@link fr.menana.automaton.State} of this transition
      * @return the origin state
+     * @since 2.0.0
      */
     public State getOrig() {
         return orig;
@@ -118,6 +120,7 @@ public class Transition {
     /**
      * Returns the destination {@link fr.menana.automaton.State} of this transition
      * @return the destination state
+     * @since 2.0.0
      */
     public State getDest() {
         return dest;
@@ -127,6 +130,7 @@ public class Transition {
      * Returns a copy of the values carried by this transition.
      * Modifying the returned set does not modify the automaton.
      * @return the values, or <code>null</code> if this transition only carries an epsilon
+     * @since 2.0.0
      */
     public IntervalSet getValues() {
         return values == null ? null : values.clone();
@@ -135,6 +139,7 @@ public class Transition {
     /**
      * Checks if this transition carries values, as opposed to a pure epsilon transition
      * @return <code>true</code> if and only if the transition carries at least one value
+     * @since 2.0.0
      */
     public boolean hasValues() {
         return values != null && !values.isEmpty();
@@ -144,6 +149,7 @@ public class Transition {
      * Checks if this transition can be taken by reading the given value
      * @param value the value to read
      * @return <code>true</code> if and only if the transition carries the value
+     * @since 2.0.0
      */
     public boolean accepts(int value) {
         return values != null && values.contains(value);

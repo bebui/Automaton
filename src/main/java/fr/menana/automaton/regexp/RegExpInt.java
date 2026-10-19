@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -21,10 +21,11 @@ import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
 
 /**
- * A regular expression element representing symbols of the regular expression as integers.  <p>
- * Created by Julien Menana on 05/05/2015.
+ * A regular expression element representing symbols of the regular expression as integers. 
+ *
+ * @author Julien Menana
  */
-public class RegExpInt extends RegExp {
+class RegExpInt extends RegExp {
 
     /**
      * An integer used as a symbol in the alphabet of the regular expression

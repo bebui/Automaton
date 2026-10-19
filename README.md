@@ -14,25 +14,25 @@ Transitions are labelled with sets of integer intervals, so an automaton can wor
 
 ## Installation
 
-Version 1.8 is available on Maven Central:
+Available on Maven Central (requires Java 17):
 
 ```xml
 <dependency>
     <groupId>fr.menana</groupId>
     <artifactId>automaton</artifactId>
-    <version>1.8</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
-Version 2.0.0, which is much faster and fixes several bugs, is not published yet. Build it from source (requires Java 17 and Maven):
+With Gradle: `implementation("fr.menana:automaton:3.0.0")`.
 
-```bash
-git clone https://github.com/bebui/Automaton.git
-cd Automaton
-mvn install
-```
+The API documentation is on [javadoc.io](https://javadoc.io/doc/fr.menana/automaton).
 
-then depend on `fr.menana:automaton:2.0.0`.
+### Upgrading
+
+From 2.x to 3.0: the classes of the nodes of regular expressions (`RegExpInt`, `RegExpOr`, ...) and the `Util` class are no longer public; use `RegExpParser` and `RegExp` instead.
+
+From 1.x: version 2.0 is much faster, fixes many bugs and adds many features, but changes part of the API. Transitions are read with `getOrig()`, `getDest()` and `getValues()`, the default minimization is set with `Operation.setDefaultMinimization(...)`, `IntervalSet.size()` returns a `long` and `new Interval(min, max)` requires `min <= max`.
 
 ## Quick start
 

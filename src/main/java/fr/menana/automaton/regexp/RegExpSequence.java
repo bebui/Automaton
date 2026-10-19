@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -23,10 +23,11 @@ import fr.menana.automaton.State;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-/** Represents a sequence or concatenation of two regular expressions <p>
- * Created by Julien Menana on 05/05/2015.
+/** Represents a sequence or concatenation of two regular expressions
+ *
+ * @author Julien Menana
  */
-public class RegExpSequence extends RegExp {
+class RegExpSequence extends RegExp {
 
     /**
      * The left hand side regular expression of the sequence
@@ -41,7 +42,7 @@ public class RegExpSequence extends RegExp {
     /**
      * Constructs a new regular expression as the sequence or concatenation of two given regular expression
      * @param left the first regular expression composing the sequence
-     * @param right the second regular expressino composing the sequence
+     * @param right the second regular expression composing the sequence
      */
     RegExpSequence(RegExp left, RegExp right) {
         this.left = left;

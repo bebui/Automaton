@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -24,7 +24,7 @@ import java.util.Collection;
  * Partition of the integer values used by a collection of {@link fr.menana.automaton.IntervalSet} into symbol classes. <br>
  * Two values belong to the same class if and only if every given set contains both or none of them.
  * Classes are disjoint intervals numbered in increasing order, so that algorithms can work on small integer symbols.
- * Values used by none of the sets belong to no class <p>
+ * Values used by none of the sets belong to no class
  */
 final class Alphabet {
 

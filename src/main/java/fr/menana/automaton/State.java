@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -22,8 +22,9 @@ import java.util.stream.Collectors;
 
 /**
  * This class represents a state in a finite automaton <br>
- * It is meant to be created via the {@link Automaton#addState()} method <p>
- * Created by Julien Menana on 01/05/2015.
+ * It is meant to be created via the {@link Automaton#addState()} method
+ *
+ * @author Julien Menana
  */
 public class State { //implements Comparable<State>{
 
@@ -38,7 +39,7 @@ public class State { //implements Comparable<State>{
     boolean initial;
 
     /**
-     * Inidicates if this state is an accepting state
+     * Indicates if this state is an accepting state
      */
     boolean accept;
 
@@ -49,7 +50,7 @@ public class State { //implements Comparable<State>{
     Map<State,Transition> transitions;
 
     /**
-     * Construts a new state
+     * Constructs a new state
      */
     State() {
         this.transitions = new LinkedHashMap<>();
@@ -112,7 +113,7 @@ public class State { //implements Comparable<State>{
     }
 
     /**
-     * Checks if this state is an acceptingstate of the {@link fr.menana.automaton.Automaton}
+     * Checks if this state is an accepting state of the {@link fr.menana.automaton.Automaton}
      * @return  <code>true</code> if and only if this state is an accepting state of the {@link fr.menana.automaton.Automaton}
      */
     public boolean isAccept() {

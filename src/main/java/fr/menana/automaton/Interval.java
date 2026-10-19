@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -22,8 +22,9 @@ import java.util.*;
 
 /**
  * This class represent an interval of integers. <br>
- * It can be manipulated using the given primitives <p>
- * Created by Julien Menana on 01/05/2015.
+ * It can be manipulated using the given primitives
+ *
+ * @author Julien Menana
  */
 public class Interval implements Comparable<Interval>,Cloneable {
 

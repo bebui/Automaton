@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -23,10 +23,11 @@ import fr.menana.automaton.State;
 /**
  * Represents a regular expression element composed of a regular expression with a Kleene plus symbol. <br>
  * The Kleene plus symbol stands for one or more times the given regular expression. <br>
- * It is constructed using a {@link fr.menana.automaton.regexp.RegExpSequence} and a {@link fr.menana.automaton.regexp.RegExpKleeneStar}  <p>
- * Created by Julien Menana on 05/05/2015.
+ * It is constructed using a {@link fr.menana.automaton.regexp.RegExpSequence} and a {@link fr.menana.automaton.regexp.RegExpKleeneStar} 
+ *
+ * @author Julien Menana
  */
-public class RegExpKleenePlus extends RegExp {
+class RegExpKleenePlus extends RegExp {
 
     /**
      * The regular expression on which to apply the Kleene plus

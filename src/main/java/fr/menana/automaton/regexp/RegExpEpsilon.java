@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -21,10 +21,11 @@ import fr.menana.automaton.Automaton;
 import fr.menana.automaton.State;
 
 /**
- * A regular expression element that represents no integer.  <p>
- * Created by Julien Menana on 05/05/2015.
+ * A regular expression element that represents no integer. 
+ *
+ * @author Julien Menana
  */
-public class RegExpEpsilon extends RegExp {
+class RegExpEpsilon extends RegExp {
 
     /**
      * Constructs a new RegExpEpsilon.

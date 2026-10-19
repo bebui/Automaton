@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -22,10 +22,11 @@ import fr.menana.automaton.State;
 
 
 /**
- * Represents a regular expression that is repeated a number of time in a given range  <p>
- * Created by Julien Menana on 05/05/2015.
+ * Represents a regular expression that is repeated a number of time in a given range 
+ *
+ * @author Julien Menana
  */
-public class RegExpKleeneRange extends RegExp {
+class RegExpKleeneRange extends RegExp {
 
     /**
      * The regular expression that has to be repeated

@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -22,10 +22,11 @@ import fr.menana.automaton.IntervalSet;
 import fr.menana.automaton.State;
 
 /**
- * A regular expression element that accepts any integer.  <p>
- * Created by Julien Menana on 05/05/2015.
+ * A regular expression element that accepts any integer. 
+ *
+ * @author Julien Menana
  */
-public class RegExpAny extends RegExp {
+class RegExpAny extends RegExp {
 
     /**
      * Constructs a new RegExpAny.

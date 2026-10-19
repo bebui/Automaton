@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -23,10 +23,11 @@ import fr.menana.automaton.State;
 
 /**
  * Represents a regular expression element composed of a regular expression with a Kleene star symbol.  <br>
- * The Kleene star symbol stands for zero or more times the given regular expression.  <p>
- * Created by Julien Menana on 05/05/2015.
+ * The Kleene star symbol stands for zero or more times the given regular expression. 
+ *
+ * @author Julien Menana
  */
-public class RegExpKleeneStar extends RegExp {
+class RegExpKleeneStar extends RegExp {
 
     /**
      * The regular expression on which to apply the Kleene star

@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -24,11 +24,12 @@ import java.util.List;
  * An immutable deterministic automaton compiled into arrays, to read many words quickly. <br>
  * States are numbered from 0 to {@link #getNbStates()} - 1. The outgoing transitions of each state are stored as
  * sorted disjoint intervals, so that reading a symbol costs a binary search among the transitions of the current state.
- * Instances can be shared between threads. <p>
+ * Instances can be shared between threads.
  * <pre>
  * CompiledDfa dfa = Automaton.dfaFromString("(1|2)*12").compile();
  * dfa.run(2, 1, 2);   // true
  * </pre>
+ * @since 2.0.0
  */
 public final class CompiledDfa {
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -22,10 +22,11 @@ import fr.menana.automaton.State;
 
 
 /**
- * Represents a regular expression constructed by the union of two regular expressions <p>
- * Created by Julien Menana on 05/05/2015.
+ * Represents a regular expression constructed by the union of two regular expressions
+ *
+ * @author Julien Menana
  */
-public class RegExpOr extends RegExp {
+class RegExpOr extends RegExp {
     /**
      * Regular expression composing the union
      */
@@ -39,7 +40,7 @@ public class RegExpOr extends RegExp {
     /**
      * Constructs a new regular expression as the union of two given regular expression
      * @param left the first regular expression composing the union
-     * @param right the second regular expressino composing the union
+     * @param right the second regular expression composing the union
      */
     RegExpOr(RegExp left, RegExp right) {
         this.left = left;

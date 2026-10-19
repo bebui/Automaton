@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -25,8 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Abstract class for regular expression. <p>
- * Created by Julien Menana on 05/05/2015.
+ * A parsed regular expression, obtained with {@link fr.menana.automaton.regexp.RegExpParser#toRegExp(String)}. <br>
+ * {@link #toNFA()} builds its automaton, {@link #toString()} prints an equivalent expression.
+ *
+ * @author Julien Menana
  */
 public abstract class RegExp {
 
@@ -35,7 +37,7 @@ public abstract class RegExp {
     /**
      * Singleton for epsilon regular expression
      */
-    public static final RegExp blank = new RegExpEpsilon();
+    static final RegExp blank = new RegExpEpsilon();
 
     @Override
     public abstract String toString();

@@ -1,4 +1,4 @@
-/**
+/*
  * Automaton
  * Copyright (c) 2025, Julien Menana, All rights reserved.
  *
@@ -25,11 +25,12 @@ import java.util.List;
  * Matches are leftmost-longest : the match starting first is chosen, and among those the longest one.
  * Finding the leftmost start takes a single backward pass, with the automaton recognizing the mirror of
  * <code>L.*</code>, so a search is linear in the length of the text, plus the length of the match. <br>
- * Instances are immutable and can be shared between threads. <p>
+ * Instances are immutable and can be shared between threads.
  * <pre>
  * Searcher searcher = Automaton.dfaFromString("12+").searcher();
  * searcher.find(3, 1, 2, 2, 4);   // Match[start=1, end=4]
  * </pre>
+ * @since 2.0.0
  */
 public final class Searcher {
 
@@ -37,6 +38,7 @@ public final class Searcher {
      * A match of a search : the symbols text[start .. end-1]
      * @param start the index of the first symbol of the match
      * @param end the index following the last symbol of the match
+     * @since 2.0.0
      */
     public record Match(int start, int end) {
         /**
