@@ -21,6 +21,8 @@ coordinates prepared by this checkout. Until a release is published, build and
 install it locally or use the built JAR. A local install under 4.0.0 does not
 replace your 3.0.0 artifact. These commands do not publish to Maven Central or
 create a GitHub release. Previously published 3.0 artifacts lack the weighted API.
+Maintainers preparing Maven Central artifacts should use the
+[release guide](../RELEASING.md), which separates local bundle preparation from upload.
 
 ```bash
 java -version

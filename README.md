@@ -21,6 +21,8 @@ weighted automata, algorithms, contracts and runnable examples. The
 overload, including the weighted API. The 11 documented examples are
 checked against executable source with `python3 docs/check_examples.py` after a
 local build. Published Javadoc and Maven artifacts may lag behind this checkout.
+Maintainers can follow [release preparation and publication](RELEASING.md) to
+build and verify a signed Central bundle before uploading it.
 
 ## Installation
 
