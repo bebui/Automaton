@@ -76,7 +76,7 @@ public class WeightedAdvancedTest {
         WeightedAutomaton cyclic = b.build(); List<CostPath> all = new ArrayList<>(); paths(cyclic, 0, 4, 0, new ArrayList<>(), all); all.sort(Comparator.comparingDouble(CostPath::cost));
         List<WeightedPath> k = KBestPaths.ofLength(cyclic, 4, 5); assertEquals(5, k.size());
         for (int i = 0; i < k.size(); i++) { assertEquals(all.get(i).cost, k.get(i).cost(), 0); assertEquals(4, k.get(i).length()); }
-        assertThrows(IllegalArgumentException.class, () -> cyclic.kBestPaths(2));
+        assertEquals(2, cyclic.kBestPaths(2).size());
     }
     @Test public void weightedCompilationAndReweightingReuseTheGraph() {
         WeightedAutomaton.Builder b = WeightedAutomaton.builder(); b.addState(); b.addState(); b.setInitial(0, 1); b.setAccept(1, -1);
@@ -92,7 +92,7 @@ public class WeightedAdvancedTest {
     @Test public void unsupportedFamiliesAndBudgetsFailExplicitly() {
         WeightedAutomaton.Builder b = WeightedAutomaton.builder(); b.addState(); b.addState(); b.setInitial(0); b.setAccept(1);
         b.addTransition(0, 1, 1, 0.5); b.addTransition(0, 1, 1, 1);
-        WeightedAutomaton decimal = b.build(); assertThrows(IllegalArgumentException.class, decimal::determinize);
+        WeightedAutomaton decimal = b.build(); assertEquals(0.5, decimal.determinize().cost(1), 0);
         assertThrows(IllegalArgumentException.class, decimal::compile);
         WeightedAutomaton integral = decimal.withWeights(new double[]{1, 2});
         assertThrows(IllegalStateException.class, () -> WeightedTransformations.determinizeDag(integral, 1));
