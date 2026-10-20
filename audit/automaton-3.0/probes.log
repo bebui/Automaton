@@ -1,0 +1,10 @@
+arcs after 2 symbolic additions + epsilon: 1
+merged arc: accepts 1=true, accepts 2=true, epsilon=true
+initial index before/after reIndex: 1/0
+states after reIndex: 2
+clear exposed transitions removes recognition: true
+clone independent of source changes: true
+Interval ALL int size: 0
+IntervalSet ALL long size: 4294967296
+distinct sets compare equal: true
+duplicate DFA arc flag: false

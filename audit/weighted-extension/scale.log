@@ -1,0 +1,1742 @@
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.dagDistances
+# Parameters: (degree = 2, states = 128, width = 1)
+
+# Run progress: 0.00% complete, ETA 00:01:36
+# Fork: 1 of 1
+# Warmup Iteration   1: 12.119 us/op
+# Warmup Iteration   2: 6.688 us/op
+# Warmup Iteration   3: 6.497 us/op
+Iteration   1: 6.576 us/op
+                 gc.alloc.rate:      386.114 MB/sec
+                 gc.alloc.rate.norm: 2672.078 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            4.000 ms
+
+Iteration   2: 6.516 us/op
+                 gc.alloc.rate:      390.247 MB/sec
+                 gc.alloc.rate.norm: 2672.077 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            5.000 ms
+
+Iteration   3: 6.534 us/op
+                 gc.alloc.rate:      389.114 MB/sec
+                 gc.alloc.rate.norm: 2672.077 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            3.000 ms
+
+Iteration   4: 6.886 us/op
+                 gc.alloc.rate:      368.467 MB/sec
+                 gc.alloc.rate.norm: 2672.081 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   5: 6.977 us/op
+                 gc.alloc.rate:      363.031 MB/sec
+                 gc.alloc.rate.norm: 2672.081 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            8.000 ms
+
+
+
+Result "audit.ScaleBench.dagDistances":
+  6.698 ±(99.9%) 0.834 us/op [Average]
+  (min, avg, max) = (6.516, 6.698, 6.977), stdev = 0.217
+  CI (99.9%): [5.863, 7.532] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate":
+  379.395 ±(99.9%) 48.880 MB/sec [Average]
+  (min, avg, max) = (363.031, 379.395, 390.247), stdev = 12.694
+  CI (99.9%): [330.514, 428.275] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate.norm":
+  2672.079 ±(99.9%) 0.008 B/op [Average]
+  (min, avg, max) = (2672.077, 2672.079, 2672.081), stdev = 0.002
+  CI (99.9%): [2672.071, 2672.087] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.count":
+  12.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (2.000, 2.400, 3.000), stdev = 0.548
+  CI (99.9%): [12.000, 12.000] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.time":
+  29.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (3.000, 5.800, 9.000), stdev = 2.588
+  CI (99.9%): [29.000, 29.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.dagDistances
+# Parameters: (degree = 2, states = 128, width = 1000000)
+
+# Run progress: 4.17% complete, ETA 00:02:05
+# Fork: 1 of 1
+# Warmup Iteration   1: 14.094 us/op
+# Warmup Iteration   2: 6.845 us/op
+# Warmup Iteration   3: 6.642 us/op
+Iteration   1: 6.468 us/op
+                 gc.alloc.rate:      393.385 MB/sec
+                 gc.alloc.rate.norm: 2672.075 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            7.000 ms
+
+Iteration   2: 6.537 us/op
+                 gc.alloc.rate:      388.442 MB/sec
+                 gc.alloc.rate.norm: 2672.077 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            6.000 ms
+
+Iteration   3: 6.629 us/op
+                 gc.alloc.rate:      382.771 MB/sec
+                 gc.alloc.rate.norm: 2672.078 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            4.000 ms
+
+Iteration   4: 6.797 us/op
+                 gc.alloc.rate:      374.304 MB/sec
+                 gc.alloc.rate.norm: 2672.081 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   5: 7.055 us/op
+                 gc.alloc.rate:      360.390 MB/sec
+                 gc.alloc.rate.norm: 2672.084 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            4.000 ms
+
+
+
+Result "audit.ScaleBench.dagDistances":
+  6.697 ±(99.9%) 0.904 us/op [Average]
+  (min, avg, max) = (6.468, 6.697, 7.055), stdev = 0.235
+  CI (99.9%): [5.793, 7.602] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate":
+  379.858 ±(99.9%) 50.021 MB/sec [Average]
+  (min, avg, max) = (360.390, 379.858, 393.385), stdev = 12.990
+  CI (99.9%): [329.837, 429.880] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate.norm":
+  2672.079 ±(99.9%) 0.013 B/op [Average]
+  (min, avg, max) = (2672.075, 2672.079, 2672.084), stdev = 0.003
+  CI (99.9%): [2672.066, 2672.092] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.count":
+  13.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (2.000, 2.600, 3.000), stdev = 0.548
+  CI (99.9%): [13.000, 13.000] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.time":
+  30.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (4.000, 6.000, 9.000), stdev = 2.121
+  CI (99.9%): [30.000, 30.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.dagDistances
+# Parameters: (degree = 2, states = 8192, width = 1)
+
+# Run progress: 8.33% complete, ETA 00:01:59
+# Fork: 1 of 1
+# Warmup Iteration   1: 811.539 us/op
+# Warmup Iteration   2: 462.481 us/op
+# Warmup Iteration   3: 455.373 us/op
+Iteration   1: 460.012 us/op
+                 gc.alloc.rate:      337.944 MB/sec
+                 gc.alloc.rate.norm: 163957.478 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            7.000 ms
+
+Iteration   2: 461.965 us/op
+                 gc.alloc.rate:      338.022 MB/sec
+                 gc.alloc.rate.norm: 163957.469 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            3.000 ms
+
+Iteration   3: 494.426 us/op
+                 gc.alloc.rate:      315.278 MB/sec
+                 gc.alloc.rate.norm: 163958.128 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            10.000 ms
+
+Iteration   4: 521.878 us/op
+                 gc.alloc.rate:      298.840 MB/sec
+                 gc.alloc.rate.norm: 163958.215 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            7.000 ms
+
+Iteration   5: 463.017 us/op
+                 gc.alloc.rate:      337.030 MB/sec
+                 gc.alloc.rate.norm: 163957.454 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            5.000 ms
+
+
+
+Result "audit.ScaleBench.dagDistances":
+  480.260 ±(99.9%) 105.010 us/op [Average]
+  (min, avg, max) = (460.012, 480.260, 521.878), stdev = 27.271
+  CI (99.9%): [375.250, 585.269] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate":
+  325.423 ±(99.9%) 68.337 MB/sec [Average]
+  (min, avg, max) = (298.840, 325.423, 338.022), stdev = 17.747
+  CI (99.9%): [257.086, 393.760] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate.norm":
+  163957.749 ±(99.9%) 1.491 B/op [Average]
+  (min, avg, max) = (163957.454, 163957.749, 163958.215), stdev = 0.387
+  CI (99.9%): [163956.258, 163959.239] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.count":
+  11.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (2.000, 2.200, 3.000), stdev = 0.447
+  CI (99.9%): [11.000, 11.000] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.time":
+  32.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (3.000, 6.400, 10.000), stdev = 2.608
+  CI (99.9%): [32.000, 32.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.dagDistances
+# Parameters: (degree = 2, states = 8192, width = 1000000)
+
+# Run progress: 12.50% complete, ETA 00:01:53
+# Fork: 1 of 1
+# Warmup Iteration   1: 812.107 us/op
+# Warmup Iteration   2: 471.789 us/op
+# Warmup Iteration   3: 462.072 us/op
+Iteration   1: 465.155 us/op
+                 gc.alloc.rate:      335.216 MB/sec
+                 gc.alloc.rate.norm: 163957.539 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            6.000 ms
+
+Iteration   2: 503.850 us/op
+                 gc.alloc.rate:      309.844 MB/sec
+                 gc.alloc.rate.norm: 163957.876 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   3: 515.730 us/op
+                 gc.alloc.rate:      302.681 MB/sec
+                 gc.alloc.rate.norm: 163958.208 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   4: 530.585 us/op
+                 gc.alloc.rate:      294.097 MB/sec
+                 gc.alloc.rate.norm: 163958.314 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            5.000 ms
+
+Iteration   5: 538.307 us/op
+                 gc.alloc.rate:      290.077 MB/sec
+                 gc.alloc.rate.norm: 163958.402 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            27.000 ms
+
+
+
+Result "audit.ScaleBench.dagDistances":
+  510.725 ±(99.9%) 110.670 us/op [Average]
+  (min, avg, max) = (465.155, 510.725, 538.307), stdev = 28.741
+  CI (99.9%): [400.055, 621.396] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate":
+  306.383 ±(99.9%) 68.716 MB/sec [Average]
+  (min, avg, max) = (290.077, 306.383, 335.216), stdev = 17.845
+  CI (99.9%): [237.667, 375.099] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate.norm":
+  163958.068 ±(99.9%) 1.372 B/op [Average]
+  (min, avg, max) = (163957.539, 163958.068, 163958.402), stdev = 0.356
+  CI (99.9%): [163956.695, 163959.440] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.count":
+  11.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (2.000, 2.200, 3.000), stdev = 0.447
+  CI (99.9%): [11.000, 11.000] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.time":
+  55.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (5.000, 11.000, 27.000), stdev = 9.083
+  CI (99.9%): [55.000, 55.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.dagDistances
+# Parameters: (degree = 16, states = 128, width = 1)
+
+# Run progress: 16.67% complete, ETA 00:01:47
+# Fork: 1 of 1
+# Warmup Iteration   1: 50.304 us/op
+# Warmup Iteration   2: 33.646 us/op
+# Warmup Iteration   3: 34.550 us/op
+Iteration   1: 29.782 us/op
+                 gc.alloc.rate:      85.448 MB/sec
+                 gc.alloc.rate.norm: 2672.348 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 30.654 us/op
+                 gc.alloc.rate:      82.998 MB/sec
+                 gc.alloc.rate.norm: 2672.361 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            2.000 ms
+
+Iteration   3: 29.463 us/op
+                 gc.alloc.rate:      86.275 MB/sec
+                 gc.alloc.rate.norm: 2672.344 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 29.711 us/op
+                 gc.alloc.rate:      85.540 MB/sec
+                 gc.alloc.rate.norm: 2672.355 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            3.000 ms
+
+Iteration   5: 29.524 us/op
+                 gc.alloc.rate:      86.212 MB/sec
+                 gc.alloc.rate.norm: 2672.348 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.dagDistances":
+  29.827 ±(99.9%) 1.850 us/op [Average]
+  (min, avg, max) = (29.463, 29.827, 30.654), stdev = 0.480
+  CI (99.9%): [27.977, 31.676] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate":
+  85.294 ±(99.9%) 5.153 MB/sec [Average]
+  (min, avg, max) = (82.998, 85.294, 86.275), stdev = 1.338
+  CI (99.9%): [80.142, 90.447] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate.norm":
+  2672.351 ±(99.9%) 0.026 B/op [Average]
+  (min, avg, max) = (2672.344, 2672.351, 2672.361), stdev = 0.007
+  CI (99.9%): [2672.325, 2672.378] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.count":
+  2.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (≈ 0, 0.400, 1.000), stdev = 0.548
+  CI (99.9%): [2.000, 2.000] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.time":
+  5.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 1.000, 3.000), stdev = 1.414
+  CI (99.9%): [5.000, 5.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.dagDistances
+# Parameters: (degree = 16, states = 128, width = 1000000)
+
+# Run progress: 20.83% complete, ETA 00:01:43
+# Fork: 1 of 1
+# Warmup Iteration   1: 43.893 us/op
+# Warmup Iteration   2: 34.463 us/op
+# Warmup Iteration   3: 35.585 us/op
+Iteration   1: 30.907 us/op
+                 gc.alloc.rate:      82.314 MB/sec
+                 gc.alloc.rate.norm: 2672.365 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 32.884 us/op
+                 gc.alloc.rate:      77.123 MB/sec
+                 gc.alloc.rate.norm: 2672.387 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            3.000 ms
+
+Iteration   3: 30.401 us/op
+                 gc.alloc.rate:      83.480 MB/sec
+                 gc.alloc.rate.norm: 2672.359 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 30.205 us/op
+                 gc.alloc.rate:      84.234 MB/sec
+                 gc.alloc.rate.norm: 2672.366 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            2.000 ms
+
+Iteration   5: 30.774 us/op
+                 gc.alloc.rate:      82.655 MB/sec
+                 gc.alloc.rate.norm: 2672.363 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.dagDistances":
+  31.034 ±(99.9%) 4.126 us/op [Average]
+  (min, avg, max) = (30.205, 31.034, 32.884), stdev = 1.072
+  CI (99.9%): [26.908, 35.160] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate":
+  81.961 ±(99.9%) 10.803 MB/sec [Average]
+  (min, avg, max) = (77.123, 81.961, 84.234), stdev = 2.805
+  CI (99.9%): [71.158, 92.764] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate.norm":
+  2672.368 ±(99.9%) 0.043 B/op [Average]
+  (min, avg, max) = (2672.359, 2672.368, 2672.387), stdev = 0.011
+  CI (99.9%): [2672.325, 2672.411] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.count":
+  2.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (≈ 0, 0.400, 1.000), stdev = 0.548
+  CI (99.9%): [2.000, 2.000] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.time":
+  5.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 1.000, 3.000), stdev = 1.414
+  CI (99.9%): [5.000, 5.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.dagDistances
+# Parameters: (degree = 16, states = 8192, width = 1)
+
+# Run progress: 25.00% complete, ETA 00:01:36
+# Fork: 1 of 1
+# Warmup Iteration   1: 2980.497 us/op
+# Warmup Iteration   2: 2207.929 us/op
+# Warmup Iteration   3: 2220.315 us/op
+Iteration   1: 2088.520 us/op
+                 gc.alloc.rate:      74.621 MB/sec
+                 gc.alloc.rate.norm: 163976.365 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 2199.664 us/op
+                 gc.alloc.rate:      70.875 MB/sec
+                 gc.alloc.rate.norm: 163978.140 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            3.000 ms
+
+Iteration   3: 1998.948 us/op
+                 gc.alloc.rate:      77.858 MB/sec
+                 gc.alloc.rate.norm: 163975.522 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 2006.999 us/op
+                 gc.alloc.rate:      77.771 MB/sec
+                 gc.alloc.rate.norm: 163975.840 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            2.000 ms
+
+Iteration   5: 1995.481 us/op
+                 gc.alloc.rate:      78.159 MB/sec
+                 gc.alloc.rate.norm: 163975.522 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.dagDistances":
+  2057.923 ±(99.9%) 338.972 us/op [Average]
+  (min, avg, max) = (1995.481, 2057.923, 2199.664), stdev = 88.030
+  CI (99.9%): [1718.951, 2396.894] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate":
+  75.857 ±(99.9%) 12.072 MB/sec [Average]
+  (min, avg, max) = (70.875, 75.857, 78.159), stdev = 3.135
+  CI (99.9%): [63.784, 87.929] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate.norm":
+  163976.278 ±(99.9%) 4.223 B/op [Average]
+  (min, avg, max) = (163975.522, 163976.278, 163978.140), stdev = 1.097
+  CI (99.9%): [163972.055, 163980.501] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.count":
+  2.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (≈ 0, 0.400, 1.000), stdev = 0.548
+  CI (99.9%): [2.000, 2.000] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.time":
+  5.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 1.000, 3.000), stdev = 1.414
+  CI (99.9%): [5.000, 5.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.dagDistances
+# Parameters: (degree = 16, states = 8192, width = 1000000)
+
+# Run progress: 29.17% complete, ETA 00:01:32
+# Fork: 1 of 1
+# Warmup Iteration   1: 4688.018 us/op
+# Warmup Iteration   2: 2350.519 us/op
+# Warmup Iteration   3: 2186.040 us/op
+Iteration   1: 2043.484 us/op
+                 gc.alloc.rate:      76.431 MB/sec
+                 gc.alloc.rate.norm: 163976.327 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            3.000 ms
+
+Iteration   2: 2091.977 us/op
+                 gc.alloc.rate:      74.592 MB/sec
+                 gc.alloc.rate.norm: 163976.567 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            2.000 ms
+
+Iteration   3: 2117.247 us/op
+                 gc.alloc.rate:      73.571 MB/sec
+                 gc.alloc.rate.norm: 163976.371 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 2046.001 us/op
+                 gc.alloc.rate:      76.276 MB/sec
+                 gc.alloc.rate.norm: 163976.327 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            4.000 ms
+
+Iteration   5: 1989.068 us/op
+                 gc.alloc.rate:      78.404 MB/sec
+                 gc.alloc.rate.norm: 163975.429 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.dagDistances":
+  2057.555 ±(99.9%) 190.305 us/op [Average]
+  (min, avg, max) = (1989.068, 2057.555, 2117.247), stdev = 49.422
+  CI (99.9%): [1867.250, 2247.861] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate":
+  75.855 ±(99.9%) 7.156 MB/sec [Average]
+  (min, avg, max) = (73.571, 75.855, 78.404), stdev = 1.858
+  CI (99.9%): [68.699, 83.010] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.alloc.rate.norm":
+  163976.204 ±(99.9%) 1.712 B/op [Average]
+  (min, avg, max) = (163975.429, 163976.204, 163976.567), stdev = 0.445
+  CI (99.9%): [163974.492, 163977.916] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.count":
+  3.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (≈ 0, 0.600, 1.000), stdev = 0.548
+  CI (99.9%): [3.000, 3.000] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.dagDistances:gc.time":
+  9.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 1.800, 4.000), stdev = 1.789
+  CI (99.9%): [9.000, 9.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeCompiled
+# Parameters: (degree = 2, states = 128, width = 1)
+
+# Run progress: 33.33% complete, ETA 00:01:27
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.462 us/op
+# Warmup Iteration   2: 1.914 us/op
+# Warmup Iteration   3: 1.487 us/op
+Iteration   1: 1.488 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 1.485 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 1.484 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 1.484 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 1.503 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeCompiled":
+  1.489 ±(99.9%) 0.031 us/op [Average]
+  (min, avg, max) = (1.484, 1.489, 1.503), stdev = 0.008
+  CI (99.9%): [1.458, 1.520] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate.norm":
+  0.018 ±(99.9%) 0.001 B/op [Average]
+  (min, avg, max) = (0.018, 0.018, 0.018), stdev = 0.001
+  CI (99.9%): [0.017, 0.018] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeCompiled
+# Parameters: (degree = 2, states = 128, width = 1000000)
+
+# Run progress: 37.50% complete, ETA 00:01:21
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.279 us/op
+# Warmup Iteration   2: 1.748 us/op
+# Warmup Iteration   3: 1.480 us/op
+Iteration   1: 1.482 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.017 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 1.480 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.017 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 1.486 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.017 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 1.479 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.017 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 1.487 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeCompiled":
+  1.483 ±(99.9%) 0.014 us/op [Average]
+  (min, avg, max) = (1.479, 1.483, 1.487), stdev = 0.004
+  CI (99.9%): [1.469, 1.496] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.012] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate.norm":
+  0.017 ±(99.9%) 0.001 B/op [Average]
+  (min, avg, max) = (0.017, 0.017, 0.018), stdev = 0.001
+  CI (99.9%): [0.017, 0.018] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeCompiled
+# Parameters: (degree = 2, states = 8192, width = 1)
+
+# Run progress: 41.67% complete, ETA 00:01:15
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.145 us/op
+# Warmup Iteration   2: 1.753 us/op
+# Warmup Iteration   3: 1.485 us/op
+Iteration   1: 1.485 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 1.483 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.017 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 1.485 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.017 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 1.484 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 1.488 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.017 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeCompiled":
+  1.485 ±(99.9%) 0.007 us/op [Average]
+  (min, avg, max) = (1.483, 1.485, 1.488), stdev = 0.002
+  CI (99.9%): [1.478, 1.492] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate.norm":
+  0.017 ±(99.9%) 0.001 B/op [Average]
+  (min, avg, max) = (0.017, 0.017, 0.018), stdev = 0.001
+  CI (99.9%): [0.017, 0.018] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeCompiled
+# Parameters: (degree = 2, states = 8192, width = 1000000)
+
+# Run progress: 45.83% complete, ETA 00:01:10
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.063 us/op
+# Warmup Iteration   2: 1.762 us/op
+# Warmup Iteration   3: 1.481 us/op
+Iteration   1: 1.493 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 1.483 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 1.489 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 1.495 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 1.510 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.018 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeCompiled":
+  1.494 ±(99.9%) 0.038 us/op [Average]
+  (min, avg, max) = (1.483, 1.494, 1.510), stdev = 0.010
+  CI (99.9%): [1.456, 1.532] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate.norm":
+  0.018 ±(99.9%) 0.001 B/op [Average]
+  (min, avg, max) = (0.018, 0.018, 0.018), stdev = 0.001
+  CI (99.9%): [0.017, 0.018] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeCompiled
+# Parameters: (degree = 16, states = 128, width = 1)
+
+# Run progress: 50.00% complete, ETA 00:01:05
+# Fork: 1 of 1
+# Warmup Iteration   1: 4.318 us/op
+# Warmup Iteration   2: 3.568 us/op
+# Warmup Iteration   3: 3.285 us/op
+Iteration   1: 3.290 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.039 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 3.273 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.039 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 3.294 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.039 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 3.453 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.040 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 3.430 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.040 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeCompiled":
+  3.348 ±(99.9%) 0.331 us/op [Average]
+  (min, avg, max) = (3.273, 3.348, 3.453), stdev = 0.086
+  CI (99.9%): [3.017, 3.679] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate.norm":
+  0.039 ±(99.9%) 0.003 B/op [Average]
+  (min, avg, max) = (0.039, 0.039, 0.040), stdev = 0.001
+  CI (99.9%): [0.036, 0.043] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeCompiled
+# Parameters: (degree = 16, states = 128, width = 1000000)
+
+# Run progress: 54.17% complete, ETA 00:00:59
+# Fork: 1 of 1
+# Warmup Iteration   1: 4.104 us/op
+# Warmup Iteration   2: 3.560 us/op
+# Warmup Iteration   3: 3.268 us/op
+Iteration   1: 3.320 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.039 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 3.273 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.039 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 3.279 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.039 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 3.317 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.039 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 3.355 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.039 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeCompiled":
+  3.309 ±(99.9%) 0.128 us/op [Average]
+  (min, avg, max) = (3.273, 3.309, 3.355), stdev = 0.033
+  CI (99.9%): [3.180, 3.437] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate.norm":
+  0.039 ±(99.9%) 0.001 B/op [Average]
+  (min, avg, max) = (0.039, 0.039, 0.039), stdev = 0.001
+  CI (99.9%): [0.038, 0.040] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeCompiled
+# Parameters: (degree = 16, states = 8192, width = 1)
+
+# Run progress: 58.33% complete, ETA 00:00:54
+# Fork: 1 of 1
+# Warmup Iteration   1: 5.045 us/op
+# Warmup Iteration   2: 4.356 us/op
+# Warmup Iteration   3: 3.973 us/op
+Iteration   1: 3.958 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.046 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 4.022 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.047 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 4.194 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.049 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 4.040 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.047 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 4.020 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.047 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeCompiled":
+  4.047 ±(99.9%) 0.339 us/op [Average]
+  (min, avg, max) = (3.958, 4.047, 4.194), stdev = 0.088
+  CI (99.9%): [3.708, 4.386] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate.norm":
+  0.047 ±(99.9%) 0.004 B/op [Average]
+  (min, avg, max) = (0.046, 0.047, 0.049), stdev = 0.001
+  CI (99.9%): [0.043, 0.051] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeCompiled
+# Parameters: (degree = 16, states = 8192, width = 1000000)
+
+# Run progress: 62.50% complete, ETA 00:00:48
+# Fork: 1 of 1
+# Warmup Iteration   1: 5.482 us/op
+# Warmup Iteration   2: 4.534 us/op
+# Warmup Iteration   3: 4.189 us/op
+Iteration   1: 4.278 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.050 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 4.129 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.048 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 4.036 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.048 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 4.066 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.048 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 4.092 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.048 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeCompiled":
+  4.120 ±(99.9%) 0.365 us/op [Average]
+  (min, avg, max) = (4.036, 4.120, 4.278), stdev = 0.095
+  CI (99.9%): [3.756, 4.485] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.alloc.rate.norm":
+  0.048 ±(99.9%) 0.004 B/op [Average]
+  (min, avg, max) = (0.048, 0.048, 0.050), stdev = 0.001
+  CI (99.9%): [0.045, 0.052] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeCompiled:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeLinear
+# Parameters: (degree = 2, states = 128, width = 1)
+
+# Run progress: 66.67% complete, ETA 00:00:43
+# Fork: 1 of 1
+# Warmup Iteration   1: 3.009 us/op
+# Warmup Iteration   2: 2.735 us/op
+# Warmup Iteration   3: 2.268 us/op
+Iteration   1: 2.782 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.032 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 2.238 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.026 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 2.193 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.026 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 2.236 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.026 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 2.209 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.026 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeLinear":
+  2.332 ±(99.9%) 0.972 us/op [Average]
+  (min, avg, max) = (2.193, 2.332, 2.782), stdev = 0.253
+  CI (99.9%): [1.359, 3.304] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.012] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate.norm":
+  0.027 ±(99.9%) 0.011 B/op [Average]
+  (min, avg, max) = (0.026, 0.027, 0.032), stdev = 0.003
+  CI (99.9%): [0.017, 0.038] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeLinear
+# Parameters: (degree = 2, states = 128, width = 1000000)
+
+# Run progress: 70.83% complete, ETA 00:00:38
+# Fork: 1 of 1
+# Warmup Iteration   1: 3.228 us/op
+# Warmup Iteration   2: 2.778 us/op
+# Warmup Iteration   3: 2.506 us/op
+Iteration   1: 2.498 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.029 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 2.508 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.029 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 2.449 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.029 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 2.474 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.029 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 2.451 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.029 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeLinear":
+  2.476 ±(99.9%) 0.102 us/op [Average]
+  (min, avg, max) = (2.449, 2.476, 2.508), stdev = 0.027
+  CI (99.9%): [2.373, 2.578] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate.norm":
+  0.029 ±(99.9%) 0.001 B/op [Average]
+  (min, avg, max) = (0.029, 0.029, 0.029), stdev = 0.001
+  CI (99.9%): [0.028, 0.030] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeLinear
+# Parameters: (degree = 2, states = 8192, width = 1)
+
+# Run progress: 75.00% complete, ETA 00:00:32
+# Fork: 1 of 1
+# Warmup Iteration   1: 3.344 us/op
+# Warmup Iteration   2: 2.849 us/op
+# Warmup Iteration   3: 2.670 us/op
+Iteration   1: 2.614 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.030 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 2.633 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.031 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 2.584 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.031 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 2.595 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.031 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 2.593 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.031 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeLinear":
+  2.604 ±(99.9%) 0.075 us/op [Average]
+  (min, avg, max) = (2.584, 2.604, 2.633), stdev = 0.020
+  CI (99.9%): [2.528, 2.679] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate.norm":
+  0.031 ±(99.9%) 0.001 B/op [Average]
+  (min, avg, max) = (0.030, 0.031, 0.031), stdev = 0.001
+  CI (99.9%): [0.030, 0.032] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeLinear
+# Parameters: (degree = 2, states = 8192, width = 1000000)
+
+# Run progress: 79.17% complete, ETA 00:00:27
+# Fork: 1 of 1
+# Warmup Iteration   1: 4.454 us/op
+# Warmup Iteration   2: 3.197 us/op
+# Warmup Iteration   3: 3.407 us/op
+Iteration   1: 2.698 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.032 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 2.708 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.032 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 2.690 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.032 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 2.679 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.031 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 2.670 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.031 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeLinear":
+  2.689 ±(99.9%) 0.059 us/op [Average]
+  (min, avg, max) = (2.670, 2.689, 2.708), stdev = 0.015
+  CI (99.9%): [2.630, 2.747] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.012] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate.norm":
+  0.032 ±(99.9%) 0.002 B/op [Average]
+  (min, avg, max) = (0.031, 0.032, 0.032), stdev = 0.001
+  CI (99.9%): [0.030, 0.033] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeLinear
+# Parameters: (degree = 16, states = 128, width = 1)
+
+# Run progress: 83.33% complete, ETA 00:00:21
+# Fork: 1 of 1
+# Warmup Iteration   1: 13.259 us/op
+# Warmup Iteration   2: 8.681 us/op
+# Warmup Iteration   3: 8.308 us/op
+Iteration   1: 8.827 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.104 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 9.089 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.106 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 8.914 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.104 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 8.916 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.105 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 8.834 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.104 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeLinear":
+  8.916 ±(99.9%) 0.407 us/op [Average]
+  (min, avg, max) = (8.827, 8.916, 9.089), stdev = 0.106
+  CI (99.9%): [8.509, 9.323] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate.norm":
+  0.105 ±(99.9%) 0.004 B/op [Average]
+  (min, avg, max) = (0.104, 0.105, 0.106), stdev = 0.001
+  CI (99.9%): [0.101, 0.109] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeLinear
+# Parameters: (degree = 16, states = 128, width = 1000000)
+
+# Run progress: 87.50% complete, ETA 00:00:16
+# Fork: 1 of 1
+# Warmup Iteration   1: 9.653 us/op
+# Warmup Iteration   2: 8.498 us/op
+# Warmup Iteration   3: 8.288 us/op
+Iteration   1: 8.595 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.101 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 8.804 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.104 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 8.889 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.105 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 8.860 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.105 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 8.867 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.104 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeLinear":
+  8.803 ±(99.9%) 0.464 us/op [Average]
+  (min, avg, max) = (8.595, 8.803, 8.889), stdev = 0.120
+  CI (99.9%): [8.340, 9.267] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate.norm":
+  0.104 ±(99.9%) 0.005 B/op [Average]
+  (min, avg, max) = (0.101, 0.104, 0.105), stdev = 0.001
+  CI (99.9%): [0.098, 0.109] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeLinear
+# Parameters: (degree = 16, states = 8192, width = 1)
+
+# Run progress: 91.67% complete, ETA 00:00:10
+# Fork: 1 of 1
+# Warmup Iteration   1: 11.845 us/op
+# Warmup Iteration   2: 9.504 us/op
+# Warmup Iteration   3: 9.075 us/op
+Iteration   1: 9.126 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.107 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 9.111 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.106 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 9.074 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.106 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 9.456 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.110 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 9.219 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.109 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeLinear":
+  9.197 ±(99.9%) 0.594 us/op [Average]
+  (min, avg, max) = (9.074, 9.197, 9.456), stdev = 0.154
+  CI (99.9%): [8.603, 9.792] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate.norm":
+  0.108 ±(99.9%) 0.007 B/op [Average]
+  (min, avg, max) = (0.106, 0.108, 0.110), stdev = 0.002
+  CI (99.9%): [0.100, 0.115] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.ScaleBench.recognizeLinear
+# Parameters: (degree = 16, states = 8192, width = 1000000)
+
+# Run progress: 95.83% complete, ETA 00:00:05
+# Fork: 1 of 1
+# Warmup Iteration   1: 17.116 us/op
+# Warmup Iteration   2: 9.760 us/op
+# Warmup Iteration   3: 9.165 us/op
+Iteration   1: 9.110 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.105 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 10.710 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.125 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 9.877 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.114 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 9.287 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.108 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 9.217 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.108 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.ScaleBench.recognizeLinear":
+  9.640 ±(99.9%) 2.574 us/op [Average]
+  (min, avg, max) = (9.110, 9.640, 10.710), stdev = 0.668
+  CI (99.9%): [7.066, 12.214] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.alloc.rate.norm":
+  0.112 ±(99.9%) 0.031 B/op [Average]
+  (min, avg, max) = (0.105, 0.112, 0.125), stdev = 0.008
+  CI (99.9%): [0.081, 0.144] (assumes normal distribution)
+
+Secondary result "audit.ScaleBench.recognizeLinear:gc.count":
+  ≈ 0 counts
+
+
+# Run complete. Total time: 00:02:11
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                        (degree)  (states)  (width)  Mode  Cnt       Score     Error   Units
+ScaleBench.dagDistances                                 2       128        1  avgt    5       6.698 ±   0.834   us/op
+ScaleBench.dagDistances:gc.alloc.rate                   2       128        1  avgt    5     379.395 ±  48.880  MB/sec
+ScaleBench.dagDistances:gc.alloc.rate.norm              2       128        1  avgt    5    2672.079 ±   0.008    B/op
+ScaleBench.dagDistances:gc.count                        2       128        1  avgt    5      12.000            counts
+ScaleBench.dagDistances:gc.time                         2       128        1  avgt    5      29.000                ms
+ScaleBench.dagDistances                                 2       128  1000000  avgt    5       6.697 ±   0.904   us/op
+ScaleBench.dagDistances:gc.alloc.rate                   2       128  1000000  avgt    5     379.858 ±  50.021  MB/sec
+ScaleBench.dagDistances:gc.alloc.rate.norm              2       128  1000000  avgt    5    2672.079 ±   0.013    B/op
+ScaleBench.dagDistances:gc.count                        2       128  1000000  avgt    5      13.000            counts
+ScaleBench.dagDistances:gc.time                         2       128  1000000  avgt    5      30.000                ms
+ScaleBench.dagDistances                                 2      8192        1  avgt    5     480.260 ± 105.010   us/op
+ScaleBench.dagDistances:gc.alloc.rate                   2      8192        1  avgt    5     325.423 ±  68.337  MB/sec
+ScaleBench.dagDistances:gc.alloc.rate.norm              2      8192        1  avgt    5  163957.749 ±   1.491    B/op
+ScaleBench.dagDistances:gc.count                        2      8192        1  avgt    5      11.000            counts
+ScaleBench.dagDistances:gc.time                         2      8192        1  avgt    5      32.000                ms
+ScaleBench.dagDistances                                 2      8192  1000000  avgt    5     510.725 ± 110.670   us/op
+ScaleBench.dagDistances:gc.alloc.rate                   2      8192  1000000  avgt    5     306.383 ±  68.716  MB/sec
+ScaleBench.dagDistances:gc.alloc.rate.norm              2      8192  1000000  avgt    5  163958.068 ±   1.372    B/op
+ScaleBench.dagDistances:gc.count                        2      8192  1000000  avgt    5      11.000            counts
+ScaleBench.dagDistances:gc.time                         2      8192  1000000  avgt    5      55.000                ms
+ScaleBench.dagDistances                                16       128        1  avgt    5      29.827 ±   1.850   us/op
+ScaleBench.dagDistances:gc.alloc.rate                  16       128        1  avgt    5      85.294 ±   5.153  MB/sec
+ScaleBench.dagDistances:gc.alloc.rate.norm             16       128        1  avgt    5    2672.351 ±   0.026    B/op
+ScaleBench.dagDistances:gc.count                       16       128        1  avgt    5       2.000            counts
+ScaleBench.dagDistances:gc.time                        16       128        1  avgt    5       5.000                ms
+ScaleBench.dagDistances                                16       128  1000000  avgt    5      31.034 ±   4.126   us/op
+ScaleBench.dagDistances:gc.alloc.rate                  16       128  1000000  avgt    5      81.961 ±  10.803  MB/sec
+ScaleBench.dagDistances:gc.alloc.rate.norm             16       128  1000000  avgt    5    2672.368 ±   0.043    B/op
+ScaleBench.dagDistances:gc.count                       16       128  1000000  avgt    5       2.000            counts
+ScaleBench.dagDistances:gc.time                        16       128  1000000  avgt    5       5.000                ms
+ScaleBench.dagDistances                                16      8192        1  avgt    5    2057.923 ± 338.972   us/op
+ScaleBench.dagDistances:gc.alloc.rate                  16      8192        1  avgt    5      75.857 ±  12.072  MB/sec
+ScaleBench.dagDistances:gc.alloc.rate.norm             16      8192        1  avgt    5  163976.278 ±   4.223    B/op
+ScaleBench.dagDistances:gc.count                       16      8192        1  avgt    5       2.000            counts
+ScaleBench.dagDistances:gc.time                        16      8192        1  avgt    5       5.000                ms
+ScaleBench.dagDistances                                16      8192  1000000  avgt    5    2057.555 ± 190.305   us/op
+ScaleBench.dagDistances:gc.alloc.rate                  16      8192  1000000  avgt    5      75.855 ±   7.156  MB/sec
+ScaleBench.dagDistances:gc.alloc.rate.norm             16      8192  1000000  avgt    5  163976.204 ±   1.712    B/op
+ScaleBench.dagDistances:gc.count                       16      8192  1000000  avgt    5       3.000            counts
+ScaleBench.dagDistances:gc.time                        16      8192  1000000  avgt    5       9.000                ms
+ScaleBench.recognizeCompiled                            2       128        1  avgt    5       1.489 ±   0.031   us/op
+ScaleBench.recognizeCompiled:gc.alloc.rate              2       128        1  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeCompiled:gc.alloc.rate.norm         2       128        1  avgt    5       0.018 ±   0.001    B/op
+ScaleBench.recognizeCompiled:gc.count                   2       128        1  avgt    5         ≈ 0            counts
+ScaleBench.recognizeCompiled                            2       128  1000000  avgt    5       1.483 ±   0.014   us/op
+ScaleBench.recognizeCompiled:gc.alloc.rate              2       128  1000000  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeCompiled:gc.alloc.rate.norm         2       128  1000000  avgt    5       0.017 ±   0.001    B/op
+ScaleBench.recognizeCompiled:gc.count                   2       128  1000000  avgt    5         ≈ 0            counts
+ScaleBench.recognizeCompiled                            2      8192        1  avgt    5       1.485 ±   0.007   us/op
+ScaleBench.recognizeCompiled:gc.alloc.rate              2      8192        1  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeCompiled:gc.alloc.rate.norm         2      8192        1  avgt    5       0.017 ±   0.001    B/op
+ScaleBench.recognizeCompiled:gc.count                   2      8192        1  avgt    5         ≈ 0            counts
+ScaleBench.recognizeCompiled                            2      8192  1000000  avgt    5       1.494 ±   0.038   us/op
+ScaleBench.recognizeCompiled:gc.alloc.rate              2      8192  1000000  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeCompiled:gc.alloc.rate.norm         2      8192  1000000  avgt    5       0.018 ±   0.001    B/op
+ScaleBench.recognizeCompiled:gc.count                   2      8192  1000000  avgt    5         ≈ 0            counts
+ScaleBench.recognizeCompiled                           16       128        1  avgt    5       3.348 ±   0.331   us/op
+ScaleBench.recognizeCompiled:gc.alloc.rate             16       128        1  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeCompiled:gc.alloc.rate.norm        16       128        1  avgt    5       0.039 ±   0.003    B/op
+ScaleBench.recognizeCompiled:gc.count                  16       128        1  avgt    5         ≈ 0            counts
+ScaleBench.recognizeCompiled                           16       128  1000000  avgt    5       3.309 ±   0.128   us/op
+ScaleBench.recognizeCompiled:gc.alloc.rate             16       128  1000000  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeCompiled:gc.alloc.rate.norm        16       128  1000000  avgt    5       0.039 ±   0.001    B/op
+ScaleBench.recognizeCompiled:gc.count                  16       128  1000000  avgt    5         ≈ 0            counts
+ScaleBench.recognizeCompiled                           16      8192        1  avgt    5       4.047 ±   0.339   us/op
+ScaleBench.recognizeCompiled:gc.alloc.rate             16      8192        1  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeCompiled:gc.alloc.rate.norm        16      8192        1  avgt    5       0.047 ±   0.004    B/op
+ScaleBench.recognizeCompiled:gc.count                  16      8192        1  avgt    5         ≈ 0            counts
+ScaleBench.recognizeCompiled                           16      8192  1000000  avgt    5       4.120 ±   0.365   us/op
+ScaleBench.recognizeCompiled:gc.alloc.rate             16      8192  1000000  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeCompiled:gc.alloc.rate.norm        16      8192  1000000  avgt    5       0.048 ±   0.004    B/op
+ScaleBench.recognizeCompiled:gc.count                  16      8192  1000000  avgt    5         ≈ 0            counts
+ScaleBench.recognizeLinear                              2       128        1  avgt    5       2.332 ±   0.972   us/op
+ScaleBench.recognizeLinear:gc.alloc.rate                2       128        1  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeLinear:gc.alloc.rate.norm           2       128        1  avgt    5       0.027 ±   0.011    B/op
+ScaleBench.recognizeLinear:gc.count                     2       128        1  avgt    5         ≈ 0            counts
+ScaleBench.recognizeLinear                              2       128  1000000  avgt    5       2.476 ±   0.102   us/op
+ScaleBench.recognizeLinear:gc.alloc.rate                2       128  1000000  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeLinear:gc.alloc.rate.norm           2       128  1000000  avgt    5       0.029 ±   0.001    B/op
+ScaleBench.recognizeLinear:gc.count                     2       128  1000000  avgt    5         ≈ 0            counts
+ScaleBench.recognizeLinear                              2      8192        1  avgt    5       2.604 ±   0.075   us/op
+ScaleBench.recognizeLinear:gc.alloc.rate                2      8192        1  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeLinear:gc.alloc.rate.norm           2      8192        1  avgt    5       0.031 ±   0.001    B/op
+ScaleBench.recognizeLinear:gc.count                     2      8192        1  avgt    5         ≈ 0            counts
+ScaleBench.recognizeLinear                              2      8192  1000000  avgt    5       2.689 ±   0.059   us/op
+ScaleBench.recognizeLinear:gc.alloc.rate                2      8192  1000000  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeLinear:gc.alloc.rate.norm           2      8192  1000000  avgt    5       0.032 ±   0.002    B/op
+ScaleBench.recognizeLinear:gc.count                     2      8192  1000000  avgt    5         ≈ 0            counts
+ScaleBench.recognizeLinear                             16       128        1  avgt    5       8.916 ±   0.407   us/op
+ScaleBench.recognizeLinear:gc.alloc.rate               16       128        1  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeLinear:gc.alloc.rate.norm          16       128        1  avgt    5       0.105 ±   0.004    B/op
+ScaleBench.recognizeLinear:gc.count                    16       128        1  avgt    5         ≈ 0            counts
+ScaleBench.recognizeLinear                             16       128  1000000  avgt    5       8.803 ±   0.464   us/op
+ScaleBench.recognizeLinear:gc.alloc.rate               16       128  1000000  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeLinear:gc.alloc.rate.norm          16       128  1000000  avgt    5       0.104 ±   0.005    B/op
+ScaleBench.recognizeLinear:gc.count                    16       128  1000000  avgt    5         ≈ 0            counts
+ScaleBench.recognizeLinear                             16      8192        1  avgt    5       9.197 ±   0.594   us/op
+ScaleBench.recognizeLinear:gc.alloc.rate               16      8192        1  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeLinear:gc.alloc.rate.norm          16      8192        1  avgt    5       0.108 ±   0.007    B/op
+ScaleBench.recognizeLinear:gc.count                    16      8192        1  avgt    5         ≈ 0            counts
+ScaleBench.recognizeLinear                             16      8192  1000000  avgt    5       9.640 ±   2.574   us/op
+ScaleBench.recognizeLinear:gc.alloc.rate               16      8192  1000000  avgt    5       0.011 ±   0.001  MB/sec
+ScaleBench.recognizeLinear:gc.alloc.rate.norm          16      8192  1000000  avgt    5       0.112 ±   0.031    B/op
+ScaleBench.recognizeLinear:gc.count                    16      8192  1000000  avgt    5         ≈ 0            counts
+
+Benchmark result is saved to /tmp/automaton-weighted-bench/scale.json

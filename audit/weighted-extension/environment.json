@@ -1,0 +1,24 @@
+{
+  "baseline_environment": "../automaton-3.0/environment.json",
+  "java": "OpenJDK 17.0.20.1",
+  "maven": "3.9.12",
+  "jmh": "1.37",
+  "main_library_version": "3.0.0 (local unreleased extension)",
+  "heap_mib": {
+    "initial": 128,
+    "maximum": 256
+  },
+  "threads": 1,
+  "warmup": {
+    "iterations": 3,
+    "milliseconds": 500
+  },
+  "measurement": {
+    "iterations": 5,
+    "milliseconds": 500
+  },
+  "primary_and_advanced_forks": 2,
+  "scaling_forks": 1,
+  "cpu_isolation": false,
+  "host_shared": true
+}

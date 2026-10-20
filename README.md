@@ -11,6 +11,7 @@ Transitions are labelled with sets of integer intervals, so an automaton can wor
 - Counting, uniform random generation and enumeration of words
 - Fast word recognition with compiled automata, search inside sequences
 - Graphviz export
+- Unreleased extension: scalar/vector weights, shortest paths, finite horizons, lexicographic and Pareto optimization — see [weighted automata](WEIGHTED_AUTOMATA.md)
 
 ## Installation
 

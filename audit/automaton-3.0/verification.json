@@ -1,0 +1,17 @@
+{
+  "tracked_files_verified_unchanged": 38,
+  "existing_tests_passed": 47,
+  "existing_test_failures": 0,
+  "existing_test_errors": 0,
+  "existing_tests_skipped": 0,
+  "packaging_sources_javadoc_success": true,
+  "jmh_combinations_complete": 39,
+  "jmh_forks_per_combination": 2,
+  "jmh_measured_samples_per_combination": 10,
+  "jmh_reported_failures": 0,
+  "benchmark_source_matches_executed_source": true,
+  "production_code_modified": false,
+  "test_code_modified": false,
+  "pom_or_ci_modified": false,
+  "implementation_started": false
+}
