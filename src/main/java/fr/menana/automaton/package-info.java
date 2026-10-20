@@ -71,6 +71,11 @@
  * {@link fr.menana.automaton.weighted}; compiled weighted recognition is in
  * {@link fr.menana.automaton.weighted.compiled}. Existing Boolean API names stay
  * in this package. See the complete repository manual and 4.0 migration guide.
+ * Since 4.1, start directly with {@link fr.menana.automaton.Automaton#weighted(java.util.function.ToDoubleFunction)}
+ * or {@link fr.menana.automaton.Automaton#multiWeighted(java.util.function.ToDoubleFunction...)}.
+ * {@link fr.menana.automaton.AutomatonSnapshot} connects original State/Transition
+ * identities to one reusable immutable structure, and all weighted variants offer
+ * Boolean membership and an explicit mutable Boolean projection.
  *
  * <h2>Threads</h2>
  * {@link fr.menana.automaton.Automaton} and {@link fr.menana.automaton.IntervalSet} are mutable and not thread safe.

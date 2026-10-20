@@ -1,0 +1,19 @@
+{
+  "baseline": "13d8ba6b898c7b8eefb7013a57f32c37fb41888f",
+  "candidate_version": "4.1.0-SNAPSHOT",
+  "java": "openjdk version \"17.0.20.1\" 2026-08-18\nOpenJDK Runtime Environment (build 17.0.20.1+1-1-26.04-Ubuntu)\nOpenJDK 64-Bit Server VM (build 17.0.20.1+1-1-26.04-Ubuntu, mixed mode, sharing)",
+  "maven": "Apache Maven 3.9.12",
+  "platform": "Linux-7.0.0-34-generic-x86_64-with-glibc2.43",
+  "machine": "x86_64",
+  "cpu": "Intel(R) Pentium(R) CPU  N3700  @ 1.60GHz",
+  "shared_host": true,
+  "jmh": "1.37",
+  "forks": 2,
+  "warmup_iterations": 3,
+  "warmup_milliseconds": 500,
+  "measurement_iterations": 5,
+  "measurement_milliseconds": 500,
+  "heap": "128-256 MB",
+  "profiler": "gc",
+  "concurrent_builds_or_tests_during_measurements": false
+}

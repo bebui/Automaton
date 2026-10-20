@@ -1,0 +1,13 @@
+{
+  "baseline": "13d8ba6",
+  "previous_supported_public_types_checked": 41,
+  "removed_public_signatures": {},
+  "original_boolean_class_files_unchanged_from_4_0": 36,
+  "original_boolean_class_files_changed": [
+    "fr/menana/automaton/Automaton.class"
+  ],
+  "original_recognizer_method_body_unchanged": true,
+  "compiled_dfa_state_transition_sources_unchanged": true,
+  "tested_and_benchmark_class_files_byte_identical": 110,
+  "unrecompiled_4_0_client_scenarios_passed": 11
+}

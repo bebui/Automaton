@@ -1,0 +1,25 @@
+{
+  "maven_clean_verify": {
+    "tests": 98,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "library_build_warnings": 0,
+  "executable_documentation_scenarios": 12,
+  "supported_public_types_documented": 43,
+  "independent_generated_automata": 70,
+  "words_per_generated_automaton": 156,
+  "integration_test_methods": 8,
+  "previous_supported_public_types_checked": 41,
+  "unrecompiled_4_0_client_scenarios": 11,
+  "new_runtime_dependencies": 0,
+  "published_artifacts_modified": false,
+  "jmh_combinations_total": 73,
+  "main_baseline_cases": 15,
+  "main_final_cases": 27,
+  "intermediate_candidate_cases": 27,
+  "focused_boolean_rechecks": 4,
+  "jmh_forks_per_case": 2,
+  "measurement_iterations_per_fork": 5
+}

@@ -1,0 +1,1394 @@
+Command: ['/usr/lib/jvm/java-17-openjdk-amd64/bin/java', '-jar', '/home/julien/codex_ha/Automaton/benchmarks/target/benchmarks.jar', 'audit.SnapshotApiBench.*', '-prof', 'gc', '-foe', 'true', '-rf', 'json', '-rff', '/home/julien/codex_ha/Automaton/audit/automaton-integration/snapshot-api.json']
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.booleanProjection
+# Parameters: (family = dfa)
+
+# Run progress: 0.00% complete, ETA 00:01:36
+# Fork: 1 of 2
+# Warmup Iteration   1: 1095.272 us/op
+# Warmup Iteration   2: 293.649 us/op
+# Warmup Iteration   3: 296.535 us/op
+Iteration   1: 294.886 us/op
+                 gc.alloc.rate:      665.992 MB/sec
+                 gc.alloc.rate.norm: 206315.557 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            10.000 ms
+
+Iteration   2: 303.793 us/op
+                 gc.alloc.rate:      646.765 MB/sec
+                 gc.alloc.rate.norm: 206315.556 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            16.000 ms
+
+Iteration   3: 295.479 us/op
+                 gc.alloc.rate:      664.419 MB/sec
+                 gc.alloc.rate.norm: 206315.516 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   4: 299.579 us/op
+                 gc.alloc.rate:      655.605 MB/sec
+                 gc.alloc.rate.norm: 206315.522 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   5: 325.281 us/op
+                 gc.alloc.rate:      603.920 MB/sec
+                 gc.alloc.rate.norm: 206315.845 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            11.000 ms
+
+
+# Run progress: 4.17% complete, ETA 00:02:03
+# Fork: 2 of 2
+# Warmup Iteration   1: 1049.349 us/op
+# Warmup Iteration   2: 318.072 us/op
+# Warmup Iteration   3: 294.449 us/op
+Iteration   1: 294.182 us/op
+                 gc.alloc.rate:      667.619 MB/sec
+                 gc.alloc.rate.norm: 206315.504 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   2: 291.479 us/op
+                 gc.alloc.rate:      674.079 MB/sec
+                 gc.alloc.rate.norm: 206315.545 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   3: 302.058 us/op
+                 gc.alloc.rate:      649.386 MB/sec
+                 gc.alloc.rate.norm: 206315.599 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            15.000 ms
+
+Iteration   4: 317.537 us/op
+                 gc.alloc.rate:      618.730 MB/sec
+                 gc.alloc.rate.norm: 206315.701 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            10.000 ms
+
+Iteration   5: 297.219 us/op
+                 gc.alloc.rate:      660.749 MB/sec
+                 gc.alloc.rate.norm: 206315.539 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            11.000 ms
+
+
+
+Result "audit.SnapshotApiBench.booleanProjection":
+  302.149 ±(99.9%) 16.562 us/op [Average]
+  (min, avg, max) = (291.479, 302.149, 325.281), stdev = 10.955
+  CI (99.9%): [285.587, 318.712] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.booleanProjection:gc.alloc.rate":
+  650.726 ±(99.9%) 34.208 MB/sec [Average]
+  (min, avg, max) = (603.920, 650.726, 674.079), stdev = 22.626
+  CI (99.9%): [616.519, 684.934] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.booleanProjection:gc.alloc.rate.norm":
+  206315.588 ±(99.9%) 0.161 B/op [Average]
+  (min, avg, max) = (206315.504, 206315.588, 206315.845), stdev = 0.106
+  CI (99.9%): [206315.428, 206315.749] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.booleanProjection:gc.count":
+  42.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (4.000, 4.200, 5.000), stdev = 0.422
+  CI (99.9%): [42.000, 42.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.booleanProjection:gc.time":
+  109.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (9.000, 10.900, 16.000), stdev = 2.558
+  CI (99.9%): [109.000, 109.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.booleanProjection
+# Parameters: (family = epsilon-nfa)
+
+# Run progress: 8.33% complete, ETA 00:01:55
+# Fork: 1 of 2
+# Warmup Iteration   1: 662.389 us/op
+# Warmup Iteration   2: 287.126 us/op
+# Warmup Iteration   3: 274.923 us/op
+Iteration   1: 272.308 us/op
+                 gc.alloc.rate:      792.969 MB/sec
+                 gc.alloc.rate.norm: 226827.321 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            15.000 ms
+
+Iteration   2: 288.316 us/op
+                 gc.alloc.rate:      746.473 MB/sec
+                 gc.alloc.rate.norm: 226827.377 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            15.000 ms
+
+Iteration   3: 300.368 us/op
+                 gc.alloc.rate:      718.505 MB/sec
+                 gc.alloc.rate.norm: 226827.558 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            13.000 ms
+
+Iteration   4: 304.019 us/op
+                 gc.alloc.rate:      703.330 MB/sec
+                 gc.alloc.rate.norm: 226827.612 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            12.000 ms
+
+Iteration   5: 277.029 us/op
+                 gc.alloc.rate:      776.511 MB/sec
+                 gc.alloc.rate.norm: 226827.295 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            10.000 ms
+
+
+# Run progress: 12.50% complete, ETA 00:01:50
+# Fork: 2 of 2
+# Warmup Iteration   1: 910.576 us/op
+# Warmup Iteration   2: 278.205 us/op
+# Warmup Iteration   3: 278.840 us/op
+Iteration   1: 331.263 us/op
+                 gc.alloc.rate:      651.958 MB/sec
+                 gc.alloc.rate.norm: 226827.974 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            38.000 ms
+
+Iteration   2: 298.740 us/op
+                 gc.alloc.rate:      721.720 MB/sec
+                 gc.alloc.rate.norm: 226827.526 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            31.000 ms
+
+Iteration   3: 346.934 us/op
+                 gc.alloc.rate:      622.575 MB/sec
+                 gc.alloc.rate.norm: 226828.008 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            10.000 ms
+
+Iteration   4: 296.123 us/op
+                 gc.alloc.rate:      729.300 MB/sec
+                 gc.alloc.rate.norm: 226827.527 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            13.000 ms
+
+Iteration   5: 274.607 us/op
+                 gc.alloc.rate:      785.118 MB/sec
+                 gc.alloc.rate.norm: 226827.217 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            12.000 ms
+
+
+
+Result "audit.SnapshotApiBench.booleanProjection":
+  298.971 ±(99.9%) 36.613 us/op [Average]
+  (min, avg, max) = (272.308, 298.971, 346.934), stdev = 24.217
+  CI (99.9%): [262.357, 335.584] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.booleanProjection:gc.alloc.rate":
+  724.846 ±(99.9%) 83.898 MB/sec [Average]
+  (min, avg, max) = (622.575, 724.846, 792.969), stdev = 55.493
+  CI (99.9%): [640.948, 808.744] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.booleanProjection:gc.alloc.rate.norm":
+  226827.541 ±(99.9%) 0.407 B/op [Average]
+  (min, avg, max) = (226827.217, 226827.541, 226828.008), stdev = 0.269
+  CI (99.9%): [226827.134, 226827.949] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.booleanProjection:gc.count":
+  49.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (4.000, 4.900, 5.000), stdev = 0.316
+  CI (99.9%): [49.000, 49.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.booleanProjection:gc.time":
+  169.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (10.000, 16.900, 38.000), stdev = 9.574
+  CI (99.9%): [169.000, 169.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.capture
+# Parameters: (family = dfa)
+
+# Run progress: 16.67% complete, ETA 00:01:45
+# Fork: 1 of 2
+# Warmup Iteration   1: 2300.033 us/op
+# Warmup Iteration   2: 1720.530 us/op
+# Warmup Iteration   3: 795.004 us/op
+Iteration   1: 1180.363 us/op
+                 gc.alloc.rate:      191.940 MB/sec
+                 gc.alloc.rate.norm: 239413.948 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   2: 1912.808 us/op
+                 gc.alloc.rate:      119.119 MB/sec
+                 gc.alloc.rate.norm: 239391.008 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            3.000 ms
+
+Iteration   3: 2022.777 us/op
+                 gc.alloc.rate:      112.616 MB/sec
+                 gc.alloc.rate.norm: 239423.550 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            3.000 ms
+
+Iteration   4: 464.306 us/op
+                 gc.alloc.rate:      474.250 MB/sec
+                 gc.alloc.rate.norm: 231248.614 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   5: 456.231 us/op
+                 gc.alloc.rate:      481.803 MB/sec
+                 gc.alloc.rate.norm: 231149.365 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            6.000 ms
+
+
+# Run progress: 20.83% complete, ETA 00:01:41
+# Fork: 2 of 2
+# Warmup Iteration   1: 2625.294 us/op
+# Warmup Iteration   2: 2627.079 us/op
+# Warmup Iteration   3: 1255.877 us/op
+Iteration   1: 640.057 us/op
+                 gc.alloc.rate:      343.400 MB/sec
+                 gc.alloc.rate.norm: 231151.581 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   2: 534.524 us/op
+                 gc.alloc.rate:      411.691 MB/sec
+                 gc.alloc.rate.norm: 231150.306 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   3: 461.394 us/op
+                 gc.alloc.rate:      476.542 MB/sec
+                 gc.alloc.rate.norm: 231149.439 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            6.000 ms
+
+Iteration   4: 471.870 us/op
+                 gc.alloc.rate:      466.433 MB/sec
+                 gc.alloc.rate.norm: 231149.531 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   5: 458.391 us/op
+                 gc.alloc.rate:      478.809 MB/sec
+                 gc.alloc.rate.norm: 231149.580 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            6.000 ms
+
+
+
+Result "audit.SnapshotApiBench.capture":
+  860.272 ±(99.9%) 943.861 us/op [Average]
+  (min, avg, max) = (456.231, 860.272, 2022.777), stdev = 624.306
+  CI (99.9%): [≈ 0, 1804.133] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.capture:gc.alloc.rate":
+  355.660 ±(99.9%) 234.834 MB/sec [Average]
+  (min, avg, max) = (112.616, 355.660, 481.803), stdev = 155.328
+  CI (99.9%): [120.827, 590.494] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.capture:gc.alloc.rate.norm":
+  233637.692 ±(99.9%) 6021.805 B/op [Average]
+  (min, avg, max) = (231149.365, 233637.692, 239423.550), stdev = 3983.051
+  CI (99.9%): [227615.887, 239659.497] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.capture:gc.count":
+  23.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (1.000, 2.300, 3.000), stdev = 0.949
+  CI (99.9%): [23.000, 23.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.capture:gc.time":
+  66.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (3.000, 6.600, 9.000), stdev = 2.221
+  CI (99.9%): [66.000, 66.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.capture
+# Parameters: (family = epsilon-nfa)
+
+# Run progress: 25.00% complete, ETA 00:01:35
+# Fork: 1 of 2
+# Warmup Iteration   1: 1981.081 us/op
+# Warmup Iteration   2: 1422.173 us/op
+# Warmup Iteration   3: 1551.151 us/op
+Iteration   1: 1497.166 us/op
+                 gc.alloc.rate:      144.294 MB/sec
+                 gc.alloc.rate.norm: 235202.149 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            123.000 ms
+
+Iteration   2: 447.456 us/op
+                 gc.alloc.rate:      487.996 MB/sec
+                 gc.alloc.rate.norm: 231197.321 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            15.000 ms
+
+Iteration   3: 451.978 us/op
+                 gc.alloc.rate:      487.008 MB/sec
+                 gc.alloc.rate.norm: 231197.341 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   4: 456.482 us/op
+                 gc.alloc.rate:      482.152 MB/sec
+                 gc.alloc.rate.norm: 231197.399 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            6.000 ms
+
+Iteration   5: 443.445 us/op
+                 gc.alloc.rate:      496.282 MB/sec
+                 gc.alloc.rate.norm: 231197.270 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            7.000 ms
+
+
+# Run progress: 29.17% complete, ETA 00:01:30
+# Fork: 2 of 2
+# Warmup Iteration   1: 2284.048 us/op
+# Warmup Iteration   2: 2815.678 us/op
+# Warmup Iteration   3: 2538.235 us/op
+Iteration   1: 3186.567 us/op
+                 gc.alloc.rate:      71.529 MB/sec
+                 gc.alloc.rate.norm: 239485.082 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            11.000 ms
+
+Iteration   2: 3688.396 us/op
+                 gc.alloc.rate:      61.665 MB/sec
+                 gc.alloc.rate.norm: 239485.197 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 724.257 us/op
+                 gc.alloc.rate:      304.753 MB/sec
+                 gc.alloc.rate.norm: 232485.383 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            13.000 ms
+
+Iteration   4: 516.569 us/op
+                 gc.alloc.rate:      424.271 MB/sec
+                 gc.alloc.rate.norm: 231198.006 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   5: 538.075 us/op
+                 gc.alloc.rate:      408.215 MB/sec
+                 gc.alloc.rate.norm: 231198.361 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            13.000 ms
+
+
+
+Result "audit.SnapshotApiBench.capture":
+  1195.039 ±(99.9%) 1859.116 us/op [Average]
+  (min, avg, max) = (443.445, 1195.039, 3688.396), stdev = 1229.690
+  CI (99.9%): [≈ 0, 3054.155] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.capture:gc.alloc.rate":
+  336.817 ±(99.9%) 270.866 MB/sec [Average]
+  (min, avg, max) = (61.665, 336.817, 496.282), stdev = 179.161
+  CI (99.9%): [65.950, 607.683] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.capture:gc.alloc.rate.norm":
+  233384.351 ±(99.9%) 5218.832 B/op [Average]
+  (min, avg, max) = (231197.270, 233384.351, 239485.197), stdev = 3451.934
+  CI (99.9%): [228165.519, 238603.182] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.capture:gc.count":
+  23.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (≈ 0, 2.300, 4.000), stdev = 1.252
+  CI (99.9%): [23.000, 23.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.capture:gc.time":
+  205.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 20.500, 123.000), stdev = 36.271
+  CI (99.9%): [205.000, 205.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.membership
+# Parameters: (family = dfa)
+
+# Run progress: 33.33% complete, ETA 00:01:25
+# Fork: 1 of 2
+# Warmup Iteration   1: 1.860 us/op
+# Warmup Iteration   2: 1.234 us/op
+# Warmup Iteration   3: 1.044 us/op
+Iteration   1: 1.045 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.012 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 1.043 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.012 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 1.041 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.012 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 1.046 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.012 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 1.047 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.012 B/op
+                 gc.count:           ≈ 0 counts
+
+
+# Run progress: 37.50% complete, ETA 00:01:20
+# Fork: 2 of 2
+# Warmup Iteration   1: 1.236 us/op
+# Warmup Iteration   2: 1.054 us/op
+# Warmup Iteration   3: 1.054 us/op
+Iteration   1: 1.048 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.012 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 1.039 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.012 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 1.100 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.013 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 1.048 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.012 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 1.048 us/op
+                 gc.alloc.rate:      0.011 MB/sec
+                 gc.alloc.rate.norm: 0.012 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.SnapshotApiBench.membership":
+  1.050 ±(99.9%) 0.027 us/op [Average]
+  (min, avg, max) = (1.039, 1.050, 1.100), stdev = 0.018
+  CI (99.9%): [1.024, 1.077] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.membership:gc.alloc.rate":
+  0.011 ±(99.9%) 0.001 MB/sec [Average]
+  (min, avg, max) = (0.011, 0.011, 0.011), stdev = 0.001
+  CI (99.9%): [0.011, 0.011] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.membership:gc.alloc.rate.norm":
+  0.012 ±(99.9%) 0.001 B/op [Average]
+  (min, avg, max) = (0.012, 0.012, 0.013), stdev = 0.001
+  CI (99.9%): [0.012, 0.013] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.membership:gc.count":
+  ≈ 0 counts
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.membership
+# Parameters: (family = epsilon-nfa)
+
+# Run progress: 41.67% complete, ETA 00:01:15
+# Fork: 1 of 2
+# Warmup Iteration   1: 225.875 us/op
+# Warmup Iteration   2: 103.598 us/op
+# Warmup Iteration   3: 156.905 us/op
+Iteration   1: 166.937 us/op
+                 gc.alloc.rate:      9.037 MB/sec
+                 gc.alloc.rate.norm: 1585.940 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 112.755 us/op
+                 gc.alloc.rate:      13.363 MB/sec
+                 gc.alloc.rate.norm: 1585.324 B/op
+                 gc.count:           1.000 counts
+                 gc.time:            22.000 ms
+
+Iteration   3: 78.282 us/op
+                 gc.alloc.rate:      19.271 MB/sec
+                 gc.alloc.rate.norm: 1584.917 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 80.561 us/op
+                 gc.alloc.rate:      18.688 MB/sec
+                 gc.alloc.rate.norm: 1584.929 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 80.410 us/op
+                 gc.alloc.rate:      18.769 MB/sec
+                 gc.alloc.rate.norm: 1584.929 B/op
+                 gc.count:           ≈ 0 counts
+
+
+# Run progress: 45.83% complete, ETA 00:01:10
+# Fork: 2 of 2
+# Warmup Iteration   1: 285.051 us/op
+# Warmup Iteration   2: 92.328 us/op
+# Warmup Iteration   3: 76.250 us/op
+Iteration   1: 73.403 us/op
+                 gc.alloc.rate:      20.549 MB/sec
+                 gc.alloc.rate.norm: 1584.856 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   2: 76.926 us/op
+                 gc.alloc.rate:      19.446 MB/sec
+                 gc.alloc.rate.norm: 1584.909 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   3: 79.158 us/op
+                 gc.alloc.rate:      19.039 MB/sec
+                 gc.alloc.rate.norm: 1584.934 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   4: 79.924 us/op
+                 gc.alloc.rate:      18.883 MB/sec
+                 gc.alloc.rate.norm: 1584.923 B/op
+                 gc.count:           ≈ 0 counts
+
+Iteration   5: 93.782 us/op
+                 gc.alloc.rate:      16.061 MB/sec
+                 gc.alloc.rate.norm: 1585.105 B/op
+                 gc.count:           ≈ 0 counts
+
+
+
+Result "audit.SnapshotApiBench.membership":
+  92.214 ±(99.9%) 43.311 us/op [Average]
+  (min, avg, max) = (73.403, 92.214, 166.937), stdev = 28.648
+  CI (99.9%): [48.902, 135.525] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.membership:gc.alloc.rate":
+  17.310 ±(99.9%) 5.380 MB/sec [Average]
+  (min, avg, max) = (9.037, 17.310, 20.549), stdev = 3.559
+  CI (99.9%): [11.930, 22.691] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.membership:gc.alloc.rate.norm":
+  1585.077 ±(99.9%) 0.503 B/op [Average]
+  (min, avg, max) = (1584.856, 1585.077, 1585.940), stdev = 0.333
+  CI (99.9%): [1584.573, 1585.580] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.membership:gc.count":
+  1.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (≈ 0, 0.100, 1.000), stdev = 0.316
+  CI (99.9%): [1.000, 1.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.membership:gc.time":
+  22.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 2.200, 22.000), stdev = 6.957
+  CI (99.9%): [22.000, 22.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.scalarFromMutable
+# Parameters: (family = dfa)
+
+# Run progress: 50.00% complete, ETA 00:01:05
+# Fork: 1 of 2
+# Warmup Iteration   1: 3020.804 us/op
+# Warmup Iteration   2: 2540.200 us/op
+# Warmup Iteration   3: 1694.303 us/op
+Iteration   1: 535.879 us/op
+                 gc.alloc.rate:      447.289 MB/sec
+                 gc.alloc.rate.norm: 251766.211 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            7.000 ms
+
+Iteration   2: 466.508 us/op
+                 gc.alloc.rate:      513.913 MB/sec
+                 gc.alloc.rate.norm: 251765.555 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   3: 590.041 us/op
+                 gc.alloc.rate:      405.592 MB/sec
+                 gc.alloc.rate.norm: 251767.028 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            17.000 ms
+
+Iteration   4: 565.478 us/op
+                 gc.alloc.rate:      423.481 MB/sec
+                 gc.alloc.rate.norm: 251765.994 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   5: 577.433 us/op
+                 gc.alloc.rate:      415.202 MB/sec
+                 gc.alloc.rate.norm: 251767.825 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            6.000 ms
+
+
+# Run progress: 54.17% complete, ETA 00:00:59
+# Fork: 2 of 2
+# Warmup Iteration   1: 2388.435 us/op
+# Warmup Iteration   2: 1989.084 us/op
+# Warmup Iteration   3: 655.633 us/op
+Iteration   1: 454.930 us/op
+                 gc.alloc.rate:      526.525 MB/sec
+                 gc.alloc.rate.norm: 251765.418 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            14.000 ms
+
+Iteration   2: 461.199 us/op
+                 gc.alloc.rate:      519.747 MB/sec
+                 gc.alloc.rate.norm: 251765.493 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            10.000 ms
+
+Iteration   3: 482.590 us/op
+                 gc.alloc.rate:      496.172 MB/sec
+                 gc.alloc.rate.norm: 251765.695 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   4: 523.426 us/op
+                 gc.alloc.rate:      458.040 MB/sec
+                 gc.alloc.rate.norm: 251766.135 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   5: 455.059 us/op
+                 gc.alloc.rate:      525.663 MB/sec
+                 gc.alloc.rate.norm: 251765.520 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            8.000 ms
+
+
+
+Result "audit.SnapshotApiBench.scalarFromMutable":
+  511.254 ±(99.9%) 81.168 us/op [Average]
+  (min, avg, max) = (454.930, 511.254, 590.041), stdev = 53.688
+  CI (99.9%): [430.086, 592.422] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromMutable:gc.alloc.rate":
+  473.162 ±(99.9%) 73.473 MB/sec [Average]
+  (min, avg, max) = (405.592, 473.162, 526.525), stdev = 48.598
+  CI (99.9%): [399.689, 546.635] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromMutable:gc.alloc.rate.norm":
+  251766.087 ±(99.9%) 1.181 B/op [Average]
+  (min, avg, max) = (251765.418, 251766.087, 251767.825), stdev = 0.781
+  CI (99.9%): [251764.906, 251767.269] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromMutable:gc.count":
+  33.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (3.000, 3.300, 4.000), stdev = 0.483
+  CI (99.9%): [33.000, 33.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromMutable:gc.time":
+  94.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (6.000, 9.400, 17.000), stdev = 3.438
+  CI (99.9%): [94.000, 94.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.scalarFromMutable
+# Parameters: (family = epsilon-nfa)
+
+# Run progress: 58.33% complete, ETA 00:00:54
+# Fork: 1 of 2
+# Warmup Iteration   1: 2171.788 us/op
+# Warmup Iteration   2: 1256.785 us/op
+# Warmup Iteration   3: 569.660 us/op
+Iteration   1: 486.274 us/op
+                 gc.alloc.rate:      493.190 MB/sec
+                 gc.alloc.rate.norm: 251829.786 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            12.000 ms
+
+Iteration   2: 527.705 us/op
+                 gc.alloc.rate:      454.453 MB/sec
+                 gc.alloc.rate.norm: 251830.213 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   3: 530.503 us/op
+                 gc.alloc.rate:      451.732 MB/sec
+                 gc.alloc.rate.norm: 251830.286 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   4: 504.073 us/op
+                 gc.alloc.rate:      475.775 MB/sec
+                 gc.alloc.rate.norm: 251830.008 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            7.000 ms
+
+Iteration   5: 460.116 us/op
+                 gc.alloc.rate:      521.253 MB/sec
+                 gc.alloc.rate.norm: 251829.449 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            5.000 ms
+
+
+# Run progress: 62.50% complete, ETA 00:00:48
+# Fork: 2 of 2
+# Warmup Iteration   1: 2247.266 us/op
+# Warmup Iteration   2: 1982.671 us/op
+# Warmup Iteration   3: 1391.758 us/op
+Iteration   1: 931.526 us/op
+                 gc.alloc.rate:      265.083 MB/sec
+                 gc.alloc.rate.norm: 259312.725 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            11.000 ms
+
+Iteration   2: 578.835 us/op
+                 gc.alloc.rate:      413.469 MB/sec
+                 gc.alloc.rate.norm: 251830.874 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            10.000 ms
+
+Iteration   3: 535.906 us/op
+                 gc.alloc.rate:      447.459 MB/sec
+                 gc.alloc.rate.norm: 251830.374 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            7.000 ms
+
+Iteration   4: 495.224 us/op
+                 gc.alloc.rate:      482.179 MB/sec
+                 gc.alloc.rate.norm: 251829.846 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            6.000 ms
+
+Iteration   5: 515.793 us/op
+                 gc.alloc.rate:      464.374 MB/sec
+                 gc.alloc.rate.norm: 251830.072 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            7.000 ms
+
+
+
+Result "audit.SnapshotApiBench.scalarFromMutable":
+  556.596 ±(99.9%) 204.988 us/op [Average]
+  (min, avg, max) = (460.116, 556.596, 931.526), stdev = 135.587
+  CI (99.9%): [351.607, 761.584] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromMutable:gc.alloc.rate":
+  446.897 ±(99.9%) 106.082 MB/sec [Average]
+  (min, avg, max) = (265.083, 446.897, 521.253), stdev = 70.167
+  CI (99.9%): [340.814, 552.979] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromMutable:gc.alloc.rate.norm":
+  252578.363 ±(99.9%) 3577.377 B/op [Average]
+  (min, avg, max) = (251829.449, 252578.363, 259312.725), stdev = 2366.213
+  CI (99.9%): [249000.986, 256155.740] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromMutable:gc.count":
+  30.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (2.000, 3.000, 4.000), stdev = 0.471
+  CI (99.9%): [30.000, 30.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromMutable:gc.time":
+  81.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (5.000, 8.100, 12.000), stdev = 2.234
+  CI (99.9%): [81.000, 81.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.scalarFromSnapshot
+# Parameters: (family = dfa)
+
+# Run progress: 66.67% complete, ETA 00:00:43
+# Fork: 1 of 2
+# Warmup Iteration   1: 38.650 us/op
+# Warmup Iteration   2: 14.044 us/op
+# Warmup Iteration   3: 14.209 us/op
+Iteration   1: 14.859 us/op
+                 gc.alloc.rate:      1320.502 MB/sec
+                 gc.alloc.rate.norm: 20616.177 B/op
+                 gc.count:           9.000 counts
+                 gc.time:            16.000 ms
+
+Iteration   2: 14.805 us/op
+                 gc.alloc.rate:      1326.121 MB/sec
+                 gc.alloc.rate.norm: 20616.173 B/op
+                 gc.count:           9.000 counts
+                 gc.time:            19.000 ms
+
+Iteration   3: 15.584 us/op
+                 gc.alloc.rate:      1252.735 MB/sec
+                 gc.alloc.rate.norm: 20616.182 B/op
+                 gc.count:           9.000 counts
+                 gc.time:            19.000 ms
+
+Iteration   4: 14.241 us/op
+                 gc.alloc.rate:      1377.770 MB/sec
+                 gc.alloc.rate.norm: 20616.169 B/op
+                 gc.count:           9.000 counts
+                 gc.time:            24.000 ms
+
+Iteration   5: 14.755 us/op
+                 gc.alloc.rate:      1326.959 MB/sec
+                 gc.alloc.rate.norm: 20616.175 B/op
+                 gc.count:           9.000 counts
+                 gc.time:            15.000 ms
+
+
+# Run progress: 70.83% complete, ETA 00:00:37
+# Fork: 2 of 2
+# Warmup Iteration   1: 34.040 us/op
+# Warmup Iteration   2: 14.188 us/op
+# Warmup Iteration   3: 18.281 us/op
+Iteration   1: 21.067 us/op
+                 gc.alloc.rate:      931.380 MB/sec
+                 gc.alloc.rate.norm: 20616.248 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            15.000 ms
+
+Iteration   2: 16.281 us/op
+                 gc.alloc.rate:      1204.254 MB/sec
+                 gc.alloc.rate.norm: 20616.192 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            15.000 ms
+
+Iteration   3: 18.196 us/op
+                 gc.alloc.rate:      1078.195 MB/sec
+                 gc.alloc.rate.norm: 20616.217 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            16.000 ms
+
+Iteration   4: 14.130 us/op
+                 gc.alloc.rate:      1384.585 MB/sec
+                 gc.alloc.rate.norm: 20616.167 B/op
+                 gc.count:           10.000 counts
+                 gc.time:            18.000 ms
+
+Iteration   5: 14.403 us/op
+                 gc.alloc.rate:      1362.466 MB/sec
+                 gc.alloc.rate.norm: 20616.170 B/op
+                 gc.count:           9.000 counts
+                 gc.time:            33.000 ms
+
+
+
+Result "audit.SnapshotApiBench.scalarFromSnapshot":
+  15.832 ±(99.9%) 3.339 us/op [Average]
+  (min, avg, max) = (14.130, 15.832, 21.067), stdev = 2.208
+  CI (99.9%): [12.494, 19.171] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromSnapshot:gc.alloc.rate":
+  1256.497 ±(99.9%) 223.387 MB/sec [Average]
+  (min, avg, max) = (931.380, 1256.497, 1384.585), stdev = 147.757
+  CI (99.9%): [1033.110, 1479.884] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromSnapshot:gc.alloc.rate.norm":
+  20616.187 ±(99.9%) 0.039 B/op [Average]
+  (min, avg, max) = (20616.167, 20616.187, 20616.248), stdev = 0.026
+  CI (99.9%): [20616.148, 20616.226] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromSnapshot:gc.count":
+  85.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (6.000, 8.500, 10.000), stdev = 1.179
+  CI (99.9%): [85.000, 85.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromSnapshot:gc.time":
+  190.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (15.000, 19.000, 33.000), stdev = 5.657
+  CI (99.9%): [190.000, 190.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.scalarFromSnapshot
+# Parameters: (family = epsilon-nfa)
+
+# Run progress: 75.00% complete, ETA 00:00:32
+# Fork: 1 of 2
+# Warmup Iteration   1: 239.212 us/op
+# Warmup Iteration   2: 21.627 us/op
+# Warmup Iteration   3: 15.909 us/op
+Iteration   1: 18.306 us/op
+                 gc.alloc.rate:      1071.816 MB/sec
+                 gc.alloc.rate.norm: 20632.218 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            33.000 ms
+
+Iteration   2: 19.228 us/op
+                 gc.alloc.rate:      1020.726 MB/sec
+                 gc.alloc.rate.norm: 20632.231 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            33.000 ms
+
+Iteration   3: 15.329 us/op
+                 gc.alloc.rate:      1278.363 MB/sec
+                 gc.alloc.rate.norm: 20632.183 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            30.000 ms
+
+Iteration   4: 14.866 us/op
+                 gc.alloc.rate:      1316.153 MB/sec
+                 gc.alloc.rate.norm: 20632.177 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            14.000 ms
+
+Iteration   5: 15.147 us/op
+                 gc.alloc.rate:      1292.268 MB/sec
+                 gc.alloc.rate.norm: 20632.180 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            20.000 ms
+
+
+# Run progress: 79.17% complete, ETA 00:00:26
+# Fork: 2 of 2
+# Warmup Iteration   1: 333.742 us/op
+# Warmup Iteration   2: 258.355 us/op
+# Warmup Iteration   3: 32.607 us/op
+Iteration   1: 20.581 us/op
+                 gc.alloc.rate:      954.419 MB/sec
+                 gc.alloc.rate.norm: 20632.245 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            26.000 ms
+
+Iteration   2: 14.129 us/op
+                 gc.alloc.rate:      1390.301 MB/sec
+                 gc.alloc.rate.norm: 20632.167 B/op
+                 gc.count:           9.000 counts
+                 gc.time:            18.000 ms
+
+Iteration   3: 13.727 us/op
+                 gc.alloc.rate:      1430.435 MB/sec
+                 gc.alloc.rate.norm: 20632.166 B/op
+                 gc.count:           10.000 counts
+                 gc.time:            19.000 ms
+
+Iteration   4: 13.010 us/op
+                 gc.alloc.rate:      1509.575 MB/sec
+                 gc.alloc.rate.norm: 20632.154 B/op
+                 gc.count:           10.000 counts
+                 gc.time:            14.000 ms
+
+Iteration   5: 13.530 us/op
+                 gc.alloc.rate:      1449.741 MB/sec
+                 gc.alloc.rate.norm: 20632.161 B/op
+                 gc.count:           10.000 counts
+                 gc.time:            17.000 ms
+
+
+
+Result "audit.SnapshotApiBench.scalarFromSnapshot":
+  15.785 ±(99.9%) 3.982 us/op [Average]
+  (min, avg, max) = (13.010, 15.785, 20.581), stdev = 2.634
+  CI (99.9%): [11.803, 19.768] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromSnapshot:gc.alloc.rate":
+  1271.380 ±(99.9%) 291.072 MB/sec [Average]
+  (min, avg, max) = (954.419, 1271.380, 1509.575), stdev = 192.526
+  CI (99.9%): [980.307, 1562.452] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromSnapshot:gc.alloc.rate.norm":
+  20632.188 ±(99.9%) 0.048 B/op [Average]
+  (min, avg, max) = (20632.154, 20632.188, 20632.245), stdev = 0.031
+  CI (99.9%): [20632.141, 20632.236] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromSnapshot:gc.count":
+  83.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (6.000, 8.300, 10.000), stdev = 1.418
+  CI (99.9%): [83.000, 83.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.scalarFromSnapshot:gc.time":
+  224.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (14.000, 22.400, 33.000), stdev = 7.471
+  CI (99.9%): [224.000, 224.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.vectorFromSnapshot
+# Parameters: (family = dfa)
+
+# Run progress: 83.33% complete, ETA 00:00:21
+# Fork: 1 of 2
+# Warmup Iteration   1: 138.443 us/op
+# Warmup Iteration   2: 37.663 us/op
+# Warmup Iteration   3: 30.702 us/op
+Iteration   1: 26.872 us/op
+                 gc.alloc.rate:      1451.888 MB/sec
+                 gc.alloc.rate.norm: 41144.317 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            14.000 ms
+
+Iteration   2: 33.344 us/op
+                 gc.alloc.rate:      1174.447 MB/sec
+                 gc.alloc.rate.norm: 41161.941 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            19.000 ms
+
+Iteration   3: 36.008 us/op
+                 gc.alloc.rate:      1088.919 MB/sec
+                 gc.alloc.rate.norm: 41192.429 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   4: 37.333 us/op
+                 gc.alloc.rate:      1049.918 MB/sec
+                 gc.alloc.rate.norm: 41192.444 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   5: 37.035 us/op
+                 gc.alloc.rate:      1058.985 MB/sec
+                 gc.alloc.rate.norm: 41192.449 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            16.000 ms
+
+
+# Run progress: 87.50% complete, ETA 00:00:16
+# Fork: 2 of 2
+# Warmup Iteration   1: 193.792 us/op
+# Warmup Iteration   2: 34.255 us/op
+# Warmup Iteration   3: 27.498 us/op
+Iteration   1: 32.078 us/op
+                 gc.alloc.rate:      1221.419 MB/sec
+                 gc.alloc.rate.norm: 41144.380 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            21.000 ms
+
+Iteration   2: 40.409 us/op
+                 gc.alloc.rate:      968.210 MB/sec
+                 gc.alloc.rate.norm: 41151.988 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            15.000 ms
+
+Iteration   3: 54.111 us/op
+                 gc.alloc.rate:      724.292 MB/sec
+                 gc.alloc.rate.norm: 41192.629 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            12.000 ms
+
+Iteration   4: 46.251 us/op
+                 gc.alloc.rate:      846.651 MB/sec
+                 gc.alloc.rate.norm: 41192.547 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            15.000 ms
+
+Iteration   5: 45.958 us/op
+                 gc.alloc.rate:      853.290 MB/sec
+                 gc.alloc.rate.norm: 41192.543 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            8.000 ms
+
+
+
+Result "audit.SnapshotApiBench.vectorFromSnapshot":
+  38.940 ±(99.9%) 12.072 us/op [Average]
+  (min, avg, max) = (26.872, 38.940, 54.111), stdev = 7.985
+  CI (99.9%): [26.868, 51.012] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.vectorFromSnapshot:gc.alloc.rate":
+  1043.802 ±(99.9%) 318.894 MB/sec [Average]
+  (min, avg, max) = (724.292, 1043.802, 1451.888), stdev = 210.928
+  CI (99.9%): [724.908, 1362.696] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.vectorFromSnapshot:gc.alloc.rate.norm":
+  41175.767 ±(99.9%) 33.475 B/op [Average]
+  (min, avg, max) = (41144.317, 41175.767, 41192.629), stdev = 22.142
+  CI (99.9%): [41142.292, 41209.241] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.vectorFromSnapshot:gc.count":
+  64.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (5.000, 6.400, 8.000), stdev = 1.075
+  CI (99.9%): [64.000, 64.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.vectorFromSnapshot:gc.time":
+  138.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (8.000, 13.800, 21.000), stdev = 4.341
+  CI (99.9%): [138.000, 138.000] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.SnapshotApiBench.vectorFromSnapshot
+# Parameters: (family = epsilon-nfa)
+
+# Run progress: 91.67% complete, ETA 00:00:10
+# Fork: 1 of 2
+# Warmup Iteration   1: 106.276 us/op
+# Warmup Iteration   2: 30.327 us/op
+# Warmup Iteration   3: 26.764 us/op
+Iteration   1: 26.151 us/op
+                 gc.alloc.rate:      1488.725 MB/sec
+                 gc.alloc.rate.norm: 41176.309 B/op
+                 gc.count:           11.000 counts
+                 gc.time:            17.000 ms
+
+Iteration   2: 36.746 us/op
+                 gc.alloc.rate:      1067.216 MB/sec
+                 gc.alloc.rate.norm: 41216.404 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            18.000 ms
+
+Iteration   3: 35.683 us/op
+                 gc.alloc.rate:      1099.948 MB/sec
+                 gc.alloc.rate.norm: 41224.425 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            15.000 ms
+
+Iteration   4: 35.782 us/op
+                 gc.alloc.rate:      1097.198 MB/sec
+                 gc.alloc.rate.norm: 41224.421 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            16.000 ms
+
+Iteration   5: 36.525 us/op
+                 gc.alloc.rate:      1074.128 MB/sec
+                 gc.alloc.rate.norm: 41207.082 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            18.000 ms
+
+
+# Run progress: 95.83% complete, ETA 00:00:05
+# Fork: 2 of 2
+# Warmup Iteration   1: 72.111 us/op
+# Warmup Iteration   2: 26.110 us/op
+# Warmup Iteration   3: 25.548 us/op
+Iteration   1: 27.998 us/op
+                 gc.alloc.rate:      1400.667 MB/sec
+                 gc.alloc.rate.norm: 41181.994 B/op
+                 gc.count:           10.000 counts
+                 gc.time:            25.000 ms
+
+Iteration   2: 42.585 us/op
+                 gc.alloc.rate:      921.747 MB/sec
+                 gc.alloc.rate.norm: 41224.507 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            13.000 ms
+
+Iteration   3: 42.650 us/op
+                 gc.alloc.rate:      919.570 MB/sec
+                 gc.alloc.rate.norm: 41224.505 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            12.000 ms
+
+Iteration   4: 42.707 us/op
+                 gc.alloc.rate:      918.465 MB/sec
+                 gc.alloc.rate.norm: 41224.509 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            11.000 ms
+
+Iteration   5: 47.778 us/op
+                 gc.alloc.rate:      820.998 MB/sec
+                 gc.alloc.rate.norm: 41224.571 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            15.000 ms
+
+
+
+Result "audit.SnapshotApiBench.vectorFromSnapshot":
+  37.461 ±(99.9%) 10.229 us/op [Average]
+  (min, avg, max) = (26.151, 37.461, 47.778), stdev = 6.766
+  CI (99.9%): [27.232, 47.689] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.vectorFromSnapshot:gc.alloc.rate":
+  1080.866 ±(99.9%) 324.541 MB/sec [Average]
+  (min, avg, max) = (820.998, 1080.866, 1488.725), stdev = 214.664
+  CI (99.9%): [756.325, 1405.407] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.vectorFromSnapshot:gc.alloc.rate.norm":
+  41212.873 ±(99.9%) 28.267 B/op [Average]
+  (min, avg, max) = (41176.309, 41212.873, 41224.571), stdev = 18.697
+  CI (99.9%): [41184.606, 41241.139] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.vectorFromSnapshot:gc.count":
+  74.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (6.000, 7.400, 11.000), stdev = 1.776
+  CI (99.9%): [74.000, 74.000] (assumes normal distribution)
+
+Secondary result "audit.SnapshotApiBench.vectorFromSnapshot:gc.time":
+  160.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (11.000, 16.000, 25.000), stdev = 3.972
+  CI (99.9%): [160.000, 160.000] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:02:09
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                                  (family)  Mode  Cnt       Score      Error   Units
+SnapshotApiBench.booleanProjection                              dfa  avgt   10     302.149 ±   16.562   us/op
+SnapshotApiBench.booleanProjection:gc.alloc.rate                dfa  avgt   10     650.726 ±   34.208  MB/sec
+SnapshotApiBench.booleanProjection:gc.alloc.rate.norm           dfa  avgt   10  206315.588 ±    0.161    B/op
+SnapshotApiBench.booleanProjection:gc.count                     dfa  avgt   10      42.000             counts
+SnapshotApiBench.booleanProjection:gc.time                      dfa  avgt   10     109.000                 ms
+SnapshotApiBench.booleanProjection                      epsilon-nfa  avgt   10     298.971 ±   36.613   us/op
+SnapshotApiBench.booleanProjection:gc.alloc.rate        epsilon-nfa  avgt   10     724.846 ±   83.898  MB/sec
+SnapshotApiBench.booleanProjection:gc.alloc.rate.norm   epsilon-nfa  avgt   10  226827.541 ±    0.407    B/op
+SnapshotApiBench.booleanProjection:gc.count             epsilon-nfa  avgt   10      49.000             counts
+SnapshotApiBench.booleanProjection:gc.time              epsilon-nfa  avgt   10     169.000                 ms
+SnapshotApiBench.capture                                        dfa  avgt   10     860.272 ±  943.861   us/op
+SnapshotApiBench.capture:gc.alloc.rate                          dfa  avgt   10     355.660 ±  234.834  MB/sec
+SnapshotApiBench.capture:gc.alloc.rate.norm                     dfa  avgt   10  233637.692 ± 6021.805    B/op
+SnapshotApiBench.capture:gc.count                               dfa  avgt   10      23.000             counts
+SnapshotApiBench.capture:gc.time                                dfa  avgt   10      66.000                 ms
+SnapshotApiBench.capture                                epsilon-nfa  avgt   10    1195.039 ± 1859.116   us/op
+SnapshotApiBench.capture:gc.alloc.rate                  epsilon-nfa  avgt   10     336.817 ±  270.866  MB/sec
+SnapshotApiBench.capture:gc.alloc.rate.norm             epsilon-nfa  avgt   10  233384.351 ± 5218.832    B/op
+SnapshotApiBench.capture:gc.count                       epsilon-nfa  avgt   10      23.000             counts
+SnapshotApiBench.capture:gc.time                        epsilon-nfa  avgt   10     205.000                 ms
+SnapshotApiBench.membership                                     dfa  avgt   10       1.050 ±    0.027   us/op
+SnapshotApiBench.membership:gc.alloc.rate                       dfa  avgt   10       0.011 ±    0.001  MB/sec
+SnapshotApiBench.membership:gc.alloc.rate.norm                  dfa  avgt   10       0.012 ±    0.001    B/op
+SnapshotApiBench.membership:gc.count                            dfa  avgt   10         ≈ 0             counts
+SnapshotApiBench.membership                             epsilon-nfa  avgt   10      92.214 ±   43.311   us/op
+SnapshotApiBench.membership:gc.alloc.rate               epsilon-nfa  avgt   10      17.310 ±    5.380  MB/sec
+SnapshotApiBench.membership:gc.alloc.rate.norm          epsilon-nfa  avgt   10    1585.077 ±    0.503    B/op
+SnapshotApiBench.membership:gc.count                    epsilon-nfa  avgt   10       1.000             counts
+SnapshotApiBench.membership:gc.time                     epsilon-nfa  avgt   10      22.000                 ms
+SnapshotApiBench.scalarFromMutable                              dfa  avgt   10     511.254 ±   81.168   us/op
+SnapshotApiBench.scalarFromMutable:gc.alloc.rate                dfa  avgt   10     473.162 ±   73.473  MB/sec
+SnapshotApiBench.scalarFromMutable:gc.alloc.rate.norm           dfa  avgt   10  251766.087 ±    1.181    B/op
+SnapshotApiBench.scalarFromMutable:gc.count                     dfa  avgt   10      33.000             counts
+SnapshotApiBench.scalarFromMutable:gc.time                      dfa  avgt   10      94.000                 ms
+SnapshotApiBench.scalarFromMutable                      epsilon-nfa  avgt   10     556.596 ±  204.988   us/op
+SnapshotApiBench.scalarFromMutable:gc.alloc.rate        epsilon-nfa  avgt   10     446.897 ±  106.082  MB/sec
+SnapshotApiBench.scalarFromMutable:gc.alloc.rate.norm   epsilon-nfa  avgt   10  252578.363 ± 3577.377    B/op
+SnapshotApiBench.scalarFromMutable:gc.count             epsilon-nfa  avgt   10      30.000             counts
+SnapshotApiBench.scalarFromMutable:gc.time              epsilon-nfa  avgt   10      81.000                 ms
+SnapshotApiBench.scalarFromSnapshot                             dfa  avgt   10      15.832 ±    3.339   us/op
+SnapshotApiBench.scalarFromSnapshot:gc.alloc.rate               dfa  avgt   10    1256.497 ±  223.387  MB/sec
+SnapshotApiBench.scalarFromSnapshot:gc.alloc.rate.norm          dfa  avgt   10   20616.187 ±    0.039    B/op
+SnapshotApiBench.scalarFromSnapshot:gc.count                    dfa  avgt   10      85.000             counts
+SnapshotApiBench.scalarFromSnapshot:gc.time                     dfa  avgt   10     190.000                 ms
+SnapshotApiBench.scalarFromSnapshot                     epsilon-nfa  avgt   10      15.785 ±    3.982   us/op
+SnapshotApiBench.scalarFromSnapshot:gc.alloc.rate       epsilon-nfa  avgt   10    1271.380 ±  291.072  MB/sec
+SnapshotApiBench.scalarFromSnapshot:gc.alloc.rate.norm  epsilon-nfa  avgt   10   20632.188 ±    0.048    B/op
+SnapshotApiBench.scalarFromSnapshot:gc.count            epsilon-nfa  avgt   10      83.000             counts
+SnapshotApiBench.scalarFromSnapshot:gc.time             epsilon-nfa  avgt   10     224.000                 ms
+SnapshotApiBench.vectorFromSnapshot                             dfa  avgt   10      38.940 ±   12.072   us/op
+SnapshotApiBench.vectorFromSnapshot:gc.alloc.rate               dfa  avgt   10    1043.802 ±  318.894  MB/sec
+SnapshotApiBench.vectorFromSnapshot:gc.alloc.rate.norm          dfa  avgt   10   41175.767 ±   33.475    B/op
+SnapshotApiBench.vectorFromSnapshot:gc.count                    dfa  avgt   10      64.000             counts
+SnapshotApiBench.vectorFromSnapshot:gc.time                     dfa  avgt   10     138.000                 ms
+SnapshotApiBench.vectorFromSnapshot                     epsilon-nfa  avgt   10      37.461 ±   10.229   us/op
+SnapshotApiBench.vectorFromSnapshot:gc.alloc.rate       epsilon-nfa  avgt   10    1080.866 ±  324.541  MB/sec
+SnapshotApiBench.vectorFromSnapshot:gc.alloc.rate.norm  epsilon-nfa  avgt   10   41212.873 ±   28.267    B/op
+SnapshotApiBench.vectorFromSnapshot:gc.count            epsilon-nfa  avgt   10      74.000             counts
+SnapshotApiBench.vectorFromSnapshot:gc.time             epsilon-nfa  avgt   10     160.000                 ms
+
+Benchmark result is saved to /home/julien/codex_ha/Automaton/audit/automaton-integration/snapshot-api.json

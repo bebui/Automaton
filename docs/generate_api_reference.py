@@ -39,7 +39,7 @@ def generate():
              'Generated from the compiled Java 17 classes in this checkout. Regenerate with',
              '`python3 docs/generate_api_reference.py` after building the library.',
              'This lists declared public constructors, methods, overloads and constants,',
-             'including public nested types. Unsupported `weighted.internal` helpers are excluded.',
+             'including public nested types. Unsupported `internal` implementation helpers are excluded.',
              'Inherited `Object` methods are not repeated.',
              'Java/JDK and library package prefixes are shortened for readability.',
              'Parameter contracts, return/absence conventions and algorithm preconditions',

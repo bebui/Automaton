@@ -78,3 +78,10 @@ and compiled evaluators from `weighted.compiled`. Historical audit sources/logs
 record their original snapshots. The [4.0 refactoring audit](../audit/release-4/README.md)
 compares the merged pre-refactoring snapshot with this checkout using the same
 benchmark fixtures, each built against its corresponding package layout.
+
+## Automaton / weighted integration
+
+`GraphBridgeBench` compares legacy coaccessibility, immutable useful-state analysis
+and scalar imports through the published 4.0 API. `SnapshotApiBench` separately
+measures new 4.1 snapshot capture/reuse, direct weighting, Boolean membership and
+projection. See the [integration audit](../audit/automaton-integration/README.md).

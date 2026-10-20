@@ -1,6 +1,22 @@
 # Changelog
 
-## 4.0.0 — prepared, not yet published
+## 4.1.0 — unreleased (`4.1.0-SNAPSHOT`)
+
+- Connect `Automaton` directly to scalar/vector costs with `weighted`,
+  `multiWeighted` and a reusable `AutomatonSnapshot` preserving original identity
+  mappings and sharing one immutable graph across weightings.
+- Support boundary callbacks, mode-aware epsilon costs, Boolean membership
+  independent of costs and an explicit mutable `toAutomaton` projection.
+- Share the primitive reachability kernel between legacy coaccessibility and
+  immutable graph analysis/epsilon closure, preserving the distinction between
+  coaccessible and useful states.
+- Add independent matrix-oracle tests, executable integration documentation and
+  before/after JMH comparisons. Preserve the published 4.0 public API.
+
+See [Automaton and weights](docs/AUTOMATON_AND_WEIGHTS.md) and the
+[integration plan](AUTOMATON_INTEGRATION_PLAN.md). No 4.1 artifact is published.
+
+## 4.0.0 — published 2026-10-20
 
 ### Weighted and multi-weighted automata
 
@@ -33,6 +49,5 @@
   index, [migration guide](docs/MIGRATION_4.md), independent correctness tests and
   isolated JMH benchmarks. See [the technical plan](RELEASE_4_PLAN.md).
 
-Java 17 is still required; no new runtime dependencies. Version preparation does
-not publish Maven Central artifacts or create a release tag. Weighted imports from
+Java 17 is required; no new runtime dependencies. Weighted imports from pre-4.0
 development snapshots must be updated; see the migration guide.

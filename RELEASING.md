@@ -1,7 +1,10 @@
 # Preparing and publishing a Maven Central release
 
-The library coordinates are `fr.menana:automaton:4.0.0`. Release preparation
-creates a signed Central bundle locally. Uploading and publishing are subsequent
+The published release is `fr.menana:automaton:4.0.0`; this checkout develops
+`4.1.0-SNAPSHOT`. Before preparing another release, select and review a new
+non-SNAPSHOT POM version. The verifier rejects development snapshots.
+
+Release preparation creates a signed Central bundle locally. Uploading and publishing are subsequent
 actions. A normal library build needs neither signing keys nor Central credentials.
 
 ## Requirements
@@ -12,8 +15,8 @@ Python 3 and GnuPG are needed for the local verification command below.
 
 Signing uses your existing GPG key through `gpg-agent`. Set
 `AUTOMATON_SIGNING_KEY` to its **full public fingerprint** and make sure the key's
-public part is available on a key server accepted by Central. For continuity,
-4.0 preparation uses the same publisher key as the published 3.0.0 artifacts.
+public part is available on a key server accepted by Central. For signing continuity,
+the published 4.0 release used the same publisher key as the published 3.0.0 artifacts.
 Do not put private keys, passwords or tokens in this repository or command-line
 properties. Maven batch mode uses the agent's cached passphrase; unlock the key
 locally first if necessary.
@@ -48,9 +51,9 @@ repository. This does not publish them remotely. Outputs are ignored by Git:
 |---|---|
 | `target/central-publishing/central-bundle.zip` | Signed bundle for Portal upload |
 | `target/release-validation.json` | Local signature, checksum, metadata and JAR-content checks |
-| `target/automaton-4.0.0.jar` | Java 17 binary library |
-| `target/automaton-4.0.0-sources.jar` | Source attachment |
-| `target/automaton-4.0.0-javadoc.jar` | API documentation attachment |
+| `target/automaton-VERSION.jar` | Java 17 binary library |
+| `target/automaton-VERSION-sources.jar` | Source attachment |
+| `target/automaton-VERSION-javadoc.jar` | API documentation attachment |
 
 Archive the verified ZIP and report outside `target` before another clean build:
 `mvn clean` removes the preparation outputs. Keep the bundle SHA-256 with that copy.
@@ -82,7 +85,7 @@ build does not mean the artifact is publicly available.
 ## Final publication and release records
 
 Publish the validated deployment in the Portal when the release is approved.
-Tag the reviewed release source as `v4.0.0` and record which source commit and
+Tag the reviewed release source with its version tag (for example `v4.1.0`) and record which source commit and
 bundle SHA-256 were published. Push the tag as part of that release action.
 Confirm the POM and three JARs can be resolved from Maven Central before changing
 the README, changelog and installation guides from “prepared” to “published”.

@@ -18,8 +18,7 @@
 package fr.menana.automaton.weighted;
 
 import fr.menana.automaton.*;
-import fr.menana.automaton.weighted.internal.WeightMath;
-import fr.menana.automaton.weighted.compiled.*;
+import fr.menana.automaton.internal.GraphTraversal;
 
 import java.util.*;
 
@@ -196,28 +195,89 @@ public final class AutomatonGraph {
     }
 
     /**
+     * Recognizes the Boolean language without inspecting costs. Negative cycles
+     * and arithmetic overflow in a weighting have no effect on membership.
+     * @param word consumed symbols
+     * @return whether at least one accepting path reads the word
+     * @since 4.1.0
+     */
+    public boolean run(int... word) {
+        Objects.requireNonNull(word);
+        if (initial < 0) return false;
+        if (isDeterministic()) {
+            int state = initial;
+            for (int symbol : word) {
+                int next = -1;
+                for (int i = outStart[state]; i < outStart[state + 1]; i++) {
+                    int e = outEdges[i];
+                    if (accepts(e, symbol)) { next = target[e]; break; }
+                }
+                if (next < 0) return false;
+                state = next;
+            }
+            return accept[state];
+        }
+        boolean[] current = new boolean[accept.length], next = new boolean[accept.length];
+        int[] queue = new int[accept.length]; current[initial] = true; queue[0] = initial;
+        GraphTraversal.propagate(outStart, outEdges, target, current, queue, 1, null, epsilon);
+        for (int symbol : word) {
+            Arrays.fill(next, false); int tail = 0;
+            for (int s = 0; s < current.length; s++) if (current[s])
+                for (int i = outStart[s]; i < outStart[s + 1]; i++) {
+                    int e = outEdges[i], t = target[e];
+                    if (!epsilon[e] && !next[t] && accepts(e, symbol)) { next[t] = true; queue[tail++] = t; }
+                }
+            if (tail == 0) return false;
+            GraphTraversal.propagate(outStart, outEdges, target, next, queue, tail, null, epsilon);
+            boolean[] swap = current; current = next; next = swap;
+        }
+        for (int s = 0; s < current.length; s++) if (current[s] && accept[s]) return true;
+        return false;
+    }
+
+    /**
+     * Creates a fresh Boolean projection. Parallel arcs with the same endpoints
+     * merge, preserving the language while forgetting logical path identities.
+     * @return independent mutable Automaton; no weight or path-cost semantics retained
+     * @since 4.1.0
+     */
+    public Automaton toAutomaton() {
+        Automaton result = new Automaton();
+        State[] states = new State[accept.length];
+        for (int s = 0; s < states.length; s++) {
+            states[s] = result.addState();
+            result.setAccept(states[s], accept[s]);
+        }
+        if (initial >= 0) result.setInitial(states[initial]);
+        // Seed epsilon modes first, then merge symbol labels through the existing API.
+        for (int e = 0; e < source.length; e++) if (epsilon[e]) result.addEpsilonTransition(states[source[e]], states[target[e]]);
+        for (int e = 0; e < source.length; e++) if (!epsilon[e]) result.addTransition(states[source[e]], states[target[e]], labels(e));
+        return result;
+    }
+
+    /**
+     * @return states that can reach a final, including unreachable states;
+     *         follows logical edges, excluding legacy records without symbols or epsilon
+     * @since 4.1.0
+     */
+    public boolean[] coaccessibleStates() {
+        boolean[] reached = accept.clone(); int[] queue = new int[accept.length]; int tail = 0;
+        for (int s = 0; s < accept.length; s++) if (accept[s]) queue[tail++] = s;
+        GraphTraversal.propagate(inStart, inEdges, source, reached, queue, tail, null, null);
+        return reached;
+    }
+
+    /**
      * @return states both reachable from the initial state and able to reach a final
      */
     public boolean[] usefulStates() {
         boolean[] reached = new boolean[accept.length], useful = new boolean[accept.length];
-        int[] queue = new int[accept.length]; int head = 0, tail = 0;
+        int[] queue = new int[accept.length]; int tail = 0;
         if (initial >= 0) { reached[initial] = true; queue[tail++] = initial; }
-        while (head < tail) {
-            int s = queue[head++];
-            for (int i = outStart[s]; i < outStart[s + 1]; i++) {
-                int t = target[outEdges[i]];
-                if (!reached[t]) { reached[t] = true; queue[tail++] = t; }
-            }
-        }
-        head = tail = 0;
+        GraphTraversal.propagate(outStart, outEdges, target, reached, queue, tail, null, null);
+        tail = 0;
         for (int s = 0; s < accept.length; s++) if (accept[s] && reached[s]) { useful[s] = true; queue[tail++] = s; }
-        while (head < tail) {
-            int s = queue[head++];
-            for (int i = inStart[s]; i < inStart[s + 1]; i++) {
-                int p = source[inEdges[i]];
-                if (reached[p] && !useful[p]) { useful[p] = true; queue[tail++] = p; }
-            }
-        }
+        GraphTraversal.propagate(inStart, inEdges, source, useful, queue, tail, reached, null);
         return useful;
     }
 
@@ -254,7 +314,7 @@ public final class AutomatonGraph {
             if (t.hasValues()) { b.addTransition(ids.get(s), ids.get(t.getDest()), t.getValues()); originals.add(t); }
             if (t.hasEpsilon()) { b.addEpsilonTransition(ids.get(s), ids.get(t.getDest())); originals.add(t); }
         }
-        return new ImportResult(b.build(), originals.toArray(Transition[]::new));
+        return new ImportResult(b.build(), originals.toArray(Transition[]::new), states.toArray(State[]::new), ids);
     }
 
     /**
@@ -263,7 +323,11 @@ public final class AutomatonGraph {
     public static final class ImportResult {
         private final AutomatonGraph graph;
         private final Transition[] originals;
-        private ImportResult(AutomatonGraph graph, Transition[] originals) { this.graph = graph; this.originals = originals; }
+        private final State[] states;
+        private final IdentityHashMap<State, Integer> stateIds;
+        private ImportResult(AutomatonGraph graph, Transition[] originals, State[] states, IdentityHashMap<State, Integer> stateIds) {
+            this.graph = graph; this.originals = originals; this.states = states; this.stateIds = stateIds;
+        }
         /**
          * @return imported graph
          */
@@ -273,6 +337,23 @@ public final class AutomatonGraph {
          * @return source transition, possibly shared by two modes
          */
         public Transition originalTransition(int edge) { return originals[edge]; }
+        /**
+         * @param state graph-local state ID
+         * @return original mutable state reference, used only as identity metadata
+         * @since 4.1.0
+         */
+        public State originalState(int state) { return states[state]; }
+        /**
+         * @param state captured original state
+         * @return graph-local ID, independent of subsequent source reindexing
+         * @throws IllegalArgumentException if the state is foreign to this import
+         * @since 4.1.0
+         */
+        public int stateId(State state) {
+            Integer id = stateIds.get(state);
+            if (id == null) throw new IllegalArgumentException("State did not belong to this snapshot");
+            return id;
+        }
     }
 
     /**

@@ -1,0 +1,135 @@
+Command: ['/usr/lib/jvm/java-17-openjdk-amd64/bin/java', '-jar', '/home/julien/codex_ha/Automaton/benchmarks/target/benchmarks.jar', 'audit.GraphBridgeBench.importScalar$', '-prof', 'gc', '-foe', 'true', '-rf', 'json', '-rff', '/home/julien/codex_ha/Automaton/audit/automaton-integration/import-final.json', '-p', 'states=256', '-p', 'degree=4']
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 500 ms each
+# Measurement: 5 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.GraphBridgeBench.importScalar
+# Parameters: (degree = 4, states = 256)
+
+# Run progress: 0.00% complete, ETA 00:00:08
+# Fork: 1 of 2
+# Warmup Iteration   1: 2243.504 us/op
+# Warmup Iteration   2: 1204.794 us/op
+# Warmup Iteration   3: 808.905 us/op
+Iteration   1: 536.141 us/op
+                 gc.alloc.rate:      446.490 MB/sec
+                 gc.alloc.rate.norm: 251766.306 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            11.000 ms
+
+Iteration   2: 487.622 us/op
+                 gc.alloc.rate:      489.137 MB/sec
+                 gc.alloc.rate.norm: 251765.744 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   3: 485.916 us/op
+                 gc.alloc.rate:      492.121 MB/sec
+                 gc.alloc.rate.norm: 251765.758 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            9.000 ms
+
+Iteration   4: 533.996 us/op
+                 gc.alloc.rate:      448.746 MB/sec
+                 gc.alloc.rate.norm: 251766.347 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            8.000 ms
+
+Iteration   5: 459.162 us/op
+                 gc.alloc.rate:      521.701 MB/sec
+                 gc.alloc.rate.norm: 251747.090 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            9.000 ms
+
+
+# Run progress: 50.00% complete, ETA 00:00:05
+# Fork: 2 of 2
+# Warmup Iteration   1: 2371.997 us/op
+# Warmup Iteration   2: 3062.886 us/op
+# Warmup Iteration   3: 1055.006 us/op
+Iteration   1: 572.573 us/op
+                 gc.alloc.rate:      419.584 MB/sec
+                 gc.alloc.rate.norm: 252875.058 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            10.000 ms
+
+Iteration   2: 467.257 us/op
+                 gc.alloc.rate:      513.098 MB/sec
+                 gc.alloc.rate.norm: 251765.445 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            13.000 ms
+
+Iteration   3: 455.396 us/op
+                 gc.alloc.rate:      525.221 MB/sec
+                 gc.alloc.rate.norm: 251765.399 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            11.000 ms
+
+Iteration   4: 480.080 us/op
+                 gc.alloc.rate:      498.706 MB/sec
+                 gc.alloc.rate.norm: 251765.703 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            12.000 ms
+
+Iteration   5: 617.907 us/op
+                 gc.alloc.rate:      387.385 MB/sec
+                 gc.alloc.rate.norm: 251757.978 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            8.000 ms
+
+
+
+Result "audit.GraphBridgeBench.importScalar":
+  509.605 ±(99.9%) 81.550 us/op [Average]
+  (min, avg, max) = (455.396, 509.605, 617.907), stdev = 53.940
+  CI (99.9%): [428.055, 591.155] (assumes normal distribution)
+
+Secondary result "audit.GraphBridgeBench.importScalar:gc.alloc.rate":
+  474.219 ±(99.9%) 70.288 MB/sec [Average]
+  (min, avg, max) = (387.385, 474.219, 525.221), stdev = 46.491
+  CI (99.9%): [403.931, 544.507] (assumes normal distribution)
+
+Secondary result "audit.GraphBridgeBench.importScalar:gc.alloc.rate.norm":
+  251874.083 ±(99.9%) 531.810 B/op [Average]
+  (min, avg, max) = (251747.090, 251874.083, 252875.058), stdev = 351.760
+  CI (99.9%): [251342.272, 252405.893] (assumes normal distribution)
+
+Secondary result "audit.GraphBridgeBench.importScalar:gc.count":
+  33.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (3.000, 3.300, 4.000), stdev = 0.483
+  CI (99.9%): [33.000, 33.000] (assumes normal distribution)
+
+Secondary result "audit.GraphBridgeBench.importScalar:gc.time":
+  100.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (8.000, 10.000, 13.000), stdev = 1.700
+  CI (99.9%): [100.000, 100.000] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:00:10
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                         (degree)  (states)  Mode  Cnt       Score     Error   Units
+GraphBridgeBench.importScalar                            4       256  avgt   10     509.605 ±  81.550   us/op
+GraphBridgeBench.importScalar:gc.alloc.rate              4       256  avgt   10     474.219 ±  70.288  MB/sec
+GraphBridgeBench.importScalar:gc.alloc.rate.norm         4       256  avgt   10  251874.083 ± 531.810    B/op
+GraphBridgeBench.importScalar:gc.count                   4       256  avgt   10      33.000            counts
+GraphBridgeBench.importScalar:gc.time                    4       256  avgt   10     100.000                ms
+
+Benchmark result is saved to /home/julien/codex_ha/Automaton/audit/automaton-integration/import-final.json

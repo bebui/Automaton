@@ -26,6 +26,15 @@ WeightedAutomaton.Evaluator evaluator = a.evaluator();
 equal(2.25, evaluator.cost(8));
 ```
 
+## Starting from Automaton (new in 4.1)
+
+Use `automaton.weighted(transition -> cost)` or `automaton.multiWeighted(...)`
+to add costs directly. `automaton.snapshot()` captures one reusable structure
+with mappings to the original State/Transition identities. Weightings from the
+same snapshot share its graph. See the complete
+[Automaton and weights guide](AUTOMATON_AND_WEIGHTS.md) for executable examples,
+boundary/mode callbacks and explicit Boolean projection with `toAutomaton()`.
+
 ## Immutable graph and weightings
 
 `AutomatonGraph.builder()` creates integer state IDs and stable logical edge IDs.
