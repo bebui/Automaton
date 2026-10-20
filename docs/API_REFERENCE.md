@@ -3,18 +3,20 @@
 Generated from the compiled Java 17 classes in this checkout. Regenerate with
 `python3 docs/generate_api_reference.py` after building the library.
 This lists declared public constructors, methods, overloads and constants,
-including public nested types. Unsupported `weighted.internal` helpers are excluded.
+including public nested types. Unsupported `internal` implementation helpers are excluded.
 Inherited `Object` methods are not repeated.
 Java/JDK and library package prefixes are shortened for readability.
 Parameter contracts, return/absence conventions and algorithm preconditions
 are explained in the [topic guides](README.md) and source Javadoc.
 
-**41 public types.**
+**43 public types.**
 
 | Type | Source |
 |---|---|
 | [Alphabet](#alphabet) | [Alphabet.java](../src/main/java/fr/menana/automaton/Alphabet.java) |
 | [Automaton](#automaton) | [Automaton.java](../src/main/java/fr/menana/automaton/Automaton.java) |
+| [AutomatonSnapshot.TransitionWeight](#automatonsnapshot-transitionweight) | [AutomatonSnapshot.java](../src/main/java/fr/menana/automaton/AutomatonSnapshot.java) |
+| [AutomatonSnapshot](#automatonsnapshot) | [AutomatonSnapshot.java](../src/main/java/fr/menana/automaton/AutomatonSnapshot.java) |
 | [CompiledDfa](#compileddfa) | [CompiledDfa.java](../src/main/java/fr/menana/automaton/CompiledDfa.java) |
 | [Interval](#interval) | [Interval.java](../src/main/java/fr/menana/automaton/Interval.java) |
 | [IntervalSet](#intervalset) | [IntervalSet.java](../src/main/java/fr/menana/automaton/IntervalSet.java) |
@@ -80,6 +82,9 @@ public final class Alphabet {
 public class Automaton implements Cloneable {
   public Automaton();
   public Automaton(String);
+  public AutomatonSnapshot snapshot();
+  public weighted.WeightedAutomaton weighted(function.ToDoubleFunction<Transition>);
+  public final weighted.MultiWeightedAutomaton multiWeighted(function.ToDoubleFunction<Transition>...);
   public List<State> getStates();
   public State getState(int);
   public int getNbStates();
@@ -137,6 +142,41 @@ public class Automaton implements Cloneable {
   public static Automaton nfaFromString(String);
   public static Automaton dfaFromString(String);
   public Object clone() throws CloneNotSupportedException;
+}
+```
+
+<a id="automatonsnapshot-transitionweight"></a>
+
+## `AutomatonSnapshot.TransitionWeight`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/AutomatonSnapshot.java)
+
+```java
+public interface AutomatonSnapshot.TransitionWeight {
+  public abstract double weight(Transition, boolean);
+}
+```
+
+<a id="automatonsnapshot"></a>
+
+## `AutomatonSnapshot`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/AutomatonSnapshot.java)
+
+```java
+public final class AutomatonSnapshot {
+  public static AutomatonSnapshot of(Automaton);
+  public weighted.AutomatonGraph graph();
+  public int stateId(State);
+  public State originalState(int);
+  public Transition originalTransition(int);
+  public weighted.WeightedAutomaton weighted(function.ToDoubleFunction<Transition>);
+  public weighted.WeightedAutomaton weighted(AutomatonSnapshot.TransitionWeight);
+  public weighted.WeightedAutomaton weighted(function.ToDoubleFunction<Transition>, double, function.ToDoubleFunction<State>);
+  public weighted.WeightedAutomaton weighted(AutomatonSnapshot.TransitionWeight, double, function.ToDoubleFunction<State>);
+  public final weighted.MultiWeightedAutomaton multiWeighted(function.ToDoubleFunction<Transition>...);
+  public boolean run(int...);
+  public Automaton toAutomaton();
 }
 ```
 
@@ -403,6 +443,8 @@ public final class weighted.AutomatonGraph.Builder {
 public final class weighted.AutomatonGraph.ImportResult {
   public weighted.AutomatonGraph graph();
   public Transition originalTransition(int);
+  public State originalState(int);
+  public int stateId(State);
 }
 ```
 
@@ -428,6 +470,9 @@ public final class weighted.AutomatonGraph {
   public boolean isAcyclic();
   public int[] topologicalOrder();
   public boolean isDeterministic();
+  public boolean run(int...);
+  public Automaton toAutomaton();
+  public boolean[] coaccessibleStates();
   public boolean[] usefulStates();
   public static weighted.AutomatonGraph from(Automaton);
   public static weighted.AutomatonGraph.ImportResult importAutomaton(Automaton);
@@ -546,12 +591,15 @@ public final class weighted.MultiWeightedAutomaton.Builder {
 ```java
 public final class weighted.MultiWeightedAutomaton {
   public static weighted.MultiWeightedAutomaton of(weighted.AutomatonGraph, int, double[]);
+  public static weighted.MultiWeightedAutomaton from(Automaton, function.ToDoubleFunction<Transition>...);
   public static weighted.MultiWeightedAutomaton of(weighted.AutomatonGraph, int, double[], double[], double[]);
   public static weighted.MultiWeightedAutomaton fromWeightings(weighted.WeightedAutomaton...);
   public static weighted.MultiWeightedAutomaton synchronizedProduct(weighted.WeightedAutomaton...);
   public weighted.compiled.CompiledMultiWeightedDfa compile();
   public static weighted.MultiWeightedAutomaton.Builder builder(int);
   public weighted.AutomatonGraph graph();
+  public boolean run(int...);
+  public Automaton toAutomaton();
   public int dimensions();
   public double weight(int, int);
   public double initialWeight(int);
@@ -723,6 +771,8 @@ public final class weighted.WeightedAutomaton {
   public static weighted.WeightedAutomaton from(Automaton, function.ToDoubleFunction<Transition>);
   public static weighted.WeightedAutomaton.Builder builder();
   public weighted.AutomatonGraph graph();
+  public boolean run(int...);
+  public Automaton toAutomaton();
   public double weight(int);
   public double initialWeight();
   public double finalWeight(int);

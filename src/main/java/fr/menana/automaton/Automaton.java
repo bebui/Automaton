@@ -18,6 +18,9 @@
 package fr.menana.automaton;
 
 import fr.menana.automaton.regexp.RegExpParser;
+import fr.menana.automaton.internal.GraphTraversal;
+import fr.menana.automaton.weighted.MultiWeightedAutomaton;
+import fr.menana.automaton.weighted.WeightedAutomaton;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,6 +28,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.function.ToDoubleFunction;
 
 /**
  * A finite automaton whose symbols are integers, deterministic or not. <br>
@@ -56,6 +60,18 @@ import java.util.stream.Collectors;
  * {@link #intersection(Automaton)}, ...) return new automata. Questions on the language ({@link #isEmpty()},
  * {@link #sameLanguage(Automaton)}, ...) do not modify the automaton. To read many words, {@link #compile()} it;
  * to search inside sequences, use a {@link #searcher()}. The {@link fr.menana.automaton package overview} lists everything.
+ *
+ * <h2>Adding costs</h2>
+ * {@link #weighted(java.util.function.ToDoubleFunction)} captures scalar costs;
+ * {@link #multiWeighted(java.util.function.ToDoubleFunction...)} captures vector costs.
+ * Reuse one {@link #snapshot()} for several weightings sharing the exact structure:
+ * <pre>{@code
+ * AutomatonSnapshot snapshot = auto.snapshot();
+ * WeightedAutomaton cost = snapshot.weighted(transition -> 2.0);
+ * WeightedAutomaton duration = snapshot.weighted(transition -> 5.0);
+ * }</pre>
+ * Source mutations do not change captured structure or costs. Weighted objects
+ * expose run() for Boolean membership and toAutomaton() to explicitly forget costs.
  * <p>
  * An automaton is mutable and not thread safe.
  *
@@ -100,6 +116,33 @@ public class Automaton implements Cloneable {
         this.states = auto.states;
         this.initIndex = auto.initIndex;
         this.deterministic = auto.deterministic;
+    }
+
+    /**
+     * Captures one immutable structure for reuse across scalar/vector weightings.
+     * Later source mutations do not affect it; original object identities remain metadata.
+     * @return structural snapshot with mappings to this automaton's states/transitions
+     * @since 4.1.0
+     */
+    public AutomatonSnapshot snapshot() { return AutomatonSnapshot.of(this); }
+
+    /**
+     * @param weights finite scalar transition costs; boundaries default to zero
+     * @return independent weighted snapshot of this automaton
+     * @since 4.1.0
+     */
+    public WeightedAutomaton weighted(ToDoubleFunction<Transition> weights) {
+        return snapshot().weighted(weights);
+    }
+
+    /**
+     * @param dimensions one or more finite transition-cost callbacks, in dimension order
+     * @return correlated vector costs on one common structural snapshot
+     * @since 4.1.0
+     */
+    @SafeVarargs
+    public final MultiWeightedAutomaton multiWeighted(ToDoubleFunction<Transition>... dimensions) {
+        return snapshot().multiWeighted(dimensions);
     }
 
     /**
@@ -615,31 +658,47 @@ public class Automaton implements Cloneable {
     }
 
     /**
-     * Returns the set of states that can reach an accepting state.
+     * Returns states reaching a final over stored transition-map arcs, including unreachable states.
      * @return a set of useful states
      */
     public Set<State> getUseFulStates() {
+        int n = states.size();
         Set<State> useful = new HashSet<>();
-        if (this.getNbStates() == 0)
-            return useful;
-        Map<State, List<State>> reverse = new HashMap<>();
-        for (State s : this.states) {
-            for (State dest : s.transitions.keySet())
-                reverse.computeIfAbsent(dest, k -> new ArrayList<>()).add(s);
+        if (n == 0) return useful;
+        IdentityHashMap<State, Integer> ids = null;
+        for (int s = 0; s < n; s++) if (states.get(s).index != s) {
+            ids = new IdentityHashMap<>(n);
+            for (int t = 0; t < n; t++) ids.put(states.get(t), t);
+            break;
         }
-        ArrayDeque<State> toTest = new ArrayDeque<>();
-        for (State s : this.states) {
-            if (s.accept && useful.add(s))
-                toTest.add(s);
+        int[] starts = new int[n + 1];
+        for (State s : states) for (State destination : s.transitions.keySet()) {
+            int id = structuralStateId(destination, ids);
+            if (id >= 0) starts[id + 1]++;
         }
-        while (!toTest.isEmpty()) {
-            State s = toTest.poll();
-            for (State orig : reverse.getOrDefault(s, Collections.emptyList())) {
-                if (useful.add(orig))
-                    toTest.add(orig);
+        for (int s = 0; s < n; s++) starts[s + 1] += starts[s];
+        int[] predecessors = new int[starts[n]], fill = starts.clone();
+        boolean[] reached = new boolean[n]; int[] queue = new int[n]; int tail = 0;
+        for (int s = 0; s < n; s++) {
+            if (states.get(s).accept) { reached[s] = true; queue[tail++] = s; }
+            for (State destination : states.get(s).transitions.keySet()) {
+                int id = structuralStateId(destination, ids);
+                if (id >= 0) predecessors[fill[id]++] = s;
             }
         }
+        GraphTraversal.propagate(starts, null, predecessors, reached, queue, tail, null, null);
+        for (int s = 0; s < n; s++) if (reached[s]) useful.add(states.get(s));
         return useful;
+    }
+
+    private int structuralStateId(State state, IdentityHashMap<State, Integer> ids) {
+        if (ids != null) {
+            Integer id = ids.get(state);
+            return id == null ? -1 : id;
+        }
+        if (state == null) return -1;
+        int id = state.index;
+        return id >= 0 && id < states.size() && states.get(id) == state ? id : -1;
     }
 
     @Override

@@ -3,7 +3,8 @@
 Automaton **4.0.0** adds immutable weighted automata alongside the mutable
 Boolean API retained from 3.0. There are no new runtime dependencies; Java 17
 is required. The existing Boolean algorithms and object layouts are unchanged.
-The root POM prepares 4.0.0; artifact publication is a separate release step.
+Version 4.0.0 is published; the current POM develops 4.1.0-SNAPSHOT.
+The [direct Automaton/weights bridge](docs/AUTOMATON_AND_WEIGHTS.md) is new in 4.1.
 Weighted types now live in `fr.menana.automaton.weighted`, with compiled
 evaluators in `weighted.compiled`. See the [migration guide](docs/MIGRATION_4.md).
 

@@ -11,8 +11,8 @@ public final class AutomatonTour {
     private static void equal(double expected, double actual) { check(Double.compare(expected, actual) == 0); }
     public static void main(String[] args) {
         construction(); intervals(); regex(); languages(); compilation(); scalar();
-        distances(); horizons(); vectors(); correlation(); advanced();
-        System.out.println("Documentation examples passed: 11");
+        distances(); horizons(); vectors(); correlation(); advanced(); integration();
+        System.out.println("Documentation examples passed: 12");
     }
     static void construction() {
         // BEGIN construction
@@ -207,4 +207,23 @@ public final class AutomatonTour {
         equal(1, KBestWords.ofLength(a, 2, 2).get(0).cost());
         // END advanced
     }
+    static void integration() {
+        // BEGIN integration
+        Automaton source = Automaton.dfaFromString("12+");
+        WeightedAutomaton direct = source.weighted(transition -> 2);
+        equal(6, direct.cost(1, 2, 2));
+        AutomatonSnapshot snapshot = source.snapshot();
+        WeightedAutomaton cost = snapshot.weighted(transition -> 2);
+        WeightedAutomaton duration = snapshot.weighted(transition -> 5);
+        MultiWeightedAutomaton multi = snapshot.multiWeighted(transition -> 2, transition -> 5);
+        check(cost.graph() == duration.graph() && cost.graph() == multi.graph());
+        check(cost.run(1, 2) && multi.run(1, 2));
+        equal(21, multi.scalarize(1, 1).cost(1, 2, 2));
+        Automaton language = cost.toAutomaton();
+        check(source.sameLanguage(language));
+        source.setAccept(source.getInitial());
+        check(source.run() && !snapshot.run());
+        // END integration
+    }
+
 }

@@ -1,0 +1,4 @@
+states=256 edges=1024
+snapshot_with_original_identity_metadata_bytes=225944
+captured_scalar_bytes=42600 direct_scalar_bytes=42600
+captured_vector_bytes=52872 direct_vector_bytes=52872

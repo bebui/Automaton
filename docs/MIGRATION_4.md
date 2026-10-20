@@ -2,14 +2,15 @@
 
 ## Version and availability
 
-The root POM prepares `fr.menana:automaton:4.0.0`. This major version brings
+The published `fr.menana:automaton:4.0.0` release brings
 scalar/vector weighted automata, path algorithms, finite horizons, multiobjective
 optimization and the package organization below. Java 17 remains the minimum;
 there are no new production dependencies. JMH remains an optional separate module.
 
-Preparing a version or merging a PR does not publish artifacts. Until a release
-is published, run `mvn clean install` from this checkout or use its built JAR.
-This installs 4.0.0 locally alongside 3.0.0. See [Getting started](GETTING_STARTED.md).
+The current checkout develops `4.1.0-SNAPSHOT`; build/install locally for its
+[new Automaton/weights bridge](AUTOMATON_AND_WEIGHTS.md). This page records the
+4.0 package migration, which remains valid. The published 4.0.0 release is on
+Maven Central; merging later changes does not publish another artifact.
 
 ## Existing 3.0 Boolean clients
 

@@ -1,4 +1,4 @@
-# Automaton 4.0
+# Automaton
 
 A Java library to create and manipulate deterministic and non-deterministic finite automata whose symbols are integers.
 
@@ -18,7 +18,7 @@ Transitions are labelled with sets of integer intervals, so an automaton can wor
 Read the [complete library manual](docs/README.md) for installation, Boolean and
 weighted automata, algorithms, contracts and runnable examples. The
 [public API reference](docs/API_REFERENCE.md) lists every current public type and
-overload, including the weighted API. The 11 documented examples are
+overload, including the weighted API. The 12 documented examples are
 checked against executable source with `python3 docs/check_examples.py` after a
 local build. Published Javadoc and Maven artifacts may lag behind this checkout.
 Maintainers can follow [release preparation and publication](RELEASING.md) to
@@ -26,10 +26,10 @@ build and verify a signed Central bundle before uploading it.
 
 ## Installation
 
-This checkout prepares **4.0.0** (requires Java 17). Build and install it locally
-with `mvn clean install` before using these coordinates; preparing this version
-does not publish it to Maven Central. Previously published 3.0 artifacts do not
-contain the weighted API.
+The published **4.0.0** release is available on Maven Central (Java 17 required).
+This checkout develops **4.1.0-SNAPSHOT**, adding direct integration between
+`Automaton` and its weighted variants. Build/install the checkout locally for
+those new APIs; the coordinates below select the published 4.0.0 release.
 
 ```xml
 <dependency>
@@ -42,6 +42,15 @@ contain the weighted API.
 With Gradle: `implementation("fr.menana:automaton:4.0.0")`.
 
 The API documentation is on [javadoc.io](https://javadoc.io/doc/fr.menana/automaton).
+
+### Adding weights in the 4.1 development API
+
+Start from an existing `Automaton` with `weighted(transition -> cost)` or
+`multiWeighted(...)`. Reuse `snapshot()` when several weightings must share one
+structure. Weighted objects provide `run(...)` for Boolean membership and
+`toAutomaton()` for an explicit projection forgetting costs. See
+[Automaton and its weighted variants](docs/AUTOMATON_AND_WEIGHTS.md) for the
+executable example, identity mappings and mutation contracts.
 
 ### Upgrading
 

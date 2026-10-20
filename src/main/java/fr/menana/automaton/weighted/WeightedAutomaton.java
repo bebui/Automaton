@@ -82,10 +82,7 @@ public final class WeightedAutomaton {
      * @return weighting
      */
     public static WeightedAutomaton from(Automaton automaton, ToDoubleFunction<Transition> weight) {
-        AutomatonGraph.ImportResult imported = AutomatonGraph.importAutomaton(automaton);
-        double[] costs = new double[imported.graph().getNbTransitions()];
-        for (int e = 0; e < costs.length; e++) costs[e] = weight.applyAsDouble(imported.originalTransition(e));
-        return of(imported.graph(), costs);
+        return automaton.snapshot().weighted(weight);
     }
     /**
      * @return builder accepting structure and costs together
@@ -95,6 +92,17 @@ public final class WeightedAutomaton {
      * @return shared immutable structure
      */
     public AutomatonGraph graph() { return graph; }
+    /**
+     * @param word consumed symbols
+     * @return Boolean membership, independent of costs, overflow and negative cycles
+     * @since 4.1.0
+     */
+    public boolean run(int... word) { return graph.run(word); }
+    /**
+     * @return independent mutable Boolean projection; costs and parallel-path identities are forgotten
+     * @since 4.1.0
+     */
+    public Automaton toAutomaton() { return graph.toAutomaton(); }
     /**
      * @param edge logical edge ID
      * @return scalar cost

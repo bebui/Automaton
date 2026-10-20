@@ -29,6 +29,7 @@ weights must themselves be exactly representable as finite doubles, or fail.
 |---|---|
 | `Automaton`, `State` collections, `IntervalSet` | Mutable; external synchronization required for concurrent edits |
 | Graph/weighted builders | Mutable; do not share concurrent construction |
+| `AutomatonSnapshot` | Immutable topology; original object mappings are mutable identity metadata, so callbacks must not race edits |
 | `AutomatonGraph`, scalar/vector automata | Immutable snapshots/views; shareable when callers respect ownership |
 | `Alphabet`, `WeightedDfaIndex`, `CompiledDfa`, `Searcher`, compiled scalar/vector DFAs | Immutable; shareable |
 | Evaluators, lazy iterators | Reusable mutable work state; one per thread |
@@ -87,7 +88,10 @@ the documented preconditions instead of depending on incidental exceptions.
 
 Use `mvn clean verify` for tests/packaging and the optional standalone
 [benchmark module](../benchmarks/README.md) for JMH/GC measurements. The source
-POM prepares 4.0.0, while original Boolean algorithm bodies remain unchanged.
+POM develops 4.1.0-SNAPSHOT. The original Boolean recognizer/compiler remain
+unchanged; coaccessibility now shares a primitive reachability kernel. The
+[integration audit](../audit/automaton-integration/README.md) records correctness,
+compatibility and before/after measurements. The historical 4.0 package audit follows.
 The [4.0 refactoring audit](../audit/release-4/README.md) records before/after
 measurements, bytecode/API checks, source hashes and memory methodology.
 The [previous algorithm audit](../audit/weighted-advanced-cyclic/README.md)

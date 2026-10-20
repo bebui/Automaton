@@ -73,10 +73,19 @@ The transformed automaton stores doubles, so it rejects such emitted weights
 instead of silently rounding an exact invariant. Fast numeric evaluation has a
 different, explicitly documented IEEE contract.
 
+## Why do Automaton and the weighted types use different representations?
+
+The original Automaton is mutable and merges transitions by destination. The
+weighted engine uses immutable logical-edge IDs and preserves parallel paths.
+Since 4.1, `Automaton.weighted`, `multiWeighted` and `snapshot` connect these
+representations directly; `toAutomaton` projects the language back explicitly.
+The shared snapshot captures one graph for multiple cost stores. See
+[the integration guide](AUTOMATON_AND_WEIGHTS.md) for the complete workflow.
+
 ## How do I publish or install the extension?
 
-Build/install the checkout locally for development. The POM prepares `4.0.0`;
-this does not imply that Maven Central already includes Git changes. Signing
+Build/install the checkout locally for development. The POM develops `4.1.0-SNAPSHOT`;
+the published 4.0.0 artifact does not include subsequent Git changes. Signing
 and publishing artifacts is a separate release action. See the
 [4.0 migration guide](MIGRATION_4.md) for packages and compatibility.
 The library remains LGPL-3.0; see [LICENSE](../LICENSE).

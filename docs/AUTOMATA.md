@@ -95,6 +95,15 @@ return independent automata. `equals` checks structure; `sameLanguage` checks
 recognized words. Mutable automata/interval sets are not safe for concurrent
 edits. The weighted snapshot types have separate immutable contracts.
 
+## Adding costs (new in 4.1)
+
+`weighted(callback)`, `multiWeighted(callbacks...)` and `snapshot()` connect the
+same Automaton construction API to scalar/vector computations. A snapshot copies
+structure once and retains original object mappings for assigning costs. Weighted
+objects expose Boolean `run(...)` and an explicit `toAutomaton()` projection.
+Read [Automaton and weights](AUTOMATON_AND_WEIGHTS.md) for ownership and cost-loss
+contracts when crossing representations.
+
 ## Export
 
 `toDot()` returns a Graphviz DOT string. `toDotty("automaton.dot")` writes a

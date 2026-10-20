@@ -23,6 +23,7 @@ import fr.menana.automaton.weighted.compiled.*;
 
 import java.util.*;
 import java.math.BigDecimal;
+import java.util.function.ToDoubleFunction;
 
 /**
  * Immutable fixed-dimension additive vector weighting of a shared graph.
@@ -54,6 +55,16 @@ public final class MultiWeightedAutomaton {
         return of(graph, dimensions, weights, new double[positive(dimensions)], new double[Math.multiplyExact(graph.getNbStates(), dimensions)]);
     }
     private static int positive(int d) { if (d <= 0) throw new IllegalArgumentException("Positive dimension required"); return d; }
+    /**
+     * @param automaton source Boolean automaton, copied once
+     * @param dimensions one or more finite transition-cost callbacks, in dimension order
+     * @return correlated vector weighting of a common snapshot, with zero boundaries
+     * @since 4.1.0
+     */
+    @SafeVarargs
+    public static MultiWeightedAutomaton from(Automaton automaton, ToDoubleFunction<Transition>... dimensions) {
+        return automaton.snapshot().multiWeighted(dimensions);
+    }
     /**
      * @param graph shared structure
      * @param dimensions dimension
@@ -115,6 +126,17 @@ public final class MultiWeightedAutomaton {
      * @return shared immutable structure
      */
     public AutomatonGraph graph() { return graph; }
+    /**
+     * @param word consumed symbols
+     * @return Boolean membership, independent of vector costs
+     * @since 4.1.0
+     */
+    public boolean run(int... word) { return graph.run(word); }
+    /**
+     * @return independent mutable Boolean projection, forgetting all vectors and parallel-path identities
+     * @since 4.1.0
+     */
+    public Automaton toAutomaton() { return graph.toAutomaton(); }
     /**
      * @return fixed dimension
      */
