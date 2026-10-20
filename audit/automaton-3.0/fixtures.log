@@ -1,0 +1,15 @@
+sparse-unit states=64 transitions=128 consuming_modes=128 epsilon_modes=0 intervals=128 finals=9 deterministic=true
+sparse-unit word_length=64 accepted=true
+sparse-unit-right-product-operand states=16 transitions=31 consuming_modes=31 epsilon_modes=0 intervals=31 finals=2 deterministic=true
+sparse-interval states=256 transitions=512 consuming_modes=512 epsilon_modes=0 intervals=512 finals=36 deterministic=true
+sparse-interval word_length=64 accepted=false
+sparse-interval-right-product-operand states=16 transitions=31 consuming_modes=31 epsilon_modes=0 intervals=31 finals=2 deterministic=true
+dense-unit states=64 transitions=922 consuming_modes=922 epsilon_modes=0 intervals=1013 finals=9 deterministic=true
+dense-unit word_length=64 accepted=false
+dense-unit-right-product-operand states=16 transitions=158 consuming_modes=158 epsilon_modes=0 intervals=237 finals=2 deterministic=true
+dense-interval states=256 transitions=3986 consuming_modes=3986 epsilon_modes=0 intervals=4082 finals=36 deterministic=true
+dense-interval word_length=64 accepted=false
+dense-interval-right-product-operand states=16 transitions=158 consuming_modes=158 epsilon_modes=0 intervals=237 finals=2 deterministic=true
+nfa states=15 transitions=19 consuming_modes=9 epsilon_modes=10 intervals=9 finals=1 deterministic=false
+nfa word_length=64 accepted=true
+nfa-determinized states=16 transitions=32 consuming_modes=32 epsilon_modes=0 intervals=32 finals=8 deterministic=true

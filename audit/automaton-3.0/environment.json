@@ -1,0 +1,32 @@
+{
+  "commit": "f7532436cbe964758988e13f8c5872c43bebe58b",
+  "version": "3.0.0",
+  "java": "openjdk version \"17.0.20.1\" 2026-08-18\nOpenJDK Runtime Environment (build 17.0.20.1+1-1-26.04-Ubuntu)\nOpenJDK 64-Bit Server VM (build 17.0.20.1+1-1-26.04-Ubuntu, mixed mode, sharing)\n",
+  "maven": "3.9.12",
+  "os": "Linux-7.0.0-34-generic-x86_64-with-glibc2.43",
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           36 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  4\nOn-line CPU(s) list:                     0-3\nVendor ID:                               GenuineIntel\nModel name:                              Intel(R) Pentium(R) CPU  N3700  @ 1.60GHz\nCPU family:                              6\nModel:                                   76\nThread(s) per core:                      1\nCore(s) per socket:                      4\nSocket(s):                               1\nStepping:                                3\nCPU(s) scaling MHz:                      100%\nCPU max MHz:                             2400.0000\nCPU min MHz:                             480.0000\nBogoMIPS:                                3200.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm sse4_1 sse4_2 movbe popcnt tsc_deadline_timer aes rdrand lahf_lm 3dnowprefetch epb pti ibrs ibpb stibp tpr_shadow flexpriority ept vpid tsc_adjust smep erms dtherm ida arat vnmi md_clear\nVirtualization:                          VT-x\nL1d cache:                               96 KiB (4 instances)\nL1i cache:                               128 KiB (4 instances)\nL2 cache:                                2 MiB (2 instances)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-3\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Mitigation; Clear CPU buffers; SMT disabled\nVulnerability Meltdown:                  Mitigation; PTI\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Not affected\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n",
+  "jmh": "1.37",
+  "forks": 2,
+  "threads": 1,
+  "warmup": {
+    "iterations": 3,
+    "milliseconds": 500
+  },
+  "measurement": {
+    "iterations": 5,
+    "milliseconds": 500
+  },
+  "heap": [
+    "-Xms128m",
+    "-Xmx256m"
+  ],
+  "profiler": "gc",
+  "time_zone": "Europe/Paris",
+  "limitations": [
+    "Shared host; no CPU isolation or fixed governor.",
+    "Two forks and short warmup: preliminary local baseline.",
+    "An existing JMH run was allowed to release the lock before starting.",
+    "Allocation per operation is not retained graph size.",
+    "Unit and wide-interval families use different state counts; no isolated claim about interval width."
+  ]
+}

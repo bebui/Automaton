@@ -1,0 +1,7 @@
+states=1025 edges=2047 dimensions=8 scalarizations=16
+graph_bytes=73000
+multi_including_graph_bytes=269776
+multi_plus_16_views_bytes=271912
+multi_plus_16_materialized_bytes=664488
+after_100_reweightings_bytes=97664
+fresh_scalar_bytes=97664

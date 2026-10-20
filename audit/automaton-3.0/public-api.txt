@@ -1,0 +1,203 @@
+Compiled from "Automaton.java"
+public class fr.menana.automaton.Automaton implements java.lang.Cloneable {
+  public fr.menana.automaton.Automaton();
+  public fr.menana.automaton.Automaton(java.lang.String);
+  public java.util.List<fr.menana.automaton.State> getStates();
+  public fr.menana.automaton.State getState(int);
+  public int getNbStates();
+  public fr.menana.automaton.State addState();
+  public void setInitial(fr.menana.automaton.State);
+  public void setAccept(fr.menana.automaton.State);
+  public void setAccept(fr.menana.automaton.State, boolean);
+  public boolean isInitial(fr.menana.automaton.State);
+  public fr.menana.automaton.State getInitial();
+  public java.util.List<fr.menana.automaton.State> getAcceptList();
+  public java.util.List<fr.menana.automaton.State> getNonAcceptList();
+  public java.util.List<fr.menana.automaton.Transition> getAllTransitions();
+  public void addTransition(fr.menana.automaton.State, fr.menana.automaton.State, fr.menana.automaton.IntervalSet);
+  public void addTransition(fr.menana.automaton.State, fr.menana.automaton.State, fr.menana.automaton.Interval);
+  public void addTransition(fr.menana.automaton.State, fr.menana.automaton.State, int...);
+  public void addEpsilonTransition(fr.menana.automaton.State, fr.menana.automaton.State);
+  public boolean isDeterministic();
+  public boolean run(int...);
+  public fr.menana.automaton.Automaton determinize();
+  public fr.menana.automaton.Automaton minimize();
+  public fr.menana.automaton.Automaton revert();
+  public fr.menana.automaton.Automaton concatenate(fr.menana.automaton.Automaton);
+  public fr.menana.automaton.Automaton union(fr.menana.automaton.Automaton);
+  public fr.menana.automaton.Automaton complement();
+  public fr.menana.automaton.Automaton intersection(fr.menana.automaton.Automaton);
+  public fr.menana.automaton.Automaton difference(fr.menana.automaton.Automaton);
+  public fr.menana.automaton.Automaton removeEpsilon();
+  public fr.menana.automaton.Automaton reduce();
+  public fr.menana.automaton.CompiledDfa compile();
+  public fr.menana.automaton.Searcher searcher();
+  public fr.menana.automaton.Searcher$Match find(int...);
+  public boolean contains(int...);
+  public java.util.List<fr.menana.automaton.Searcher$Match> findAll(int...);
+  public boolean isEmpty();
+  public boolean isFinite();
+  public boolean isUniversal();
+  public boolean sameLanguage(fr.menana.automaton.Automaton);
+  public boolean isSubsetOf(fr.menana.automaton.Automaton);
+  public int[] shortestWord();
+  public int[] counterExample(fr.menana.automaton.Automaton);
+  public java.math.BigInteger countWords(int);
+  public int[] randomWord(int, java.util.Random);
+  public java.lang.Iterable<int[]> words(int);
+  public void removeDeadStates();
+  public java.util.Set<fr.menana.automaton.State> getUseFulStates();
+  public fr.menana.automaton.Automaton clone();
+  public java.util.Set<fr.menana.automaton.State> delta(fr.menana.automaton.State, int);
+  public java.util.Set<fr.menana.automaton.State> deltaEpsilon(fr.menana.automaton.State);
+  public void reIndex();
+  public void toDotty(java.lang.String);
+  public java.lang.String toDot();
+  public java.lang.String toString();
+  public boolean equals(java.lang.Object);
+  public int hashCode();
+  public static fr.menana.automaton.Automaton nfaFromString(java.lang.String);
+  public static fr.menana.automaton.Automaton dfaFromString(java.lang.String);
+  public java.lang.Object clone() throws java.lang.CloneNotSupportedException;
+}
+Compiled from "State.java"
+public class fr.menana.automaton.State {
+  public java.util.Map<fr.menana.automaton.State, fr.menana.automaton.Transition> getTransitions();
+  public boolean isInitial();
+  public boolean isAccept();
+  public java.lang.String toString();
+  public int getIndex();
+  public int compareTo(fr.menana.automaton.State);
+  public boolean hasTransitionWith(int);
+}
+Compiled from "Transition.java"
+public class fr.menana.automaton.Transition {
+  public fr.menana.automaton.State getOrig();
+  public fr.menana.automaton.State getDest();
+  public fr.menana.automaton.IntervalSet getValues();
+  public boolean hasValues();
+  public boolean accepts(int);
+  public boolean hasEpsilon();
+  public boolean equals(java.lang.Object);
+  public int hashCode();
+  public java.lang.String toString();
+}
+Compiled from "Interval.java"
+public class fr.menana.automaton.Interval implements java.lang.Comparable<fr.menana.automaton.Interval>, java.lang.Cloneable {
+  public int getMin();
+  public int getMax();
+  public fr.menana.automaton.Interval(int, int);
+  public boolean contains(int);
+  public boolean contains(fr.menana.automaton.Interval);
+  public boolean intersects(fr.menana.automaton.Interval);
+  public int compareTo(fr.menana.automaton.Interval) throws java.lang.NullPointerException;
+  public boolean equals(java.lang.Object);
+  public java.lang.String toString();
+  public fr.menana.automaton.Interval intersection(fr.menana.automaton.Interval);
+  public int hashCode();
+  public int size();
+  public java.util.List<fr.menana.automaton.Interval> complement();
+  public fr.menana.automaton.Interval clone();
+  public java.lang.Object clone() throws java.lang.CloneNotSupportedException;
+  public int compareTo(java.lang.Object);
+}
+Compiled from "IntervalSet.java"
+public class fr.menana.automaton.IntervalSet implements java.lang.Comparable<fr.menana.automaton.IntervalSet>, java.lang.Cloneable {
+  public static final fr.menana.automaton.IntervalSet ALL;
+  public static final fr.menana.automaton.IntervalSet EMPTY;
+  public fr.menana.automaton.IntervalSet();
+  public boolean add(int...);
+  public boolean add(int);
+  public boolean add(fr.menana.automaton.IntervalSet);
+  public boolean add(fr.menana.automaton.Interval);
+  public void remove(fr.menana.automaton.IntervalSet);
+  public boolean contains(int);
+  public boolean isEmpty();
+  public boolean intersects(fr.menana.automaton.IntervalSet);
+  public boolean intersects(fr.menana.automaton.Interval);
+  public fr.menana.automaton.IntervalSet intersection(fr.menana.automaton.IntervalSet);
+  public fr.menana.automaton.IntervalSet complement();
+  public fr.menana.automaton.IntervalSet minus(fr.menana.automaton.IntervalSet...);
+  public fr.menana.automaton.IntervalSet union(fr.menana.automaton.IntervalSet...);
+  public int getMin();
+  public int getMax();
+  public long size();
+  public java.lang.String toString();
+  public fr.menana.automaton.IntervalSet clone();
+  public static fr.menana.automaton.IntervalSet union(java.util.Collection<fr.menana.automaton.IntervalSet>);
+  public java.util.TreeSet<fr.menana.automaton.Interval> getIntervals();
+  public static fr.menana.automaton.IntervalSet intersection(java.util.Collection<fr.menana.automaton.IntervalSet>);
+  public static fr.menana.automaton.IntervalSet fromIntArray(int...);
+  public boolean equals(java.lang.Object);
+  public int hashCode();
+  public static fr.menana.automaton.IntervalSet fromInterval(fr.menana.automaton.Interval);
+  public int compareTo(fr.menana.automaton.IntervalSet);
+  public java.lang.Object clone() throws java.lang.CloneNotSupportedException;
+  public int compareTo(java.lang.Object);
+}
+Compiled from "Operation.java"
+public class fr.menana.automaton.Operation {
+  public static fr.menana.automaton.Operation$MINIMIZATION_ALGO getDefaultMinimization();
+  public static void setDefaultMinimization(fr.menana.automaton.Operation$MINIMIZATION_ALGO);
+  public static fr.menana.automaton.Automaton minimize(fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton minimize(fr.menana.automaton.Automaton, fr.menana.automaton.Operation$MINIMIZATION_ALGO);
+  public static fr.menana.automaton.Automaton minimizeHopcroft(fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton minimizeBrzozowski(fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton determinize(fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton revert(fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton concatenate(fr.menana.automaton.Automaton, fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton concatenate(fr.menana.automaton.Automaton, fr.menana.automaton.Automaton, boolean);
+  public static fr.menana.automaton.Automaton union(fr.menana.automaton.Automaton, fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton intersection(fr.menana.automaton.Automaton, fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton difference(fr.menana.automaton.Automaton, fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton removeEpsilon(fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton reduce(fr.menana.automaton.Automaton);
+  public static fr.menana.automaton.Automaton complement(fr.menana.automaton.Automaton);
+}
+Compiled from "Operation.java"
+public final class fr.menana.automaton.Operation$MINIMIZATION_ALGO extends java.lang.Enum<fr.menana.automaton.Operation$MINIMIZATION_ALGO> {
+  public static final fr.menana.automaton.Operation$MINIMIZATION_ALGO Brzozowski;
+  public static final fr.menana.automaton.Operation$MINIMIZATION_ALGO Hopcroft;
+  public static fr.menana.automaton.Operation$MINIMIZATION_ALGO[] values();
+  public static fr.menana.automaton.Operation$MINIMIZATION_ALGO valueOf(java.lang.String);
+}
+Compiled from "CompiledDfa.java"
+public final class fr.menana.automaton.CompiledDfa {
+  public static final int DEAD;
+  public static fr.menana.automaton.CompiledDfa of(fr.menana.automaton.Automaton);
+  public int getInitialState();
+  public int getNbStates();
+  public boolean isAccept(int);
+  public int step(int, int);
+  public boolean run(int...);
+  public boolean run(int[], int, int);
+}
+Compiled from "Searcher.java"
+public final class fr.menana.automaton.Searcher {
+  public fr.menana.automaton.Searcher(fr.menana.automaton.Automaton);
+  public fr.menana.automaton.Searcher$Match find(int...);
+  public fr.menana.automaton.Searcher$Match find(int[], int);
+  public boolean contains(int...);
+  public java.util.List<fr.menana.automaton.Searcher$Match> findAll(int...);
+}
+Compiled from "Searcher.java"
+public final class fr.menana.automaton.Searcher$Match extends java.lang.Record {
+  public fr.menana.automaton.Searcher$Match(int, int);
+  public int length();
+  public final java.lang.String toString();
+  public final int hashCode();
+  public final boolean equals(java.lang.Object);
+  public int start();
+  public int end();
+}
+Compiled from "RegExp.java"
+public abstract class fr.menana.automaton.regexp.RegExp {
+  public abstract java.lang.String toString();
+  public fr.menana.automaton.Automaton toNFA();
+}
+Compiled from "RegExpParser.java"
+public class fr.menana.automaton.regexp.RegExpParser {
+  public static fr.menana.automaton.regexp.RegExp toRegExp(java.lang.String);
+  public static fr.menana.automaton.Automaton toNFA(java.lang.String);
+  public static fr.menana.automaton.Automaton toDFA(java.lang.String);
+}
