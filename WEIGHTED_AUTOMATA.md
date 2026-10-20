@@ -1,15 +1,18 @@
 # Weighted and multi-weighted automata
 
-This extension adds immutable weighted automata alongside the mutable Boolean
-Automaton 3.0 API. There are no new runtime dependencies; Java 17 is required.
-The existing Boolean algorithms and object layouts are unchanged.
-The weighted API in this working tree has not been published; build it from
-these sources. The release version in the main POM has not been changed.
+Automaton **4.0.0** adds immutable weighted automata alongside the mutable
+Boolean API retained from 3.0. There are no new runtime dependencies; Java 17
+is required. The existing Boolean algorithms and object layouts are unchanged.
+The root POM prepares 4.0.0; artifact publication is a separate release step.
+Weighted types now live in `fr.menana.automaton.weighted`, with compiled
+evaluators in `weighted.compiled`. See the [migration guide](docs/MIGRATION_4.md).
 
 ## Scalar automata
 
 ```java
 import fr.menana.automaton.*;
+import fr.menana.automaton.weighted.*;
+import fr.menana.automaton.weighted.compiled.*;
 
 var builder = WeightedAutomaton.builder();
 int start = builder.addState();
@@ -370,8 +373,10 @@ recognized word has one cost vector. An NFA is rejected rather than silently
 collapsing its vector relation. The compiled interval index references logical
 edge IDs and vector storage; `reweight`, `project` and `scalarize` reuse it.
 A reweighting must use the identical graph but may change the dimension count.
-The existing scalar compiled evaluator is reused without modifying its lookup
-loop. Buffered evaluation takes O(L(log I + d)) time, where I is the outgoing
+The scalar and vector compiled evaluators share `WeightedDfaIndex`, which
+contains no costs. Explicit `of(automaton, index)` factories also share an index
+between independently created weightings on the same graph. Its interval lookup
+loop is unchanged. Buffered evaluation takes O(L(log I + d)) time, where I is the outgoing
 interval count. It overwrites the caller buffer and returns false with every
 component set to `+Infinity` on rejection. On overflow it throws and buffer
 contents are unspecified. The convenience array-returning overload allocates

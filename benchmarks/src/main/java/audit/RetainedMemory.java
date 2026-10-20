@@ -1,5 +1,7 @@
 package audit;
 import fr.menana.automaton.*;
+import fr.menana.automaton.weighted.*;
+import fr.menana.automaton.weighted.compiled.*;
 import java.lang.reflect.*;
 import java.util.*;
 

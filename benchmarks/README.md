@@ -70,3 +70,11 @@ buffered/allocated vector recognition, scalar-to-vector views, compilation,
 reweighting and scalarization with/without index reuse. The scalar-product
 fixture is a fixed pair of nine-state weighted chains for every dimension
 parameter; those three rows repeat the same product workload deliberately.
+
+## 4.0 package refactoring
+
+The current harness imports weighted classes from `fr.menana.automaton.weighted`
+and compiled evaluators from `weighted.compiled`. Historical audit sources/logs
+record their original snapshots. The [4.0 refactoring audit](../audit/release-4/README.md)
+compares the merged pre-refactoring snapshot with this checkout using the same
+benchmark fixtures, each built against its corresponding package layout.

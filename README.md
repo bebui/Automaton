@@ -1,4 +1,4 @@
-# Automaton
+# Automaton 4.0
 
 A Java library to create and manipulate deterministic and non-deterministic finite automata whose symbols are integers.
 
@@ -11,34 +11,42 @@ Transitions are labelled with sets of integer intervals, so an automaton can wor
 - Counting, uniform random generation and enumeration of words
 - Fast word recognition with compiled automata, search inside sequences
 - Graphviz export
-- Unreleased extension: scalar/vector weights, shortest paths, finite horizons, lexicographic and Pareto optimization — see [weighted automata](WEIGHTED_AUTOMATA.md)
+- Scalar/vector weighted automata: scalar/vector weights, shortest paths, finite horizons, lexicographic and Pareto optimization — see [weighted automata](WEIGHTED_AUTOMATA.md)
 
 ## Documentation
 
 Read the [complete library manual](docs/README.md) for installation, Boolean and
 weighted automata, algorithms, contracts and runnable examples. The
 [public API reference](docs/API_REFERENCE.md) lists every current public type and
-overload, including the unreleased extension. The 11 documented examples are
+overload, including the weighted API. The 11 documented examples are
 checked against executable source with `python3 docs/check_examples.py` after a
 local build. Published Javadoc and Maven artifacts may lag behind this checkout.
 
 ## Installation
 
-Available on Maven Central (requires Java 17):
+This checkout prepares **4.0.0** (requires Java 17). Build and install it locally
+with `mvn clean install` before using these coordinates; preparing this version
+does not publish it to Maven Central. Previously published 3.0 artifacts do not
+contain the weighted API.
 
 ```xml
 <dependency>
     <groupId>fr.menana</groupId>
     <artifactId>automaton</artifactId>
-    <version>3.0.0</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 
-With Gradle: `implementation("fr.menana:automaton:3.0.0")`.
+With Gradle: `implementation("fr.menana:automaton:4.0.0")`.
 
 The API documentation is on [javadoc.io](https://javadoc.io/doc/fr.menana/automaton).
 
 ### Upgrading
+
+From 3.0 to 4.0: the existing Boolean API keeps its packages and signatures.
+The new weighted API lives in `fr.menana.automaton.weighted`, with compiled
+evaluators in `weighted.compiled`. See the [4.0 migration guide](docs/MIGRATION_4.md)
+and [release notes](CHANGELOG.md).
 
 From 2.x to 3.0: the classes of the nodes of regular expressions (`RegExpInt`, `RegExpOr`, ...) and the `Util` class are no longer public; use `RegExpParser` and `RegExp` instead.
 

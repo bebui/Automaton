@@ -1,15 +1,16 @@
 # Automaton documentation
 
-This manual describes the code in this checkout: Automaton 3.0 and its unreleased
-scalar/vector weighted extension. It uses Java 17 and the public API actually
-present in the repository. Older 1.x/2.x documentation is not an API reference
-for these examples. The Maven version in the root POM remains `3.0.0`; merging
-code on GitHub does not publish a new Maven Central artifact.
+This manual describes Automaton **4.0.0**, as prepared in this checkout: the
+existing Boolean library and the scalar/vector weighted API. It uses Java 17
+and the actual repository API. Older 1.x/2.x documentation is not a reference
+for these examples. A GitHub merge does not publish Maven Central artifacts;
+see [local build instructions](GETTING_STARTED.md) and the [4.0 migration guide](MIGRATION_4.md).
 
 ## Read by topic
 
 | Topic | Guide |
 |---|---|
+| Release changes, package map, migration from 3.0 / weighted snapshots | [Migration to 4.0](MIGRATION_4.md) |
 | Installation, build, first program, running examples | [Getting started](GETTING_STARTED.md) |
 | States, integer intervals, epsilon, mutation and copying | [Automata and alphabets](AUTOMATA.md) |
 | Integer expression syntax, precedence, parser API | [Regular expressions](REGULAR_EXPRESSIONS.md) |
@@ -36,6 +37,7 @@ code on GitHub does not publish a new Maven Central artifact.
 | `MultiWeightedAutomaton` | Additive vector costs; an ambiguous word denotes a set of vectors |
 | `CompiledWeightedDfa` | Scalar DFA recognition with an interval index; requires a DFA without epsilon |
 | `CompiledMultiWeightedDfa` | Vector DFA recognition; caller-buffer API and shared scalar indexes |
+| `WeightedDfaIndex` | Immutable interval index shared by independently compiled scalar/vector weightings |
 | `LayeredAutomaton` | Reusable finite-horizon structure with `(position,state)` nodes |
 
 A path, a concrete word, a scalar cost, and a vector are different objects. Two
@@ -60,6 +62,7 @@ flowchart LR
 All Java blocks marked `example:` are copied verbatim from
 [AutomatonTour.java](examples/AutomatonTour.java), including assertions about
 results. The tour imports `fr.menana.automaton.*`,
+`fr.menana.automaton.weighted.*`, `fr.menana.automaton.weighted.compiled.*`,
 `fr.menana.automaton.regexp.*`, `java.util.*` and `java.math.BigInteger`.
 Its `check(condition)` and `equal(expected,actual)` helpers throw an assertion
 error on failure. These helper calls are checks, not library methods.

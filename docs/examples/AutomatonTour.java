@@ -1,4 +1,6 @@
 import fr.menana.automaton.*;
+import fr.menana.automaton.weighted.*;
+import fr.menana.automaton.weighted.compiled.*;
 import fr.menana.automaton.regexp.*;
 import java.math.BigInteger;
 import java.util.*;
@@ -161,7 +163,10 @@ public final class AutomatonTour {
         check(multi.paretoFront().size() == 2);
         check(Arrays.equals(new int[]{0}, multi.lexicographicBestPath().word()));
         check(Arrays.equals(new int[]{1}, multi.scalarize(1, 2).bestPath().word()));
-        CompiledMultiWeightedDfa compiled = multi.compile();
+        WeightedDfaIndex index = WeightedDfaIndex.of(multi.graph());
+        CompiledMultiWeightedDfa compiled = CompiledMultiWeightedDfa.of(multi, index);
+        check(compiled.project(0).index() == index);
+        check(CompiledWeightedDfa.of(cost, index).index() == index);
         double[] output = new double[2];
         check(compiled.costs(new int[]{1}, output));
         check(Arrays.equals(new double[]{10, 1}, output));

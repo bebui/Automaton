@@ -1,0 +1,138 @@
+Command: ['/usr/lib/jvm/java-17-openjdk-amd64/bin/java', '-jar', '/home/julien/codex_ha/Automaton/benchmarks/target/benchmarks.jar', 'audit.WeightedBench.product$', '-wi', '5', '-w', '1s', '-i', '5', '-r', '1s', '-f', '2', '-prof', 'gc', '-foe', 'true', '-rf', 'json', '-rff', '/home/julien/codex_ha/Automaton/audit/release-4/product-followup-current.json']
+# JMH version: 1.37
+# VM version: JDK 17.0.20.1, OpenJDK 64-Bit Server VM, 17.0.20.1+1-1-26.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+# VM options: -Xms128m -Xmx256m
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: audit.WeightedBench.product
+
+# Run progress: 0.00% complete, ETA 00:00:20
+# Fork: 1 of 2
+# Warmup Iteration   1: 113795.180 us/op
+# Warmup Iteration   2: 33829.099 us/op
+# Warmup Iteration   3: 28393.677 us/op
+# Warmup Iteration   4: 40878.772 us/op
+# Warmup Iteration   5: 29778.543 us/op
+Iteration   1: 28253.879 us/op
+                 gc.alloc.rate:      445.044 MB/sec
+                 gc.alloc.rate.norm: 13197899.778 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            47.000 ms
+
+Iteration   2: 28090.719 us/op
+                 gc.alloc.rate:      447.544 MB/sec
+                 gc.alloc.rate.norm: 13197899.778 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            39.000 ms
+
+Iteration   3: 28808.420 us/op
+                 gc.alloc.rate:      436.145 MB/sec
+                 gc.alloc.rate.norm: 13197904.457 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            45.000 ms
+
+Iteration   4: 31551.873 us/op
+                 gc.alloc.rate:      398.533 MB/sec
+                 gc.alloc.rate.norm: 13197920.250 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            46.000 ms
+
+Iteration   5: 28065.167 us/op
+                 gc.alloc.rate:      447.692 MB/sec
+                 gc.alloc.rate.norm: 13197901.556 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            38.000 ms
+
+
+# Run progress: 50.00% complete, ETA 00:00:11
+# Fork: 2 of 2
+# Warmup Iteration   1: 100803.577 us/op
+# Warmup Iteration   2: 35172.961 us/op
+# Warmup Iteration   3: 30415.358 us/op
+# Warmup Iteration   4: 28344.538 us/op
+# Warmup Iteration   5: 28118.988 us/op
+Iteration   1: 28469.055 us/op
+                 gc.alloc.rate:      441.541 MB/sec
+                 gc.alloc.rate.norm: 13197899.778 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            40.000 ms
+
+Iteration   2: 29570.571 us/op
+                 gc.alloc.rate:      424.973 MB/sec
+                 gc.alloc.rate.norm: 13197909.412 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            39.000 ms
+
+Iteration   3: 29128.013 us/op
+                 gc.alloc.rate:      431.778 MB/sec
+                 gc.alloc.rate.norm: 13197906.286 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            34.000 ms
+
+Iteration   4: 28783.624 us/op
+                 gc.alloc.rate:      436.637 MB/sec
+                 gc.alloc.rate.norm: 13197905.371 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            38.000 ms
+
+Iteration   5: 28893.733 us/op
+                 gc.alloc.rate:      435.306 MB/sec
+                 gc.alloc.rate.norm: 13197904.457 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            44.000 ms
+
+
+
+Result "audit.WeightedBench.product":
+  28961.505 ±(99.9%) 1551.101 us/op [Average]
+  (min, avg, max) = (28065.167, 28961.505, 31551.873), stdev = 1025.957
+  CI (99.9%): [27410.405, 30512.606] (assumes normal distribution)
+
+Secondary result "audit.WeightedBench.product:gc.alloc.rate":
+  434.519 ±(99.9%) 21.994 MB/sec [Average]
+  (min, avg, max) = (398.533, 434.519, 447.692), stdev = 14.547
+  CI (99.9%): [412.526, 456.513] (assumes normal distribution)
+
+Secondary result "audit.WeightedBench.product:gc.alloc.rate.norm":
+  13197905.112 ±(99.9%) 9.401 B/op [Average]
+  (min, avg, max) = (13197899.778, 13197905.112, 13197920.250), stdev = 6.218
+  CI (99.9%): [13197895.712, 13197914.513] (assumes normal distribution)
+
+Secondary result "audit.WeightedBench.product:gc.count":
+  60.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (5.000, 6.000, 7.000), stdev = 0.471
+  CI (99.9%): [60.000, 60.000] (assumes normal distribution)
+
+Secondary result "audit.WeightedBench.product:gc.time":
+  410.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (34.000, 41.000, 47.000), stdev = 4.243
+  CI (99.9%): [410.000, 410.000] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:00:23
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                 Mode  Cnt         Score      Error   Units
+WeightedBench.product                     avgt   10     28961.505 ± 1551.101   us/op
+WeightedBench.product:gc.alloc.rate       avgt   10       434.519 ±   21.994  MB/sec
+WeightedBench.product:gc.alloc.rate.norm  avgt   10  13197905.112 ±    9.401    B/op
+WeightedBench.product:gc.count            avgt   10        60.000             counts
+WeightedBench.product:gc.time             avgt   10       410.000                 ms
+
+Benchmark result is saved to /home/julien/codex_ha/Automaton/audit/release-4/product-followup-current.json

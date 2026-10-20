@@ -1,0 +1,76 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< fr.menana:automaton >-------------------------
+[INFO] Building fr.menana:automaton 4.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ automaton ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ automaton ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 51 source files with javac [debug target 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ automaton ---
+[INFO] skip non existing resourceDirectory /home/julien/codex_ha/Automaton/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ automaton ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 14 source files with javac [debug target 17] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ automaton ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running IntervalSetTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.605 s -- in IntervalSetTest
+[INFO] Running FunctionalAutomatonTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in FunctionalAutomatonTest
+[INFO] Running BugFixTest
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.263 s -- in BugFixTest
+[INFO] Running IntervalTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in IntervalTest
+[INFO] Running LanguageTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.48 s -- in LanguageTest
+[INFO] Running RandomTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.707 s -- in RandomTest
+[INFO] Running NfaEquivalenceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.117 s -- in NfaEquivalenceTest
+[INFO] Running fr.menana.automaton.weighted.WeightedAutomatonTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.197 s -- in fr.menana.automaton.weighted.WeightedAutomatonTest
+[INFO] Running fr.menana.automaton.weighted.LayeredAutomatonTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.070 s -- in fr.menana.automaton.weighted.LayeredAutomatonTest
+[INFO] Running fr.menana.automaton.weighted.WeightedCyclicAdvancedTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.133 s -- in fr.menana.automaton.weighted.WeightedCyclicAdvancedTest
+[INFO] Running fr.menana.automaton.weighted.PackageOrganizationTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in fr.menana.automaton.weighted.PackageOrganizationTest
+[INFO] Running fr.menana.automaton.weighted.MultiWeightedAutomatonTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.288 s -- in fr.menana.automaton.weighted.MultiWeightedAutomatonTest
+[INFO] Running fr.menana.automaton.weighted.WeightedAdvancedTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.294 s -- in fr.menana.automaton.weighted.WeightedAdvancedTest
+[INFO] Running fr.menana.automaton.weighted.CompiledMultiWeightedDfaTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.578 s -- in fr.menana.automaton.weighted.CompiledMultiWeightedDfaTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 90, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ automaton ---
+[INFO] Building jar: /home/julien/codex_ha/Automaton/target/automaton-4.0.0.jar
+[INFO] 
+[INFO] --- source:3.3.1:jar-no-fork (attach-sources) @ automaton ---
+[INFO] Building jar: /home/julien/codex_ha/Automaton/target/automaton-4.0.0-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.8.0:jar (attach-javadocs) @ automaton ---
+[INFO] Configuration changed, re-generating javadoc.
+[INFO] Building jar: /home/julien/codex_ha/Automaton/target/automaton-4.0.0-javadoc.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:52 min
+[INFO] Finished at: 2026-10-20T04:00:35+02:00
+[INFO] ------------------------------------------------------------------------

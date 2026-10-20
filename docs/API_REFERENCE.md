@@ -3,54 +3,72 @@
 Generated from the compiled Java 17 classes in this checkout. Regenerate with
 `python3 docs/generate_api_reference.py` after building the library.
 This lists declared public constructors, methods, overloads and constants,
-including public nested types. Inherited `Object` methods are not repeated.
+including public nested types. Unsupported `weighted.internal` helpers are excluded.
+Inherited `Object` methods are not repeated.
 Java/JDK and library package prefixes are shortened for readability.
 Parameter contracts, return/absence conventions and algorithm preconditions
 are explained in the [topic guides](README.md) and source Javadoc.
 
-**39 public types.**
+**41 public types.**
 
 | Type | Source |
 |---|---|
+| [Alphabet](#alphabet) | [Alphabet.java](../src/main/java/fr/menana/automaton/Alphabet.java) |
 | [Automaton](#automaton) | [Automaton.java](../src/main/java/fr/menana/automaton/Automaton.java) |
-| [AutomatonGraph.Builder](#automatongraph-builder) | [AutomatonGraph.java](../src/main/java/fr/menana/automaton/AutomatonGraph.java) |
-| [AutomatonGraph.ImportResult](#automatongraph-importresult) | [AutomatonGraph.java](../src/main/java/fr/menana/automaton/AutomatonGraph.java) |
-| [AutomatonGraph](#automatongraph) | [AutomatonGraph.java](../src/main/java/fr/menana/automaton/AutomatonGraph.java) |
 | [CompiledDfa](#compileddfa) | [CompiledDfa.java](../src/main/java/fr/menana/automaton/CompiledDfa.java) |
-| [CompiledMultiWeightedDfa](#compiledmultiweighteddfa) | [CompiledMultiWeightedDfa.java](../src/main/java/fr/menana/automaton/CompiledMultiWeightedDfa.java) |
-| [CompiledWeightedDfa](#compiledweighteddfa) | [CompiledWeightedDfa.java](../src/main/java/fr/menana/automaton/CompiledWeightedDfa.java) |
 | [Interval](#interval) | [Interval.java](../src/main/java/fr/menana/automaton/Interval.java) |
 | [IntervalSet](#intervalset) | [IntervalSet.java](../src/main/java/fr/menana/automaton/IntervalSet.java) |
-| [KBestPaths](#kbestpaths) | [KBestPaths.java](../src/main/java/fr/menana/automaton/KBestPaths.java) |
-| [KBestWords](#kbestwords) | [KBestWords.java](../src/main/java/fr/menana/automaton/KBestWords.java) |
-| [LayeredAutomaton.Analysis](#layeredautomaton-analysis) | [LayeredAutomaton.java](../src/main/java/fr/menana/automaton/LayeredAutomaton.java) |
-| [LayeredAutomaton.PositionWeights](#layeredautomaton-positionweights) | [LayeredAutomaton.java](../src/main/java/fr/menana/automaton/LayeredAutomaton.java) |
-| [LayeredAutomaton](#layeredautomaton) | [LayeredAutomaton.java](../src/main/java/fr/menana/automaton/LayeredAutomaton.java) |
-| [MultiWeightedAutomaton.Builder](#multiweightedautomaton-builder) | [MultiWeightedAutomaton.java](../src/main/java/fr/menana/automaton/MultiWeightedAutomaton.java) |
-| [MultiWeightedAutomaton](#multiweightedautomaton) | [MultiWeightedAutomaton.java](../src/main/java/fr/menana/automaton/MultiWeightedAutomaton.java) |
-| [MultiWeightedOperations](#multiweightedoperations) | [MultiWeightedOperations.java](../src/main/java/fr/menana/automaton/MultiWeightedOperations.java) |
-| [MultiWeightedPath](#multiweightedpath) | [MultiWeightedPath.java](../src/main/java/fr/menana/automaton/MultiWeightedPath.java) |
-| [MultiWeightedPaths](#multiweightedpaths) | [MultiWeightedPaths.java](../src/main/java/fr/menana/automaton/MultiWeightedPaths.java) |
 | [Operation.MINIMIZATION_ALGO](#operation-minimization_algo) | [Operation.java](../src/main/java/fr/menana/automaton/Operation.java) |
 | [Operation](#operation) | [Operation.java](../src/main/java/fr/menana/automaton/Operation.java) |
-| [ParetoResult](#paretoresult) | [ParetoResult.java](../src/main/java/fr/menana/automaton/ParetoResult.java) |
 | [Searcher.Match](#searcher-match) | [Searcher.java](../src/main/java/fr/menana/automaton/Searcher.java) |
 | [Searcher](#searcher) | [Searcher.java](../src/main/java/fr/menana/automaton/Searcher.java) |
-| [ShortestPathResult.Status](#shortestpathresult-status) | [ShortestPathResult.java](../src/main/java/fr/menana/automaton/ShortestPathResult.java) |
-| [ShortestPathResult](#shortestpathresult) | [ShortestPathResult.java](../src/main/java/fr/menana/automaton/ShortestPathResult.java) |
 | [State](#state) | [State.java](../src/main/java/fr/menana/automaton/State.java) |
 | [Transition](#transition) | [Transition.java](../src/main/java/fr/menana/automaton/Transition.java) |
-| [WeightedAutomaton.Builder](#weightedautomaton-builder) | [WeightedAutomaton.java](../src/main/java/fr/menana/automaton/WeightedAutomaton.java) |
-| [WeightedAutomaton.Evaluator](#weightedautomaton-evaluator) | [WeightedAutomaton.java](../src/main/java/fr/menana/automaton/WeightedAutomaton.java) |
-| [WeightedAutomaton](#weightedautomaton) | [WeightedAutomaton.java](../src/main/java/fr/menana/automaton/WeightedAutomaton.java) |
-| [WeightedOperations](#weightedoperations) | [WeightedOperations.java](../src/main/java/fr/menana/automaton/WeightedOperations.java) |
-| [WeightedPath](#weightedpath) | [WeightedPath.java](../src/main/java/fr/menana/automaton/WeightedPath.java) |
-| [WeightedPaths.Analysis](#weightedpaths-analysis) | [WeightedPaths.java](../src/main/java/fr/menana/automaton/WeightedPaths.java) |
-| [WeightedPaths](#weightedpaths) | [WeightedPaths.java](../src/main/java/fr/menana/automaton/WeightedPaths.java) |
-| [WeightedTransformations](#weightedtransformations) | [WeightedTransformations.java](../src/main/java/fr/menana/automaton/WeightedTransformations.java) |
-| [WeightedWord](#weightedword) | [WeightedWord.java](../src/main/java/fr/menana/automaton/WeightedWord.java) |
 | [regexp.RegExp](#regexp-regexp) | [RegExp.java](../src/main/java/fr/menana/automaton/regexp/RegExp.java) |
 | [regexp.RegExpParser](#regexp-regexpparser) | [RegExpParser.java](../src/main/java/fr/menana/automaton/regexp/RegExpParser.java) |
+| [weighted.AutomatonGraph.Builder](#weighted-automatongraph-builder) | [AutomatonGraph.java](../src/main/java/fr/menana/automaton/weighted/AutomatonGraph.java) |
+| [weighted.AutomatonGraph.ImportResult](#weighted-automatongraph-importresult) | [AutomatonGraph.java](../src/main/java/fr/menana/automaton/weighted/AutomatonGraph.java) |
+| [weighted.AutomatonGraph](#weighted-automatongraph) | [AutomatonGraph.java](../src/main/java/fr/menana/automaton/weighted/AutomatonGraph.java) |
+| [weighted.KBestPaths](#weighted-kbestpaths) | [KBestPaths.java](../src/main/java/fr/menana/automaton/weighted/KBestPaths.java) |
+| [weighted.KBestWords](#weighted-kbestwords) | [KBestWords.java](../src/main/java/fr/menana/automaton/weighted/KBestWords.java) |
+| [weighted.LayeredAutomaton.Analysis](#weighted-layeredautomaton-analysis) | [LayeredAutomaton.java](../src/main/java/fr/menana/automaton/weighted/LayeredAutomaton.java) |
+| [weighted.LayeredAutomaton.PositionWeights](#weighted-layeredautomaton-positionweights) | [LayeredAutomaton.java](../src/main/java/fr/menana/automaton/weighted/LayeredAutomaton.java) |
+| [weighted.LayeredAutomaton](#weighted-layeredautomaton) | [LayeredAutomaton.java](../src/main/java/fr/menana/automaton/weighted/LayeredAutomaton.java) |
+| [weighted.MultiWeightedAutomaton.Builder](#weighted-multiweightedautomaton-builder) | [MultiWeightedAutomaton.java](../src/main/java/fr/menana/automaton/weighted/MultiWeightedAutomaton.java) |
+| [weighted.MultiWeightedAutomaton](#weighted-multiweightedautomaton) | [MultiWeightedAutomaton.java](../src/main/java/fr/menana/automaton/weighted/MultiWeightedAutomaton.java) |
+| [weighted.MultiWeightedOperations](#weighted-multiweightedoperations) | [MultiWeightedOperations.java](../src/main/java/fr/menana/automaton/weighted/MultiWeightedOperations.java) |
+| [weighted.MultiWeightedPath](#weighted-multiweightedpath) | [MultiWeightedPath.java](../src/main/java/fr/menana/automaton/weighted/MultiWeightedPath.java) |
+| [weighted.MultiWeightedPaths](#weighted-multiweightedpaths) | [MultiWeightedPaths.java](../src/main/java/fr/menana/automaton/weighted/MultiWeightedPaths.java) |
+| [weighted.ParetoResult](#weighted-paretoresult) | [ParetoResult.java](../src/main/java/fr/menana/automaton/weighted/ParetoResult.java) |
+| [weighted.ShortestPathResult.Status](#weighted-shortestpathresult-status) | [ShortestPathResult.java](../src/main/java/fr/menana/automaton/weighted/ShortestPathResult.java) |
+| [weighted.ShortestPathResult](#weighted-shortestpathresult) | [ShortestPathResult.java](../src/main/java/fr/menana/automaton/weighted/ShortestPathResult.java) |
+| [weighted.WeightedAutomaton.Builder](#weighted-weightedautomaton-builder) | [WeightedAutomaton.java](../src/main/java/fr/menana/automaton/weighted/WeightedAutomaton.java) |
+| [weighted.WeightedAutomaton.Evaluator](#weighted-weightedautomaton-evaluator) | [WeightedAutomaton.java](../src/main/java/fr/menana/automaton/weighted/WeightedAutomaton.java) |
+| [weighted.WeightedAutomaton](#weighted-weightedautomaton) | [WeightedAutomaton.java](../src/main/java/fr/menana/automaton/weighted/WeightedAutomaton.java) |
+| [weighted.WeightedDfaIndex](#weighted-weighteddfaindex) | [WeightedDfaIndex.java](../src/main/java/fr/menana/automaton/weighted/WeightedDfaIndex.java) |
+| [weighted.WeightedOperations](#weighted-weightedoperations) | [WeightedOperations.java](../src/main/java/fr/menana/automaton/weighted/WeightedOperations.java) |
+| [weighted.WeightedPath](#weighted-weightedpath) | [WeightedPath.java](../src/main/java/fr/menana/automaton/weighted/WeightedPath.java) |
+| [weighted.WeightedPaths.Analysis](#weighted-weightedpaths-analysis) | [WeightedPaths.java](../src/main/java/fr/menana/automaton/weighted/WeightedPaths.java) |
+| [weighted.WeightedPaths](#weighted-weightedpaths) | [WeightedPaths.java](../src/main/java/fr/menana/automaton/weighted/WeightedPaths.java) |
+| [weighted.WeightedTransformations](#weighted-weightedtransformations) | [WeightedTransformations.java](../src/main/java/fr/menana/automaton/weighted/WeightedTransformations.java) |
+| [weighted.WeightedWord](#weighted-weightedword) | [WeightedWord.java](../src/main/java/fr/menana/automaton/weighted/WeightedWord.java) |
+| [weighted.compiled.CompiledMultiWeightedDfa](#weighted-compiled-compiledmultiweighteddfa) | [CompiledMultiWeightedDfa.java](../src/main/java/fr/menana/automaton/weighted/compiled/CompiledMultiWeightedDfa.java) |
+| [weighted.compiled.CompiledWeightedDfa](#weighted-compiled-compiledweighteddfa) | [CompiledWeightedDfa.java](../src/main/java/fr/menana/automaton/weighted/compiled/CompiledWeightedDfa.java) |
+
+<a id="alphabet"></a>
+
+## `Alphabet`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/Alphabet.java)
+
+```java
+public final class Alphabet {
+  public static Alphabet of(Collection<IntervalSet>);
+  public int size();
+  public int min(int);
+  public int max(int);
+}
+```
 
 <a id="automaton"></a>
 
@@ -122,67 +140,6 @@ public class Automaton implements Cloneable {
 }
 ```
 
-<a id="automatongraph-builder"></a>
-
-## `AutomatonGraph.Builder`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/AutomatonGraph.java)
-
-```java
-public final class AutomatonGraph.Builder {
-  public int addState();
-  public void setInitial(int);
-  public void setAccept(int);
-  public void setAccept(int, boolean);
-  public int addTransition(int, int, IntervalSet);
-  public int addTransition(int, int, Interval);
-  public int addTransition(int, int, int);
-  public int addEpsilonTransition(int, int);
-  public AutomatonGraph build();
-}
-```
-
-<a id="automatongraph-importresult"></a>
-
-## `AutomatonGraph.ImportResult`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/AutomatonGraph.java)
-
-```java
-public final class AutomatonGraph.ImportResult {
-  public AutomatonGraph graph();
-  public Transition originalTransition(int);
-}
-```
-
-<a id="automatongraph"></a>
-
-## `AutomatonGraph`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/AutomatonGraph.java)
-
-```java
-public final class AutomatonGraph {
-  public static AutomatonGraph.Builder builder();
-  public int getNbStates();
-  public int getNbTransitions();
-  public int getInitialState();
-  public boolean isAccept(int);
-  public int source(int);
-  public int target(int);
-  public boolean isEpsilon(int);
-  public IntervalSet labels(int);
-  public boolean accepts(int, int);
-  public int[] outgoingEdges(int);
-  public boolean isAcyclic();
-  public int[] topologicalOrder();
-  public boolean isDeterministic();
-  public boolean[] usefulStates();
-  public static AutomatonGraph from(Automaton);
-  public static AutomatonGraph.ImportResult importAutomaton(Automaton);
-}
-```
-
 <a id="compileddfa"></a>
 
 ## `CompiledDfa`
@@ -199,44 +156,6 @@ public final class CompiledDfa {
   public int step(int, int);
   public boolean run(int...);
   public boolean run(int[], int, int);
-}
-```
-
-<a id="compiledmultiweighteddfa"></a>
-
-## `CompiledMultiWeightedDfa`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/CompiledMultiWeightedDfa.java)
-
-```java
-public final class CompiledMultiWeightedDfa {
-  public static CompiledMultiWeightedDfa of(MultiWeightedAutomaton);
-  public int dimensions();
-  public AutomatonGraph graph();
-  public int transition(int, int);
-  public CompiledMultiWeightedDfa reweight(MultiWeightedAutomaton);
-  public CompiledWeightedDfa project(int);
-  public CompiledWeightedDfa scalarize(double...);
-  public double[] costs(int...);
-  public double[] costs(int[], int, int);
-  public boolean costs(int[], double[]);
-  public boolean costs(int[], int, int, double[]);
-}
-```
-
-<a id="compiledweighteddfa"></a>
-
-## `CompiledWeightedDfa`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/CompiledWeightedDfa.java)
-
-```java
-public final class CompiledWeightedDfa {
-  public static CompiledWeightedDfa of(WeightedAutomaton);
-  public CompiledWeightedDfa reweight(WeightedAutomaton);
-  public int transition(int, int);
-  public double cost(int...);
-  public double cost(int[], int, int);
 }
 ```
 
@@ -278,6 +197,10 @@ public class IntervalSet implements Comparable<IntervalSet>, Cloneable {
   public static final IntervalSet ALL;
   public static final IntervalSet EMPTY;
   public IntervalSet();
+  public int intervalCount();
+  public int getIntervalMin(int);
+  public int getIntervalMax(int);
+  public static IntervalSet fromSortedIntervals(int[], int[], int, int);
   public boolean add(int...);
   public boolean add(int);
   public boolean add(IntervalSet);
@@ -306,200 +229,6 @@ public class IntervalSet implements Comparable<IntervalSet>, Cloneable {
   public int compareTo(IntervalSet);
   public Object clone() throws CloneNotSupportedException;
   public int compareTo(Object);
-}
-```
-
-<a id="kbestpaths"></a>
-
-## `KBestPaths`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/KBestPaths.java)
-
-```java
-public final class KBestPaths {
-  public static List<WeightedPath> accepting(WeightedAutomaton, int);
-  public static Iterator<WeightedPath> iterator(WeightedAutomaton);
-  public static List<WeightedPath> ofLength(WeightedAutomaton, int, int);
-}
-```
-
-<a id="kbestwords"></a>
-
-## `KBestWords`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/KBestWords.java)
-
-```java
-public final class KBestWords {
-  public static Iterator<WeightedWord> iterator(WeightedAutomaton);
-  public static List<WeightedWord> accepting(WeightedAutomaton, int);
-  public static List<WeightedWord> ofLength(WeightedAutomaton, int, int);
-}
-```
-
-<a id="layeredautomaton-analysis"></a>
-
-## `LayeredAutomaton.Analysis`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/LayeredAutomaton.java)
-
-```java
-public final class LayeredAutomaton.Analysis {
-  public double[] forwardDistances();
-  public double[] backwardDistances();
-  public double optimalCost();
-  public WeightedPath bestPath();
-  public double costAt(int, int);
-}
-```
-
-<a id="layeredautomaton-positionweights"></a>
-
-## `LayeredAutomaton.PositionWeights`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/LayeredAutomaton.java)
-
-```java
-public interface LayeredAutomaton.PositionWeights {
-  public abstract double weight(int, int);
-}
-```
-
-<a id="layeredautomaton"></a>
-
-## `LayeredAutomaton`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/LayeredAutomaton.java)
-
-```java
-public final class LayeredAutomaton {
-  public static LayeredAutomaton exactly(AutomatonGraph, int);
-  public static LayeredAutomaton atMost(AutomatonGraph, int);
-  public static LayeredAutomaton forWord(AutomatonGraph, int...);
-  public AutomatonGraph baseGraph();
-  public AutomatonGraph graph();
-  public int horizon();
-  public int originalState(int);
-  public int position(int);
-  public int originalEdge(int);
-  public WeightedAutomaton evaluate(WeightedAutomaton);
-  public WeightedAutomaton evaluate(WeightedAutomaton, LayeredAutomaton.PositionWeights);
-  public MultiWeightedAutomaton evaluate(MultiWeightedAutomaton);
-  public WeightedPath bestPath(WeightedAutomaton);
-  public WeightedPath map(WeightedPath);
-  public MultiWeightedPath map(MultiWeightedPath);
-  public LayeredAutomaton.Analysis analyze(WeightedAutomaton);
-  public LayeredAutomaton.Analysis analyze(WeightedAutomaton, LayeredAutomaton.PositionWeights);
-}
-```
-
-<a id="multiweightedautomaton-builder"></a>
-
-## `MultiWeightedAutomaton.Builder`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/MultiWeightedAutomaton.java)
-
-```java
-public final class MultiWeightedAutomaton.Builder {
-  public int addState();
-  public void setInitial(int, double...);
-  public void setAccept(int, double...);
-  public int addTransition(int, int, IntervalSet, double...);
-  public int addTransition(int, int, Interval, double...);
-  public int addTransition(int, int, int, double...);
-  public int addEpsilonTransition(int, int, double...);
-  public MultiWeightedAutomaton build();
-}
-```
-
-<a id="multiweightedautomaton"></a>
-
-## `MultiWeightedAutomaton`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/MultiWeightedAutomaton.java)
-
-```java
-public final class MultiWeightedAutomaton {
-  public static MultiWeightedAutomaton of(AutomatonGraph, int, double[]);
-  public static MultiWeightedAutomaton of(AutomatonGraph, int, double[], double[], double[]);
-  public static MultiWeightedAutomaton fromWeightings(WeightedAutomaton...);
-  public static MultiWeightedAutomaton synchronizedProduct(WeightedAutomaton...);
-  public CompiledMultiWeightedDfa compile();
-  public static MultiWeightedAutomaton.Builder builder(int);
-  public AutomatonGraph graph();
-  public int dimensions();
-  public double weight(int, int);
-  public double initialWeight(int);
-  public double finalWeight(int, int);
-  public double[] weights(int);
-  public WeightedAutomaton project(int);
-  public MultiWeightedAutomaton selectDimensions(int...);
-  public WeightedAutomaton scalarize(double...);
-  public WeightedAutomaton scalarizeMaterialized(double...);
-  public double[] pathCosts(WeightedPath);
-  public MultiWeightedPath lexicographicBestPath(int...);
-  public ParetoResult paretoFront();
-  public ParetoResult paretoFront(boolean);
-  public ParetoResult paretoForWord(int...);
-  public MultiWeightedAutomaton union(MultiWeightedAutomaton);
-  public MultiWeightedAutomaton concatenate(MultiWeightedAutomaton);
-  public MultiWeightedAutomaton intersection(MultiWeightedAutomaton);
-  public MultiWeightedAutomaton revert();
-  public MultiWeightedAutomaton simplify();
-}
-```
-
-<a id="multiweightedoperations"></a>
-
-## `MultiWeightedOperations`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/MultiWeightedOperations.java)
-
-```java
-public final class MultiWeightedOperations {
-  public static MultiWeightedAutomaton union(MultiWeightedAutomaton, MultiWeightedAutomaton);
-  public static MultiWeightedAutomaton concatenate(MultiWeightedAutomaton, MultiWeightedAutomaton);
-  public static MultiWeightedAutomaton revert(MultiWeightedAutomaton);
-  public static MultiWeightedAutomaton intersection(MultiWeightedAutomaton, MultiWeightedAutomaton);
-  public static MultiWeightedAutomaton productIndependent(MultiWeightedAutomaton, MultiWeightedAutomaton);
-  public static MultiWeightedAutomaton synchronizedProduct(WeightedAutomaton...);
-  public static MultiWeightedAutomaton concatenateIndependent(MultiWeightedAutomaton, MultiWeightedAutomaton);
-  public static MultiWeightedAutomaton trim(MultiWeightedAutomaton);
-  public static MultiWeightedAutomaton simplify(MultiWeightedAutomaton);
-}
-```
-
-<a id="multiweightedpath"></a>
-
-## `MultiWeightedPath`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/MultiWeightedPath.java)
-
-```java
-public final class MultiWeightedPath {
-  public AutomatonGraph graph();
-  public int start();
-  public int end();
-  public int[] edges();
-  public int[] word();
-  public int length();
-  public double[] costs();
-  public double cost(int);
-  public BigDecimal exactCost(int);
-}
-```
-
-<a id="multiweightedpaths"></a>
-
-## `MultiWeightedPaths`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/MultiWeightedPaths.java)
-
-```java
-public final class MultiWeightedPaths {
-  public static MultiWeightedPath lexicographic(MultiWeightedAutomaton, int...);
-  public static boolean dominates(double[], double[]);
-  public static ParetoResult pareto(MultiWeightedAutomaton, boolean);
 }
 ```
 
@@ -545,21 +274,6 @@ public class Operation {
 }
 ```
 
-<a id="paretoresult"></a>
-
-## `ParetoResult`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/ParetoResult.java)
-
-```java
-public final class ParetoResult {
-  public List<MultiWeightedPath> paths();
-  public int size();
-  public boolean includesAllPaths();
-  public boolean isComplete();
-}
-```
-
 <a id="searcher-match"></a>
 
 ## `Searcher.Match`
@@ -591,39 +305,6 @@ public final class Searcher {
   public Searcher.Match find(int[], int);
   public boolean contains(int...);
   public List<Searcher.Match> findAll(int...);
-}
-```
-
-<a id="shortestpathresult-status"></a>
-
-## `ShortestPathResult.Status`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/ShortestPathResult.java)
-
-```java
-public final class ShortestPathResult.Status extends Enum<ShortestPathResult.Status> {
-  public static final ShortestPathResult.Status FINITE;
-  public static final ShortestPathResult.Status UNREACHABLE;
-  public static final ShortestPathResult.Status UNBOUNDED;
-  public static ShortestPathResult.Status[] values();
-  public static ShortestPathResult.Status valueOf(String);
-}
-```
-
-<a id="shortestpathresult"></a>
-
-## `ShortestPathResult`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/ShortestPathResult.java)
-
-```java
-public final class ShortestPathResult {
-  public double distanceTo(int);
-  public double[] distances();
-  public ShortestPathResult.Status statusTo(int);
-  public WeightedPath pathTo(int);
-  public double optimalCost();
-  public WeightedPath bestPath();
 }
 ```
 
@@ -665,196 +346,6 @@ public class Transition {
 }
 ```
 
-<a id="weightedautomaton-builder"></a>
-
-## `WeightedAutomaton.Builder`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/WeightedAutomaton.java)
-
-```java
-public final class WeightedAutomaton.Builder {
-  public int addState();
-  public void setInitial(int);
-  public void setInitial(int, double);
-  public void setAccept(int);
-  public void setAccept(int, double);
-  public int addTransition(int, int, IntervalSet, double);
-  public int addTransition(int, int, Interval, double);
-  public int addTransition(int, int, int, double);
-  public int addEpsilonTransition(int, int, double);
-  public WeightedAutomaton build();
-}
-```
-
-<a id="weightedautomaton-evaluator"></a>
-
-## `WeightedAutomaton.Evaluator`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/WeightedAutomaton.java)
-
-```java
-public final class WeightedAutomaton.Evaluator {
-  public double cost(int...);
-  public double optimalCostWithPrefix(int...);
-}
-```
-
-<a id="weightedautomaton"></a>
-
-## `WeightedAutomaton`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/WeightedAutomaton.java)
-
-```java
-public final class WeightedAutomaton {
-  public static WeightedAutomaton of(AutomatonGraph, double[]);
-  public static WeightedAutomaton of(AutomatonGraph, double[], double, double[]);
-  public static WeightedAutomaton from(Automaton, function.ToDoubleFunction<Transition>);
-  public static WeightedAutomaton.Builder builder();
-  public AutomatonGraph graph();
-  public double weight(int);
-  public double initialWeight();
-  public double finalWeight(int);
-  public WeightedAutomaton withWeights(double[]);
-  public double cost(int...);
-  public WeightedAutomaton.Evaluator evaluator();
-  public double optimalCost();
-  public WeightedPath bestPath();
-  public WeightedPath bestPath(int...);
-  public WeightedAutomaton union(WeightedAutomaton);
-  public WeightedAutomaton concatenate(WeightedAutomaton);
-  public WeightedAutomaton intersection(WeightedAutomaton);
-  public WeightedAutomaton revert();
-  public WeightedAutomaton star();
-  public WeightedAutomaton trim();
-  public double costOfLength(int);
-  public double costOfLengthAtMost(int);
-  public WeightedPath bestPathOfLength(int);
-  public int[] bestWordOfLength(int);
-  public WeightedAutomaton removeEpsilon();
-  public WeightedAutomaton determinize();
-  public WeightedAutomaton minimize();
-  public CompiledWeightedDfa compile();
-  public List<WeightedPath> kBestPaths(int);
-  public WeightedAutomaton determinize(int);
-  public Iterator<WeightedPath> pathsByCost();
-  public List<WeightedWord> kBestWords(int);
-  public Iterator<WeightedWord> wordsByCost();
-  public double optimalCostWithPrefix(int...);
-}
-```
-
-<a id="weightedoperations"></a>
-
-## `WeightedOperations`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/WeightedOperations.java)
-
-```java
-public final class WeightedOperations {
-  public static WeightedAutomaton union(WeightedAutomaton, WeightedAutomaton);
-  public static WeightedAutomaton concatenate(WeightedAutomaton, WeightedAutomaton);
-  public static WeightedAutomaton intersection(WeightedAutomaton, WeightedAutomaton);
-  public static WeightedAutomaton revert(WeightedAutomaton);
-  public static WeightedAutomaton star(WeightedAutomaton);
-  public static WeightedAutomaton repeat(WeightedAutomaton, int, int);
-  public static WeightedAutomaton trim(WeightedAutomaton);
-  public static WeightedAutomaton simplify(WeightedAutomaton);
-}
-```
-
-<a id="weightedpath"></a>
-
-## `WeightedPath`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/WeightedPath.java)
-
-```java
-public final class WeightedPath {
-  public AutomatonGraph graph();
-  public int start();
-  public int end();
-  public int edgeCount();
-  public int length();
-  public int edge(int);
-  public int[] edges();
-  public int[] word();
-  public double cost();
-}
-```
-
-<a id="weightedpaths-analysis"></a>
-
-## `WeightedPaths.Analysis`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/WeightedPaths.java)
-
-```java
-public final class WeightedPaths.Analysis {
-  public ShortestPathResult forward();
-  public double[] backward();
-  public double costThroughState(int);
-  public double costThroughTransition(int);
-}
-```
-
-<a id="weightedpaths"></a>
-
-## `WeightedPaths`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/WeightedPaths.java)
-
-```java
-public final class WeightedPaths {
-  public static ShortestPathResult shortestPaths(WeightedAutomaton);
-  public static ShortestPathResult shortestPaths(WeightedAutomaton, boolean);
-  public static ShortestPathResult shortestPaths(WeightedAutomaton, int);
-  public static ShortestPathResult dagShortestPaths(WeightedAutomaton);
-  public static ShortestPathResult dagLongestPaths(WeightedAutomaton);
-  public static ShortestPathResult dijkstra(WeightedAutomaton);
-  public static ShortestPathResult bellmanFord(WeightedAutomaton);
-  public static double[] backwardDistances(WeightedAutomaton);
-  public static double[] distancesTo(WeightedAutomaton, int);
-  public static WeightedPaths.Analysis analyze(WeightedAutomaton);
-  public static double costThroughState(WeightedAutomaton, int);
-  public static double costThroughTransition(WeightedAutomaton, int);
-  public static double fixedLengthCost(WeightedAutomaton, int, boolean);
-}
-```
-
-<a id="weightedtransformations"></a>
-
-## `WeightedTransformations`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/WeightedTransformations.java)
-
-```java
-public final class WeightedTransformations {
-  public static final int DEFAULT_MAX_STATES;
-  public static WeightedAutomaton removeEpsilon(WeightedAutomaton);
-  public static WeightedAutomaton determinizeDag(WeightedAutomaton);
-  public static WeightedAutomaton determinizeDag(WeightedAutomaton, int);
-  public static WeightedAutomaton minimizeDag(WeightedAutomaton);
-  public static WeightedAutomaton determinize(WeightedAutomaton, int);
-  public static WeightedAutomaton determinize(WeightedAutomaton);
-  public static WeightedAutomaton minimize(WeightedAutomaton);
-}
-```
-
-<a id="weightedword"></a>
-
-## `WeightedWord`
-
-[Source and Javadoc](../src/main/java/fr/menana/automaton/WeightedWord.java)
-
-```java
-public final class WeightedWord {
-  public int[] word();
-  public int length();
-  public double cost();
-}
-```
-
 <a id="regexp-regexp"></a>
 
 ## `regexp.RegExp`
@@ -879,6 +370,555 @@ public class RegExpParser {
   public static RegExp toRegExp(String);
   public static Automaton toNFA(String);
   public static Automaton toDFA(String);
+}
+```
+
+<a id="weighted-automatongraph-builder"></a>
+
+## `weighted.AutomatonGraph.Builder`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/AutomatonGraph.java)
+
+```java
+public final class weighted.AutomatonGraph.Builder {
+  public int addState();
+  public void setInitial(int);
+  public void setAccept(int);
+  public void setAccept(int, boolean);
+  public int addTransition(int, int, IntervalSet);
+  public int addTransition(int, int, Interval);
+  public int addTransition(int, int, int);
+  public int addEpsilonTransition(int, int);
+  public weighted.AutomatonGraph build();
+}
+```
+
+<a id="weighted-automatongraph-importresult"></a>
+
+## `weighted.AutomatonGraph.ImportResult`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/AutomatonGraph.java)
+
+```java
+public final class weighted.AutomatonGraph.ImportResult {
+  public weighted.AutomatonGraph graph();
+  public Transition originalTransition(int);
+}
+```
+
+<a id="weighted-automatongraph"></a>
+
+## `weighted.AutomatonGraph`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/AutomatonGraph.java)
+
+```java
+public final class weighted.AutomatonGraph {
+  public static weighted.AutomatonGraph.Builder builder();
+  public int getNbStates();
+  public int getNbTransitions();
+  public int getInitialState();
+  public boolean isAccept(int);
+  public int source(int);
+  public int target(int);
+  public boolean isEpsilon(int);
+  public IntervalSet labels(int);
+  public boolean accepts(int, int);
+  public int[] outgoingEdges(int);
+  public boolean isAcyclic();
+  public int[] topologicalOrder();
+  public boolean isDeterministic();
+  public boolean[] usefulStates();
+  public static weighted.AutomatonGraph from(Automaton);
+  public static weighted.AutomatonGraph.ImportResult importAutomaton(Automaton);
+}
+```
+
+<a id="weighted-kbestpaths"></a>
+
+## `weighted.KBestPaths`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/KBestPaths.java)
+
+```java
+public final class weighted.KBestPaths {
+  public static List<weighted.WeightedPath> accepting(weighted.WeightedAutomaton, int);
+  public static Iterator<weighted.WeightedPath> iterator(weighted.WeightedAutomaton);
+  public static List<weighted.WeightedPath> ofLength(weighted.WeightedAutomaton, int, int);
+}
+```
+
+<a id="weighted-kbestwords"></a>
+
+## `weighted.KBestWords`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/KBestWords.java)
+
+```java
+public final class weighted.KBestWords {
+  public static Iterator<weighted.WeightedWord> iterator(weighted.WeightedAutomaton);
+  public static List<weighted.WeightedWord> accepting(weighted.WeightedAutomaton, int);
+  public static List<weighted.WeightedWord> ofLength(weighted.WeightedAutomaton, int, int);
+}
+```
+
+<a id="weighted-layeredautomaton-analysis"></a>
+
+## `weighted.LayeredAutomaton.Analysis`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/LayeredAutomaton.java)
+
+```java
+public final class weighted.LayeredAutomaton.Analysis {
+  public double[] forwardDistances();
+  public double[] backwardDistances();
+  public double optimalCost();
+  public weighted.WeightedPath bestPath();
+  public double costAt(int, int);
+}
+```
+
+<a id="weighted-layeredautomaton-positionweights"></a>
+
+## `weighted.LayeredAutomaton.PositionWeights`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/LayeredAutomaton.java)
+
+```java
+public interface weighted.LayeredAutomaton.PositionWeights {
+  public abstract double weight(int, int);
+}
+```
+
+<a id="weighted-layeredautomaton"></a>
+
+## `weighted.LayeredAutomaton`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/LayeredAutomaton.java)
+
+```java
+public final class weighted.LayeredAutomaton {
+  public static weighted.LayeredAutomaton exactly(weighted.AutomatonGraph, int);
+  public static weighted.LayeredAutomaton atMost(weighted.AutomatonGraph, int);
+  public static weighted.LayeredAutomaton forWord(weighted.AutomatonGraph, int...);
+  public weighted.AutomatonGraph baseGraph();
+  public weighted.AutomatonGraph graph();
+  public int horizon();
+  public int originalState(int);
+  public int position(int);
+  public int originalEdge(int);
+  public weighted.WeightedAutomaton evaluate(weighted.WeightedAutomaton);
+  public weighted.WeightedAutomaton evaluate(weighted.WeightedAutomaton, weighted.LayeredAutomaton.PositionWeights);
+  public weighted.MultiWeightedAutomaton evaluate(weighted.MultiWeightedAutomaton);
+  public weighted.WeightedPath bestPath(weighted.WeightedAutomaton);
+  public weighted.WeightedPath map(weighted.WeightedPath);
+  public weighted.MultiWeightedPath map(weighted.MultiWeightedPath);
+  public weighted.LayeredAutomaton.Analysis analyze(weighted.WeightedAutomaton);
+  public weighted.LayeredAutomaton.Analysis analyze(weighted.WeightedAutomaton, weighted.LayeredAutomaton.PositionWeights);
+}
+```
+
+<a id="weighted-multiweightedautomaton-builder"></a>
+
+## `weighted.MultiWeightedAutomaton.Builder`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/MultiWeightedAutomaton.java)
+
+```java
+public final class weighted.MultiWeightedAutomaton.Builder {
+  public int addState();
+  public void setInitial(int, double...);
+  public void setAccept(int, double...);
+  public int addTransition(int, int, IntervalSet, double...);
+  public int addTransition(int, int, Interval, double...);
+  public int addTransition(int, int, int, double...);
+  public int addEpsilonTransition(int, int, double...);
+  public weighted.MultiWeightedAutomaton build();
+}
+```
+
+<a id="weighted-multiweightedautomaton"></a>
+
+## `weighted.MultiWeightedAutomaton`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/MultiWeightedAutomaton.java)
+
+```java
+public final class weighted.MultiWeightedAutomaton {
+  public static weighted.MultiWeightedAutomaton of(weighted.AutomatonGraph, int, double[]);
+  public static weighted.MultiWeightedAutomaton of(weighted.AutomatonGraph, int, double[], double[], double[]);
+  public static weighted.MultiWeightedAutomaton fromWeightings(weighted.WeightedAutomaton...);
+  public static weighted.MultiWeightedAutomaton synchronizedProduct(weighted.WeightedAutomaton...);
+  public weighted.compiled.CompiledMultiWeightedDfa compile();
+  public static weighted.MultiWeightedAutomaton.Builder builder(int);
+  public weighted.AutomatonGraph graph();
+  public int dimensions();
+  public double weight(int, int);
+  public double initialWeight(int);
+  public double finalWeight(int, int);
+  public double[] weights(int);
+  public weighted.WeightedAutomaton project(int);
+  public weighted.MultiWeightedAutomaton selectDimensions(int...);
+  public weighted.WeightedAutomaton scalarize(double...);
+  public weighted.WeightedAutomaton scalarizeMaterialized(double...);
+  public double[] pathCosts(weighted.WeightedPath);
+  public weighted.MultiWeightedPath lexicographicBestPath(int...);
+  public weighted.ParetoResult paretoFront();
+  public weighted.ParetoResult paretoFront(boolean);
+  public weighted.ParetoResult paretoForWord(int...);
+  public weighted.MultiWeightedAutomaton union(weighted.MultiWeightedAutomaton);
+  public weighted.MultiWeightedAutomaton concatenate(weighted.MultiWeightedAutomaton);
+  public weighted.MultiWeightedAutomaton intersection(weighted.MultiWeightedAutomaton);
+  public weighted.MultiWeightedAutomaton revert();
+  public weighted.MultiWeightedAutomaton simplify();
+}
+```
+
+<a id="weighted-multiweightedoperations"></a>
+
+## `weighted.MultiWeightedOperations`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/MultiWeightedOperations.java)
+
+```java
+public final class weighted.MultiWeightedOperations {
+  public static weighted.MultiWeightedAutomaton union(weighted.MultiWeightedAutomaton, weighted.MultiWeightedAutomaton);
+  public static weighted.MultiWeightedAutomaton concatenate(weighted.MultiWeightedAutomaton, weighted.MultiWeightedAutomaton);
+  public static weighted.MultiWeightedAutomaton revert(weighted.MultiWeightedAutomaton);
+  public static weighted.MultiWeightedAutomaton intersection(weighted.MultiWeightedAutomaton, weighted.MultiWeightedAutomaton);
+  public static weighted.MultiWeightedAutomaton productIndependent(weighted.MultiWeightedAutomaton, weighted.MultiWeightedAutomaton);
+  public static weighted.MultiWeightedAutomaton synchronizedProduct(weighted.WeightedAutomaton...);
+  public static weighted.MultiWeightedAutomaton concatenateIndependent(weighted.MultiWeightedAutomaton, weighted.MultiWeightedAutomaton);
+  public static weighted.MultiWeightedAutomaton trim(weighted.MultiWeightedAutomaton);
+  public static weighted.MultiWeightedAutomaton simplify(weighted.MultiWeightedAutomaton);
+}
+```
+
+<a id="weighted-multiweightedpath"></a>
+
+## `weighted.MultiWeightedPath`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/MultiWeightedPath.java)
+
+```java
+public final class weighted.MultiWeightedPath {
+  public weighted.AutomatonGraph graph();
+  public int start();
+  public int end();
+  public int[] edges();
+  public int[] word();
+  public int length();
+  public double[] costs();
+  public double cost(int);
+  public BigDecimal exactCost(int);
+}
+```
+
+<a id="weighted-multiweightedpaths"></a>
+
+## `weighted.MultiWeightedPaths`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/MultiWeightedPaths.java)
+
+```java
+public final class weighted.MultiWeightedPaths {
+  public static weighted.MultiWeightedPath lexicographic(weighted.MultiWeightedAutomaton, int...);
+  public static boolean dominates(double[], double[]);
+  public static weighted.ParetoResult pareto(weighted.MultiWeightedAutomaton, boolean);
+}
+```
+
+<a id="weighted-paretoresult"></a>
+
+## `weighted.ParetoResult`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/ParetoResult.java)
+
+```java
+public final class weighted.ParetoResult {
+  public List<weighted.MultiWeightedPath> paths();
+  public int size();
+  public boolean includesAllPaths();
+  public boolean isComplete();
+}
+```
+
+<a id="weighted-shortestpathresult-status"></a>
+
+## `weighted.ShortestPathResult.Status`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/ShortestPathResult.java)
+
+```java
+public final class weighted.ShortestPathResult.Status extends Enum<weighted.ShortestPathResult.Status> {
+  public static final weighted.ShortestPathResult.Status FINITE;
+  public static final weighted.ShortestPathResult.Status UNREACHABLE;
+  public static final weighted.ShortestPathResult.Status UNBOUNDED;
+  public static weighted.ShortestPathResult.Status[] values();
+  public static weighted.ShortestPathResult.Status valueOf(String);
+}
+```
+
+<a id="weighted-shortestpathresult"></a>
+
+## `weighted.ShortestPathResult`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/ShortestPathResult.java)
+
+```java
+public final class weighted.ShortestPathResult {
+  public double distanceTo(int);
+  public double[] distances();
+  public weighted.ShortestPathResult.Status statusTo(int);
+  public weighted.WeightedPath pathTo(int);
+  public double optimalCost();
+  public weighted.WeightedPath bestPath();
+}
+```
+
+<a id="weighted-weightedautomaton-builder"></a>
+
+## `weighted.WeightedAutomaton.Builder`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedAutomaton.java)
+
+```java
+public final class weighted.WeightedAutomaton.Builder {
+  public int addState();
+  public void setInitial(int);
+  public void setInitial(int, double);
+  public void setAccept(int);
+  public void setAccept(int, double);
+  public int addTransition(int, int, IntervalSet, double);
+  public int addTransition(int, int, Interval, double);
+  public int addTransition(int, int, int, double);
+  public int addEpsilonTransition(int, int, double);
+  public weighted.WeightedAutomaton build();
+}
+```
+
+<a id="weighted-weightedautomaton-evaluator"></a>
+
+## `weighted.WeightedAutomaton.Evaluator`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedAutomaton.java)
+
+```java
+public final class weighted.WeightedAutomaton.Evaluator {
+  public double cost(int...);
+  public double optimalCostWithPrefix(int...);
+}
+```
+
+<a id="weighted-weightedautomaton"></a>
+
+## `weighted.WeightedAutomaton`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedAutomaton.java)
+
+```java
+public final class weighted.WeightedAutomaton {
+  public static weighted.WeightedAutomaton of(weighted.AutomatonGraph, double[]);
+  public static weighted.WeightedAutomaton of(weighted.AutomatonGraph, double[], double, double[]);
+  public static weighted.WeightedAutomaton from(Automaton, function.ToDoubleFunction<Transition>);
+  public static weighted.WeightedAutomaton.Builder builder();
+  public weighted.AutomatonGraph graph();
+  public double weight(int);
+  public double initialWeight();
+  public double finalWeight(int);
+  public weighted.WeightedAutomaton withWeights(double[]);
+  public double cost(int...);
+  public weighted.WeightedAutomaton.Evaluator evaluator();
+  public double optimalCost();
+  public weighted.WeightedPath bestPath();
+  public weighted.WeightedPath bestPath(int...);
+  public weighted.WeightedAutomaton union(weighted.WeightedAutomaton);
+  public weighted.WeightedAutomaton concatenate(weighted.WeightedAutomaton);
+  public weighted.WeightedAutomaton intersection(weighted.WeightedAutomaton);
+  public weighted.WeightedAutomaton revert();
+  public weighted.WeightedAutomaton star();
+  public weighted.WeightedAutomaton trim();
+  public double costOfLength(int);
+  public double costOfLengthAtMost(int);
+  public weighted.WeightedPath bestPathOfLength(int);
+  public int[] bestWordOfLength(int);
+  public weighted.WeightedAutomaton removeEpsilon();
+  public weighted.WeightedAutomaton determinize();
+  public weighted.WeightedAutomaton minimize();
+  public weighted.compiled.CompiledWeightedDfa compile();
+  public List<weighted.WeightedPath> kBestPaths(int);
+  public weighted.WeightedAutomaton determinize(int);
+  public Iterator<weighted.WeightedPath> pathsByCost();
+  public List<weighted.WeightedWord> kBestWords(int);
+  public Iterator<weighted.WeightedWord> wordsByCost();
+  public double optimalCostWithPrefix(int...);
+}
+```
+
+<a id="weighted-weighteddfaindex"></a>
+
+## `weighted.WeightedDfaIndex`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedDfaIndex.java)
+
+```java
+public final class weighted.WeightedDfaIndex {
+  public static weighted.WeightedDfaIndex of(weighted.AutomatonGraph);
+  public weighted.AutomatonGraph graph();
+  public int transition(int, int);
+}
+```
+
+<a id="weighted-weightedoperations"></a>
+
+## `weighted.WeightedOperations`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedOperations.java)
+
+```java
+public final class weighted.WeightedOperations {
+  public static weighted.WeightedAutomaton union(weighted.WeightedAutomaton, weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton concatenate(weighted.WeightedAutomaton, weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton intersection(weighted.WeightedAutomaton, weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton revert(weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton star(weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton repeat(weighted.WeightedAutomaton, int, int);
+  public static weighted.WeightedAutomaton trim(weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton simplify(weighted.WeightedAutomaton);
+}
+```
+
+<a id="weighted-weightedpath"></a>
+
+## `weighted.WeightedPath`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedPath.java)
+
+```java
+public final class weighted.WeightedPath {
+  public weighted.AutomatonGraph graph();
+  public int start();
+  public int end();
+  public int edgeCount();
+  public int length();
+  public int edge(int);
+  public int[] edges();
+  public int[] word();
+  public double cost();
+}
+```
+
+<a id="weighted-weightedpaths-analysis"></a>
+
+## `weighted.WeightedPaths.Analysis`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedPaths.java)
+
+```java
+public final class weighted.WeightedPaths.Analysis {
+  public weighted.ShortestPathResult forward();
+  public double[] backward();
+  public double costThroughState(int);
+  public double costThroughTransition(int);
+}
+```
+
+<a id="weighted-weightedpaths"></a>
+
+## `weighted.WeightedPaths`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedPaths.java)
+
+```java
+public final class weighted.WeightedPaths {
+  public static weighted.ShortestPathResult shortestPaths(weighted.WeightedAutomaton);
+  public static weighted.ShortestPathResult shortestPaths(weighted.WeightedAutomaton, boolean);
+  public static weighted.ShortestPathResult shortestPaths(weighted.WeightedAutomaton, int);
+  public static weighted.ShortestPathResult dagShortestPaths(weighted.WeightedAutomaton);
+  public static weighted.ShortestPathResult dagLongestPaths(weighted.WeightedAutomaton);
+  public static weighted.ShortestPathResult dijkstra(weighted.WeightedAutomaton);
+  public static weighted.ShortestPathResult bellmanFord(weighted.WeightedAutomaton);
+  public static double[] backwardDistances(weighted.WeightedAutomaton);
+  public static double[] distancesTo(weighted.WeightedAutomaton, int);
+  public static weighted.WeightedPaths.Analysis analyze(weighted.WeightedAutomaton);
+  public static double costThroughState(weighted.WeightedAutomaton, int);
+  public static double costThroughTransition(weighted.WeightedAutomaton, int);
+  public static double fixedLengthCost(weighted.WeightedAutomaton, int, boolean);
+}
+```
+
+<a id="weighted-weightedtransformations"></a>
+
+## `weighted.WeightedTransformations`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedTransformations.java)
+
+```java
+public final class weighted.WeightedTransformations {
+  public static final int DEFAULT_MAX_STATES;
+  public static weighted.WeightedAutomaton removeEpsilon(weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton determinizeDag(weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton determinizeDag(weighted.WeightedAutomaton, int);
+  public static weighted.WeightedAutomaton minimizeDag(weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton determinize(weighted.WeightedAutomaton, int);
+  public static weighted.WeightedAutomaton determinize(weighted.WeightedAutomaton);
+  public static weighted.WeightedAutomaton minimize(weighted.WeightedAutomaton);
+}
+```
+
+<a id="weighted-weightedword"></a>
+
+## `weighted.WeightedWord`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/WeightedWord.java)
+
+```java
+public final class weighted.WeightedWord {
+  public int[] word();
+  public int length();
+  public double cost();
+}
+```
+
+<a id="weighted-compiled-compiledmultiweighteddfa"></a>
+
+## `weighted.compiled.CompiledMultiWeightedDfa`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/compiled/CompiledMultiWeightedDfa.java)
+
+```java
+public final class weighted.compiled.CompiledMultiWeightedDfa {
+  public static weighted.compiled.CompiledMultiWeightedDfa of(weighted.MultiWeightedAutomaton);
+  public static weighted.compiled.CompiledMultiWeightedDfa of(weighted.MultiWeightedAutomaton, weighted.WeightedDfaIndex);
+  public weighted.WeightedDfaIndex index();
+  public int dimensions();
+  public weighted.AutomatonGraph graph();
+  public int transition(int, int);
+  public weighted.compiled.CompiledMultiWeightedDfa reweight(weighted.MultiWeightedAutomaton);
+  public weighted.compiled.CompiledWeightedDfa project(int);
+  public weighted.compiled.CompiledWeightedDfa scalarize(double...);
+  public double[] costs(int...);
+  public double[] costs(int[], int, int);
+  public boolean costs(int[], double[]);
+  public boolean costs(int[], int, int, double[]);
+}
+```
+
+<a id="weighted-compiled-compiledweighteddfa"></a>
+
+## `weighted.compiled.CompiledWeightedDfa`
+
+[Source and Javadoc](../src/main/java/fr/menana/automaton/weighted/compiled/CompiledWeightedDfa.java)
+
+```java
+public final class weighted.compiled.CompiledWeightedDfa {
+  public static weighted.compiled.CompiledWeightedDfa of(weighted.WeightedAutomaton);
+  public static weighted.compiled.CompiledWeightedDfa of(weighted.WeightedAutomaton, weighted.WeightedDfaIndex);
+  public weighted.WeightedDfaIndex index();
+  public weighted.compiled.CompiledWeightedDfa reweight(weighted.WeightedAutomaton);
+  public int transition(int, int);
+  public double cost(int...);
+  public double cost(int[], int, int);
 }
 ```
 

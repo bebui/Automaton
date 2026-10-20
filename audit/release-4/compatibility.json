@@ -1,0 +1,20 @@
+{
+  "baseline_commit": "d9c9225",
+  "original_boolean_commit": "f753243",
+  "original_boolean_class_files_byte_identical": 33,
+  "original_boolean_class_files_changed_by_additive_api": [
+    "fr/menana/automaton/Alphabet.class",
+    "fr/menana/automaton/IntervalSet.class"
+  ],
+  "original_boolean_public_types_checked": 12,
+  "original_boolean_removed_public_signatures": {},
+  "previous_public_types_including_nested_checked_after_relocation": 39,
+  "previous_removed_public_signatures_after_relocation": {},
+  "original_source_and_test_changes": [
+    "src/main/java/fr/menana/automaton/Alphabet.java",
+    "src/main/java/fr/menana/automaton/IntervalSet.java",
+    "src/main/java/fr/menana/automaton/package-info.java"
+  ],
+  "tested_and_benchmark_class_files_byte_identical": 106,
+  "benchmark_source_files_identical_except_library_imports": 8
+}

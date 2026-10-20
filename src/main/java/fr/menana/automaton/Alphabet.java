@@ -22,11 +22,11 @@ import java.util.Collection;
 
 /**
  * Partition of the integer values used by a collection of {@link fr.menana.automaton.IntervalSet} into symbol classes. <br>
- * Two values belong to the same class if and only if every given set contains both or none of them.
+ * Within each class, every given set contains either all values or none of them.
  * Classes are disjoint intervals numbered in increasing order, so that algorithms can work on small integer symbols.
  * Values used by none of the sets belong to no class
  */
-final class Alphabet {
+public final class Alphabet {
 
     /**
      * Lower bounds of the classes, sorted
@@ -48,7 +48,7 @@ final class Alphabet {
      * @param sets the interval sets, <code>null</code> elements are ignored
      * @return the alphabet partition
      */
-    static Alphabet of(Collection<IntervalSet> sets) {
+    public static Alphabet of(Collection<IntervalSet> sets) {
         int nb = 0;
         for (IntervalSet set : sets)
             if (set != null)
@@ -98,7 +98,7 @@ final class Alphabet {
      * Returns the number of classes
      * @return the number of classes
      */
-    int size() {
+    public int size() {
         return mins.length;
     }
 
@@ -107,7 +107,7 @@ final class Alphabet {
      * @param c the class
      * @return its lower bound
      */
-    int min(int c) {
+    public int min(int c) {
         return mins[c];
     }
 
@@ -116,7 +116,7 @@ final class Alphabet {
      * @param c the class
      * @return its upper bound
      */
-    int max(int c) {
+    public int max(int c) {
         return maxs[c];
     }
 
