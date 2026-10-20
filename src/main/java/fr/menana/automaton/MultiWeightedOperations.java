@@ -135,6 +135,25 @@ public final class MultiWeightedOperations {
         int d = Math.addExact(a.dimensions(), b.dimensions()); return intersection(embed(a, d, 0), embed(b, d, a.dimensions()));
     }
     /**
+     * Synchronizes scalar operands on their common words, keeping one independent
+     * dimension per operand, including initial and terminal costs. All combinations
+     * of accepting paths are retained, even when operands share a graph. This is
+     * different from the correlated view {@link MultiWeightedAutomaton#fromWeightings}.
+     * Labels are intersected symbolically; epsilon interleavings use the existing
+     * canonical filter. Output can be a product of operand graph sizes.
+     * @param automata one or more scalar operands
+     * @return full word/vector relation, with no dominance filtering
+     */
+    public static MultiWeightedAutomaton synchronizedProduct(WeightedAutomaton... automata) {
+        if (automata.length == 0) throw new IllegalArgumentException("At least one operand required");
+        WeightedAutomaton[] operands = automata.clone();
+        for (WeightedAutomaton a : operands) Objects.requireNonNull(a);
+        MultiWeightedAutomaton result = MultiWeightedAutomaton.fromWeightings(operands[0]);
+        for (int i = 1; i < operands.length; i++)
+            result = productIndependent(result, MultiWeightedAutomaton.fromWeightings(operands[i]));
+        return result;
+    }
+    /**
      * @param a prefix resources
      * @param b suffix independent resources
      * @return concatenation with disjoint resource blocks
