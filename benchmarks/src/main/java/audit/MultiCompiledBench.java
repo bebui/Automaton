@@ -1,6 +1,8 @@
 package audit;
 
 import fr.menana.automaton.*;
+import fr.menana.automaton.weighted.*;
+import fr.menana.automaton.weighted.compiled.*;
 import org.openjdk.jmh.annotations.*;
 import java.util.concurrent.TimeUnit;
 

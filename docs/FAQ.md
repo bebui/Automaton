@@ -75,9 +75,10 @@ different, explicitly documented IEEE contract.
 
 ## How do I publish or install the extension?
 
-Build/install the checkout locally for development. The unchanged `3.0.0` POM
-does not imply that Maven Central already includes Git changes. Selecting a new
-release version, signing and publishing artifacts is a separate release action.
+Build/install the checkout locally for development. The POM prepares `4.0.0`;
+this does not imply that Maven Central already includes Git changes. Signing
+and publishing artifacts is a separate release action. See the
+[4.0 migration guide](MIGRATION_4.md) for packages and compatibility.
 The library remains LGPL-3.0; see [LICENSE](../LICENSE).
 
 [Documentation index](README.md) · [API reference](API_REFERENCE.md)

@@ -66,6 +66,12 @@
  * {@link fr.menana.automaton.Automaton#sameLanguage(Automaton)} compares the words they accept.
  * Operations return new automata and leave their operands unchanged.
  *
+ * <h2>Weighted extension in 4.0</h2>
+ * Scalar/vector costs and immutable shared graphs are in
+ * {@link fr.menana.automaton.weighted}; compiled weighted recognition is in
+ * {@link fr.menana.automaton.weighted.compiled}. Existing Boolean API names stay
+ * in this package. See the complete repository manual and 4.0 migration guide.
+ *
  * <h2>Threads</h2>
  * {@link fr.menana.automaton.Automaton} and {@link fr.menana.automaton.IntervalSet} are mutable and not thread safe.
  * {@link fr.menana.automaton.CompiledDfa} and {@link fr.menana.automaton.Searcher} are immutable and can be shared between threads.

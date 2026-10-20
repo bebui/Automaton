@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-20T04:00:58+02:00",
+  "baseline_commit": "d9c922545c9c8eaf9482c78a028f42aeadd3aef1",
+  "os": "Linux-7.0.0-34-generic-x86_64-with-glibc2.43",
+  "cpu_count": 4,
+  "cpu_model": "Intel(R) Pentium(R) CPU  N3700  @ 1.60GHz",
+  "java": "openjdk version \"17.0.20.1\" 2026-08-18\nOpenJDK Runtime Environment (build 17.0.20.1+1-1-26.04-Ubuntu)\nOpenJDK 64-Bit Server VM (build 17.0.20.1+1-1-26.04-Ubuntu, mixed mode, sharing)",
+  "jmh_version": "1.37",
+  "shared_host": true,
+  "forks": 2,
+  "warmup_iterations": 3,
+  "measurement_iterations": 5,
+  "iteration_duration_ms": 500,
+  "profiler": "gc",
+  "runtime_dependencies_added": 0
+}

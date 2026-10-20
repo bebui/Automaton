@@ -809,3 +809,17 @@ against this checkout, and run. A regeneration tool keeps the static signature
 reference reproducible. Root README links to the manual; library sources and the
 root POM remain unchanged by documentation work. Javadoc generation is verified
 separately. Documentation validation and hashes accompany the final audit.
+
+
+## 18. Version 4.0 and package organization
+
+The merged weighted extension is prepared as 4.0.0, retaining the public Boolean
+3.0 packages and signatures. The new weighted API moves into `weighted` and
+`weighted.compiled`, with unsupported numeric helpers in `weighted.internal`.
+A weight-independent `WeightedDfaIndex` now supports explicit sharing across
+independent scalar/vector evaluators. The existing interval partitioner is reused
+through an additive public facade and primitive `IntervalSet` accessors.
+See [the scoped release/refactoring plan](RELEASE_4_PLAN.md),
+[English migration guide](docs/MIGRATION_4.md) and
+[validation report](audit/release-4/README.md). Historical audits above describe
+the snapshots actually measured; they are not retroactively rewritten.

@@ -12,16 +12,15 @@ The root POM coordinates are:
 <dependency>
     <groupId>fr.menana</groupId>
     <artifactId>automaton</artifactId>
-    <version>3.0.0</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 
-For Gradle: `implementation("fr.menana:automaton:3.0.0")`. This identifies the
-3.0.0 artifact; it does not fetch unreleased weighted APIs from the Git checkout.
-For the extension, build and install this checkout locally, or use its built JAR.
-A local install under the unchanged version replaces that version in your local
-Maven repository. A separate published release/version is not created by these
-commands. Avoid confusing a local build with the Maven Central artifact.
+For Gradle: `implementation("fr.menana:automaton:4.0.0")`. These are the
+coordinates prepared by this checkout. Until a release is published, build and
+install it locally or use the built JAR. A local install under 4.0.0 does not
+replace your 3.0.0 artifact. These commands do not publish to Maven Central or
+create a GitHub release. Previously published 3.0 artifacts lack the weighted API.
 
 ```bash
 java -version
@@ -64,7 +63,7 @@ prefer an interval transition over enumerating symbols in an expression.
 ## Build products and API documentation
 
 The main `target` directory contains the binary, source and Javadoc JARs after
-`verify`. These include the extension when built from this checkout. The main
+`verify`. These include the scalar/vector weighted API when built from this checkout. The main
 JAR does not include benchmark classes or JMH dependencies.
 
 ```bash

@@ -4,7 +4,7 @@
 
     <groupId>fr.menana</groupId>
     <artifactId>automaton</artifactId>
-    <version>3.0.0</version>
+    <version>4.0.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
@@ -25,7 +25,8 @@
 
     <description>
         A Java library to create and manipulate deterministic and non-deterministic finite automata whose symbols are
-        integers : regular expressions, determinization, minimization, boolean operations, language queries and search.
+        integers: regular expressions, language operations and search; scalar/vector weights, shortest paths,
+        finite horizons, lexicographic and Pareto optimization, and compiled recognition.
     </description>
     <licenses>
         <license>

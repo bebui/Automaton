@@ -1,0 +1,6 @@
+states=1024 edges=4096 dimensions=8 scalarizations=16
+compiled_multi_bytes=509512
+compiled_plus_16_shared_scalar_indexes_bytes=512032
+compiled_plus_16_separate_scalar_indexes_bytes=1365664
+after_100_reweightings_bytes=509512
+fresh_compiled_multi_bytes=509512

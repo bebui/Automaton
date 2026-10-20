@@ -19,7 +19,10 @@ check(multi.graph() == cost.graph());
 check(multi.paretoFront().size() == 2);
 check(Arrays.equals(new int[]{0}, multi.lexicographicBestPath().word()));
 check(Arrays.equals(new int[]{1}, multi.scalarize(1, 2).bestPath().word()));
-CompiledMultiWeightedDfa compiled = multi.compile();
+WeightedDfaIndex index = WeightedDfaIndex.of(multi.graph());
+CompiledMultiWeightedDfa compiled = CompiledMultiWeightedDfa.of(multi, index);
+check(compiled.project(0).index() == index);
+check(CompiledWeightedDfa.of(cost, index).index() == index);
 double[] output = new double[2];
 check(compiled.costs(new int[]{1}, output));
 check(Arrays.equals(new double[]{10, 1}, output));
@@ -123,5 +126,11 @@ sharing the exact interval index. `compiled.reweight(other)` also reuses it when
 the graph object is identical; the new vector dimension may differ. The old
 compiled instance remains unchanged. NFA compilation is rejected explicitly;
 Boolean determinization would lose the vector relation.
+
+`WeightedDfaIndex.of(graph)` creates the weight-independent index explicitly.
+The scalar/vector `of(automaton,index)` factories require the identical graph,
+and `index()` exposes the immutable shared index. This allows unrelated cost
+stores on the same graph to reuse lookup arrays without first compiling one
+of them; see the [migration guide](MIGRATION_4.md#sharing-a-compiled-index-across-weights).
 
 [Documentation index](README.md) · [API reference](API_REFERENCE.md)

@@ -85,7 +85,7 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      * Returns the number of disjoint intervals in this set
      * @return the number of intervals
      */
-    int intervalCount() {
+    public int intervalCount() {
         return count;
     }
 
@@ -105,6 +105,45 @@ public class IntervalSet implements Comparable<IntervalSet>,Cloneable{
      */
     int maxAt(int i) {
         return bounds[2 * i + 1];
+    }
+
+    /**
+     * Reads an interval lower bound without allocating an Interval or collection.
+     * @param index interval index in sorted canonical order
+     * @return inclusive lower bound
+     * @throws IndexOutOfBoundsException if index is outside intervalCount()
+     */
+    public int getIntervalMin(int index) { return bounds[2 * Objects.checkIndex(index, count)]; }
+
+    /**
+     * Reads an interval upper bound without allocating an Interval or collection.
+     * @param index interval index in sorted canonical order
+     * @return inclusive upper bound
+     * @throws IndexOutOfBoundsException if index is outside intervalCount()
+     */
+    public int getIntervalMax(int index) { return bounds[2 * Objects.checkIndex(index, count) + 1]; }
+
+    /**
+     * Copies a slice of sorted disjoint inclusive intervals from primitive arrays.
+     * Adjacent intervals are merged. Neither input array is retained or modified.
+     * @param minima lower bounds
+     * @param maxima upper bounds, same length as minima
+     * @param from inclusive slice start
+     * @param to exclusive slice end
+     * @return independent canonical interval set
+     * @throws IllegalArgumentException for unequal arrays, inverted or overlapping/unsorted intervals
+     * @throws IndexOutOfBoundsException for an invalid slice
+     */
+    public static IntervalSet fromSortedIntervals(int[] minima, int[] maxima, int from, int to) {
+        if (minima.length != maxima.length) throw new IllegalArgumentException("Equal interval-array lengths required");
+        Objects.checkFromToIndex(from, to, minima.length);
+        IntervalSet result = new IntervalSet();
+        for (int i = from; i < to; i++) {
+            if (minima[i] > maxima[i] || (i > from && minima[i] <= maxima[i - 1]))
+                throw new IllegalArgumentException("Sorted disjoint intervals required");
+            result.append(minima[i], maxima[i]);
+        }
+        return result;
     }
 
     private void ensureCapacity(int intervals) {

@@ -13,7 +13,7 @@ JAVAP = str(Path(JAVA_HOME) / 'bin/javap') if JAVA_HOME else shutil.which('javap
 
 def generate():
     names = [str(p.relative_to(CLASSES).with_suffix('')).replace(os.sep, '.')
-             for p in sorted(CLASSES.rglob('*.class')) if p.name != 'package-info.class']
+             for p in sorted(CLASSES.rglob('*.class')) if p.name != 'package-info.class' and '/internal/' not in p.as_posix()]
     if not names:
         raise SystemExit('Build the library first with Maven and JDK 17.')
     text = subprocess.check_output([JAVAP, '-public', '-classpath', str(CLASSES), *names], text=True)
@@ -39,7 +39,8 @@ def generate():
              'Generated from the compiled Java 17 classes in this checkout. Regenerate with',
              '`python3 docs/generate_api_reference.py` after building the library.',
              'This lists declared public constructors, methods, overloads and constants,',
-             'including public nested types. Inherited `Object` methods are not repeated.',
+             'including public nested types. Unsupported `weighted.internal` helpers are excluded.',
+             'Inherited `Object` methods are not repeated.',
              'Java/JDK and library package prefixes are shortened for readability.',
              'Parameter contracts, return/absence conventions and algorithm preconditions',
              'are explained in the [topic guides](README.md) and source Javadoc.', '',

@@ -1,0 +1,11 @@
+{
+  "final_source_non_package_class_files_match_tested_classes": 101,
+  "package_metadata_excluded_from_direct_javac_comparison": 5,
+  "reason": "Maven synthesizes empty package descriptors with a different constant-pool order. All 106 tested/benchmark class files including these descriptors match in compatibility.json.",
+  "javac_options": [
+    "--release",
+    "17",
+    "-g",
+    "-Xpkginfo:always"
+  ]
+}

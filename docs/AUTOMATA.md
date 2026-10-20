@@ -58,6 +58,18 @@ not the internal primitive storage. `ALL` and `EMPTY` reject mutation; clone
 one to obtain a mutable copy. The alphabet is the entire signed `int` range,
 with cardinality 2^32, unless your own construction restricts it.
 
+For allocation-free indexed reads, `intervalCount()`, `getIntervalMin(i)` and
+`getIntervalMax(i)` expose primitive bounds in canonical order. The indexes must
+be within `[0, intervalCount())`. `fromSortedIntervals(mins,maxs,from,to)` copies
+a slice of equally sized primitive arrays: ranges must be ordered and disjoint;
+adjacent ranges are merged. The result is independent of subsequent array edits.
+
+`Alphabet.of(collection)` snapshots the interval partition induced by those
+sets, ignoring null elements and excluding symbols contained in none of them.
+`size()`, `min(classId)` and `max(classId)` read its immutable disjoint classes,
+numbered in increasing order. Building the partition takes O(I log I) for I
+input intervals and never enumerates individual symbols.
+
 ## Inspection and mutation boundaries
 
 `getStates()` exposes the live state list and `State.getTransitions()` the live
