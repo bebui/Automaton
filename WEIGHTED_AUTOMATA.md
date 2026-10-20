@@ -266,28 +266,117 @@ rounding. Exact fallback costs more memory and time; it is not a runtime depende
 
 ## Advanced operations and compilation
 
-`determinize()` uses residual weights only on bounded integer DAGs, with epsilon
-removal when needed. Already deterministic inputs are returned unchanged.
-General cyclic weighted automata are not claimed to be determinizable.
-`WeightedTransformations.determinizeDag(a, maxStates)` throws explicitly on a
-state budget, without interpreting exhaustion as mathematical impossibility.
+`determinize()` and `determinize(maxStates)` use exact residual subsets. The
+bounded-integer DAG fast path is retained. Other inputs, including cyclic NFAs
+and epsilon cycles of nonnegative total cost, use exact binary-input sums and
+exact residual equality. The default limit is 10,000 output states. A budget
+exception means no complete result was produced; it does not prove that an
+equivalent finite DFA cannot exist. Already deterministic inputs are returned
+unchanged (the construction budget does not limit that existing graph).
+Relevant negative epsilon cycles are rejected. Every emitted transition and
+boundary must be exactly representable as a finite `double`; otherwise an
+`ArithmeticException` is raised instead of rounding a transformation silently.
+`determinizeDag` retains its explicitly restricted, primitive implementation.
 
-`minimize()` requires a deterministic bounded-integer DAG, pushes exact suffix
-potentials and merges equal normalized right-cost functions. The conservative
-certification bound is `abs(weight) <= 2^48/(V+1)^2` for integral edge and boundary
-weights. Other families fail explicitly rather than falling back to Boolean
-minimization. The mathematical restrictions and deferred families are discussed
-in [the technical plan](WEIGHTED_AUTOMATA_PLAN.md).
+`minimize()` accepts deterministic epsilon-free cyclic graphs, including graphs
+with negative consuming cycles. It chooses a canonical accepted suffix by
+shortest length then smallest word, normalizes weights using its exact cost,
+and refines weighted interval signatures to a fixed point. It minimizes the
+number of deterministic states while preserving exact word-cost sums. Output
+weights must again be exactly representable as doubles. This does not require a
+finite minimum-cost accepting walk. `minimizeDag` retains the bounded-integer
+DAG fast path and its conservative bound `abs(weight) <= 2^48/(V+1)^2`.
 
-`kBestPaths(k)` returns logical-edge paths on a DAG, retaining equal-cost paths.
-`KBestPaths.ofLength(a, length, k)` uses a finite unfolding and rejects useful
-epsilon cycles. These are not K distinct words; an interval edge provides one
-representative symbol. K equal-vector Pareto witnesses are a different query.
+`kBestPaths(k)` returns logical-edge accepting walks, allowing repeated vertices
+and retaining equal-cost walks. DAGs use the original suffix-list algorithm;
+cyclic graphs use an exact-potential best-first search. `pathsByCost()` exposes
+the lazy iterator. A useful negative cycle is rejected before enumeration;
+unreachable cycles and cycles without an accepting continuation are ignored.
+Zero-cost cycles yield infinitely many equal-cost walks, fairly ordered by
+number of edges. Such an infinite tie can prevent any higher-cost walk from
+ever appearing. Labels provide one representative symbol per logical edge,
+so these are not distinct-word queries. `KBestPaths.ofLength(a, length, k)`
+counts consumed symbols and now permits useful nonnegative epsilon cycles.
+
+`kBestWords(k)` and `wordsByCost()` return `WeightedWord` results: a concrete
+`int[]` word and its minimum accepting cost. For an NFA, each word prefix carries
+exact best costs per state, with weighted epsilon closure. Only prefixes needed
+by the search are expanded; a complete DFA is never required. This works even
+when explicit residual determinization would exhaust its state budget. NFA
+ambiguity and zero-cost epsilon cycles cannot duplicate a word. Deterministic
+inputs use a direct path/cursor fast path without per-state vectors.
+Interval symbols are generated lazily, even for the full signed-int range.
+`KBestWords.ofLength(a, length, k)` supports signed consuming cycles through
+finite unfolding, including zero/positive epsilon cycles. Useful negative
+cycles are rejected before unrestricted enumeration; at a fixed horizon only
+negative epsilon cycles can remain. Equal-cost words are ordered by consumed
+length without a lexicographic promise. Search/frontier size can be exponential.
+Cost ordering and transformations use exact binary-input sums; reported costs
+are rounded once and can differ from the fast IEEE scalar `cost` in cancellation
+cases. Input automata are never modified.
+
+```java
+Iterator<WeightedPath> walks = scalar.pathsByCost();
+WeightedPath first = walks.next();
+List<WeightedWord> words = scalar.kBestWords(10);
+WeightedAutomaton deterministic = scalar.determinize(20_000);
+WeightedAutomaton minimal = deterministic.minimize();
+```
+
+The [advanced extension report](audit/weighted-advanced-cyclic/README.md)
+gives the invariants, costs, validation and remaining restrictions. Exact
+arithmetic and frontier growth can be expensive; this implementation does not
+claim specialized sidetrack-algorithm bounds or a general determinization test.
 
 `compile()` creates `CompiledWeightedDfa`, rejecting nondeterminism and epsilon
 edges. It does not silently determinize. The index performs binary interval
 searches and can be reused with `compiled.reweight(newWeighting)` when the exact
 graph object is shared. Existing-array recognition allocates nothing after setup.
+
+## Compiled vector recognition and combining scalar automata
+
+```java
+// Same immutable graph: one correlated vector for each common logical path.
+MultiWeightedAutomaton multi = MultiWeightedAutomaton.fromWeightings(cost, duration);
+CompiledMultiWeightedDfa compiled = multi.compile();
+double[] vector = compiled.costs(1, 2, 3); // null if the word is absent
+
+double[] output = new double[multi.dimensions()];
+boolean accepted = compiled.costs(existingWord, output); // no allocation
+CompiledWeightedDfa score = compiled.scalarize(0.5, 2.0); // same interval index
+CompiledMultiWeightedDfa next = compiled.reweight(newVectorsOnSameGraph);
+
+// Independent paths, possibly different structures: synchronize common words.
+MultiWeightedAutomaton product = MultiWeightedAutomaton.synchronizedProduct(a, b, c);
+```
+
+`fromWeightings` requires at least one scalar operand and identity of the graph
+object. It copies only the operand-reference array: O(d) setup/storage, no graph
+or weight-table copy. Initial and final costs become vector components too.
+On an NFA, all components describe **one common path**. If two parallel paths
+have vectors `(0,10)` and `(10,0)`, their componentwise minima `(0,0)` do not
+form an available vector; their sum scalarization has minimum 10.
+
+`synchronizedProduct` instead retains every combination of operand paths for
+the same word, with one dimension per scalar automaton. Applied to those same
+two scalar weightings it can contain `(0,0)` from independently chosen paths.
+It uses symbolic interval intersections and the canonical epsilon filter; its
+graph can grow as the product of operand sizes. It preserves dominated vectors
+and path combinations, not just a Pareto front. This is a full relation; it is
+not a routine that synthesizes componentwise minima on a shared path.
+
+`CompiledMultiWeightedDfa` accepts only deterministic epsilon-free graphs, so a
+recognized word has one cost vector. An NFA is rejected rather than silently
+collapsing its vector relation. The compiled interval index references logical
+edge IDs and vector storage; `reweight`, `project` and `scalarize` reuse it.
+A reweighting must use the identical graph but may change the dimension count.
+The existing scalar compiled evaluator is reused without modifying its lookup
+loop. Buffered evaluation takes O(L(log I + d)) time, where I is the outgoing
+interval count. It overwrites the caller buffer and returns false with every
+component set to `+Infinity` on rejection. On overflow it throws and buffer
+contents are unspecified. The convenience array-returning overload allocates
+one output vector and returns null on rejection. Sums follow the compiled
+scalar IEEE contract; exact vector path queries retain their separate API.
 
 ## Validation
 
