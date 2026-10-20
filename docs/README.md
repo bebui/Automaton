@@ -1,10 +1,9 @@
 # Automaton documentation
 
-This manual describes the **4.1.0-SNAPSHOT** development checkout. The published
-4.0.0 release already includes scalar/vector weights; the direct `Automaton`
-bridge and reusable `AutomatonSnapshot` are new in 4.1. Examples use Java 17 and
-the actual checkout API. Build/install locally for unreleased additions; a Git
-merge does not publish artifacts. See [Getting started](GETTING_STARTED.md).
+This manual describes the published **4.1.0** release, available on Maven Central.
+The 4.0 release introduced scalar/vector weights; the direct `Automaton` bridge
+and reusable `AutomatonSnapshot` are new in 4.1. Examples use Java 17 and the
+release API. See [Getting started](GETTING_STARTED.md) for installation.
 
 ## Read by topic
 

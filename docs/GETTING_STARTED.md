@@ -12,15 +12,14 @@ The root POM coordinates are:
 <dependency>
     <groupId>fr.menana</groupId>
     <artifactId>automaton</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>4.1.0</version>
 </dependency>
 ```
 
-For Gradle: `implementation("fr.menana:automaton:4.1.0-SNAPSHOT")`. Build and
-install this development checkout locally or use its built JAR; these new APIs
-are not part of the published 4.0.0 release. To use the published library instead,
-select `4.0.0` from Maven Central. Installing the snapshot leaves that artifact
-intact. These commands do not publish or create a GitHub release. See the
+For Gradle: `implementation("fr.menana:automaton:4.1.0")`. These artifacts are
+available on Maven Central and include the direct Automaton/weights integration.
+To build the source checkout locally, use the commands below; they do not
+publish artifacts or create a GitHub release. See the
 [Automaton/weights integration guide](AUTOMATON_AND_WEIGHTS.md) for the 4.1 additions
 and the [release guide](../RELEASING.md) for maintainer publication steps.
 

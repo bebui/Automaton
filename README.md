@@ -26,24 +26,23 @@ build and verify a signed Central bundle before uploading it.
 
 ## Installation
 
-The published **4.0.0** release is available on Maven Central (Java 17 required).
-This checkout develops **4.1.0-SNAPSHOT**, adding direct integration between
-`Automaton` and its weighted variants. Build/install the checkout locally for
-those new APIs; the coordinates below select the published 4.0.0 release.
+The published **4.1.0** release is available on Maven Central (Java 17 required).
+It includes direct integration between `Automaton` and its weighted variants,
+with reusable structural snapshots. The coordinates below select this release.
 
 ```xml
 <dependency>
     <groupId>fr.menana</groupId>
     <artifactId>automaton</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
 </dependency>
 ```
 
-With Gradle: `implementation("fr.menana:automaton:4.0.0")`.
+With Gradle: `implementation("fr.menana:automaton:4.1.0")`.
 
 The API documentation is on [javadoc.io](https://javadoc.io/doc/fr.menana/automaton).
 
-### Adding weights in the 4.1 development API
+### Adding weights since 4.1
 
 Start from an existing `Automaton` with `weighted(transition -> cost)` or
 `multiWeighted(...)`. Reuse `snapshot()` when several weightings must share one

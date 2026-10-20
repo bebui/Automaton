@@ -1,7 +1,8 @@
 # Automaton and its weighted variants
 
-This integration API is **new in 4.1**, currently `4.1.0-SNAPSHOT`. Build this
-checkout locally. The published 4.0.0 weighted factories/builders remain valid.
+This integration API is **new in 4.1** and available in the published
+`fr.menana:automaton:4.1.0` release on Maven Central. The 4.0 weighted
+factories/builders remain valid.
 
 ## Start from the same Automaton
 
@@ -32,6 +33,51 @@ check(source.run() && !snapshot.run());
 callback. The callbacks receive the original `Transition` objects, so existing
 cost tables keyed by transition identity remain usable. Scalar and vector
 boundaries default to zero. All supplied costs must be finite.
+
+## Different costs on one network
+
+Suppose a transport automaton represents allowed itineraries, with each transition
+representing a connection. A direct train might cost 45 and take 50 minutes,
+while a bus-and-metro itinerary costs 12 and takes 95 minutes. The connection
+prices and durations come from complete tables keyed by the original transitions:
+
+```java
+Map<Transition, Double> prices = ...;
+Map<Transition, Double> durations = ...;
+AutomatonSnapshot network = transport.snapshot();
+WeightedAutomaton cheapest = network.weighted(prices::get);
+WeightedAutomaton fastest = network.weighted(durations::get);
+MultiWeightedAutomaton alternatives = network.multiWeighted(prices::get, durations::get);
+```
+
+Each callback looks up the value of the particular transition being captured;
+costs need not be uniform. Scalar shortest paths choose the cheapest or fastest
+accepting itinerary. The vector version retains price and duration on each common
+path so Pareto optimization can compare their tradeoffs. Every version above
+shares the same network structure. This API is useful when an existing automaton
+needs several cost models or when cost tables change between evaluations.
+
+## Words and weight arrays
+
+In the first example, `"12+"` recognizes a `1` followed by one or more `2`s.
+`transition -> 2` assigns cost 2 to every transition, so reading `[1, 2, 2]`
+traverses three transitions and costs 6, with zero boundary costs.
+The callback entry point does not replace array-based APIs.
+
+```java
+int[] word = {1, 2, 2};
+double value = direct.cost(word); // equivalent to direct.cost(1, 2, 2)
+double[] edgeCosts = new double[snapshot.graph().getNbTransitions()];
+java.util.Arrays.fill(edgeCosts, 2.0);
+WeightedAutomaton byArray = WeightedAutomaton.of(snapshot.graph(), edgeCosts);
+```
+
+`edgeCosts[e]` is the cost of logical edge ID `e` in this exact graph.
+`WeightedAutomaton.withWeights(double[])` captures replacement edge costs
+on the same graph. Vector builders still accept a `double[]` per transition;
+`MultiWeightedAutomaton.of(graph, dimensions, double[])` accepts a flat
+edge-major array, with component `d` of edge `e` at `e * dimensions + d`.
+All these factories defensively copy the supplied cost arrays.
 
 ## Capture once when several costs share a structure
 

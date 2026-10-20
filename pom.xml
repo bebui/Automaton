@@ -4,7 +4,7 @@
 
     <groupId>fr.menana</groupId>
     <artifactId>automaton</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>4.1.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
@@ -47,7 +47,7 @@
         <connection>scm:git:git@github.com:bebui/Automaton.git</connection>
         <url>https://github.com/bebui/Automaton</url>
         <developerConnection>scm:git:git@github.com:bebui/Automaton.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v4.1.0</tag>
     </scm>
 
     <build>
