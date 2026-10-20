@@ -21,20 +21,46 @@ import java.util.*;
 import java.math.BigDecimal;
 
 /**
- * K best logical-edge paths on DAGs. Equal-cost paths remain distinct; distinct words are not enumerated.
+ * K best logical-edge accepting walks. Repeated states and equal-cost paths remain distinct.
+ * Interval labels provide a representative symbol; distinct words have a separate API.
  */
 public final class KBestPaths {
     private KBestPaths() { }
     private record Suffix(double cost, BigDecimal exact, int edge, Suffix next) { }
     /**
-     * Keeps K suffixes per vertex, sorting at most K*outdegree+1 candidates.
-     * Output/reconstruction can be exponential in requested K; no silent budget truncation.
+     * On DAGs keeps K suffixes per vertex, sorting at most K*outdegree+1 candidates.
+     * On cyclic graphs collects the lazy iterator, rejecting useful negative cycles.
+     * The number of paths can be exponential in graph size; storage depends on K.
+     * No silent budget truncation is used.
      * A nonsingleton label contributes its smallest symbol as the concrete witness.
-     * @param a DAG weighting
+     * @param a scalar weighting
      * @param k requested number of paths
      * @return up to K paths, increasing cost
      */
     public static List<WeightedPath> accepting(WeightedAutomaton a, int k) {
+        if (k < 0) throw new IllegalArgumentException("Negative K");
+        if (k == 0) return List.of();
+        if (a.graph().isAcyclic()) return acceptingDag(a, k);
+        Iterator<WeightedPath> paths = iterator(a); List<WeightedPath> result = new ArrayList<>();
+        while (result.size() < k && paths.hasNext()) result.add(paths.next());
+        return List.copyOf(result);
+    }
+    /**
+     * Lazily enumerates accepting walks, including repeated vertices and epsilon
+     * edges. Exact suffix potentials handle signed weights; useful negative cycles
+     * are rejected before enumeration. Zero-cost cycles yield infinitely many
+     * equal-cost walks, returned fairly in increasing edge count. There is no
+     * promise to reach a higher cost after infinitely many lower-cost results.
+     * Preprocessing: DAG O(V+E), nonnegative edges O((V+E) log(V+E)), otherwise O(VE).
+     * Queue work is output/search dependent, O(log Q) per queued prefix, plus exact
+     * arithmetic. Persistent prefixes share storage; no paths are eagerly listed.
+     * The iterator is confined to one thread and can be abandoned at any time.
+     * @param a scalar weighting
+     * @return independent lazy iterator in increasing exact cost
+     */
+    public static Iterator<WeightedPath> iterator(WeightedAutomaton a) { return new BestFirstPaths(a, false); }
+
+    private static List<WeightedPath> acceptingDag(WeightedAutomaton a, int k) {
         if (k < 0) throw new IllegalArgumentException("Negative K");
         AutomatonGraph g = a.graph(); g.requireDag(); if (k == 0 || g.initial < 0) return List.of();
         WeightMath.Exactness certificate = new WeightMath.Exactness(); certificate.include(a.initialWeight());
@@ -74,9 +100,10 @@ public final class KBestPaths {
      * @param a weighting
      * @param length exact consumed length
      * @param k number of logical paths
-     * @return best paths, rejecting epsilon cycles
+     * @return best walks; rejects useful negative epsilon cycles at this horizon
      */
     public static List<WeightedPath> ofLength(WeightedAutomaton a, int length, int k) {
+        if (k < 0) throw new IllegalArgumentException("Negative K");
         LayeredAutomaton layers = LayeredAutomaton.exactly(a.graph(), length); List<WeightedPath> result = new ArrayList<>();
         for (WeightedPath p : accepting(layers.evaluate(a), k)) result.add(layers.map(p)); return List.copyOf(result);
     }

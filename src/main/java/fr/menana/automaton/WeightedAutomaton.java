@@ -214,22 +214,36 @@ public final class WeightedAutomaton {
      */
     public WeightedAutomaton removeEpsilon() { return WeightedTransformations.removeEpsilon(this); }
     /**
-     * @return certified residual determinization on bounded integer DAGs, or this if already deterministic
+     * @return exact residual determinization within the default state budget, or this if already deterministic
      */
-    public WeightedAutomaton determinize() { return WeightedTransformations.determinizeDag(this); }
+    public WeightedAutomaton determinize() { return WeightedTransformations.determinize(this); }
     /**
-     * @return certified weighted minimization of a bounded integer deterministic DAG
+     * @return exact weighted minimization of a deterministic graph; normalized weights must be representable
      */
-    public WeightedAutomaton minimize() { return WeightedTransformations.minimizeDag(this); }
+    public WeightedAutomaton minimize() { return WeightedTransformations.minimize(this); }
     /**
      * @return immutable weighted DFA index; rejects nondeterminism rather than losing costs
      */
     public CompiledWeightedDfa compile() { return CompiledWeightedDfa.of(this); }
     /**
      * @param k number of paths
-     * @return DAG accepting paths in increasing cost order
+     * @return accepting walks in increasing cost order; rejects useful negative cycles
      */
     public List<WeightedPath> kBestPaths(int k) { return KBestPaths.accepting(this, k); }
+    /**
+     * @param maxStates positive determinization output-state budget
+     * @return complete exact deterministic equivalent, or an explicit failure
+     */
+    public WeightedAutomaton determinize(int maxStates) { return WeightedTransformations.determinize(this, maxStates); }
+    /** @return lazy accepting walks, rejecting useful negative cycles */
+    public Iterator<WeightedPath> pathsByCost() { return KBestPaths.iterator(this); }
+    /**
+     * @param k maximum number of distinct words
+     * @return concrete words ranked by their minimum accepting cost
+     */
+    public List<WeightedWord> kBestWords(int k) { return KBestWords.accepting(this, k); }
+    /** @return lazy distinct words using on-demand state-cost vectors */
+    public Iterator<WeightedWord> wordsByCost() { return KBestWords.iterator(this); }
     /**
      * @param prefix imposed prefix
      * @return optimum among accepting paths starting with these symbols

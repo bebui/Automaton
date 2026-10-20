@@ -56,3 +56,17 @@ API compatibility checks accompany the measurements.
 Build-only tooling: [JMH](https://github.com/openjdk/jmh),
 [Build Helper](https://www.mojohaus.org/build-helper-maven-plugin/plugin-info.html)
 and [Maven Shade](https://maven.apache.org/plugins/maven-shade-plugin/plugin-info.html).
+
+
+`CyclicAdvancedBench` adds signed cyclic K walks, first lazy results, ambiguous
+NFA distinct words, cyclic exact residual construction/minimization, signed
+finite horizons with zero epsilon cycles, and full-int-range lazy symbols.
+It varies 32/128 states and uses the same two-fork defaults. Results and numeric
+restrictions are recorded under `audit/weighted-advanced-cyclic/`.
+
+`MultiCompiledBench` measures dimensions 2/8/32 on 128-state DFAs with 16 large
+interval classes and 64-symbol words rotating across all classes. It compares
+buffered/allocated vector recognition, scalar-to-vector views, compilation,
+reweighting and scalarization with/without index reuse. The scalar-product
+fixture is a fixed pair of nine-state weighted chains for every dimension
+parameter; those three rows repeat the same product workload deliberately.

@@ -69,6 +69,40 @@ public final class MultiWeightedAutomaton {
         });
     }
     /**
+     * Combines scalar weightings of the identical immutable graph, in argument
+     * order. Shares graph and scalar stores; only the operand array is copied.
+     * On an NFA each vector belongs to one common logical-edge path, so dimension
+     * costs remain correlated. Independently chosen paths require a product.
+     * @param weightings one or more scalar weightings sharing the exact graph object
+     * @return O(d)-construction vector view, O(1) component access
+     */
+    public static MultiWeightedAutomaton fromWeightings(WeightedAutomaton... weightings) {
+        if (weightings.length == 0) throw new IllegalArgumentException("At least one weighting required");
+        WeightedAutomaton[] operands = weightings.clone();
+        AutomatonGraph graph = Objects.requireNonNull(operands[0]).graph();
+        for (WeightedAutomaton a : operands) if (Objects.requireNonNull(a).graph() != graph)
+            throw new IllegalArgumentException("Identical shared graph required; use synchronizedProduct for independent graphs");
+        return new MultiWeightedAutomaton(graph, operands.length, new ScalarWeightings(operands));
+    }
+    private static final class ScalarWeightings implements Vectors {
+        private final WeightedAutomaton[] operands;
+        ScalarWeightings(WeightedAutomaton[] operands) { this.operands = operands; }
+        public double edge(int e, int d) { return operands[d].weight(e); }
+        public double initial(int d) { return operands[d].initialWeight(); }
+        public double terminal(int s, int d) { return operands[d].finalWeight(s); }
+    }
+    /**
+     * @param automata one or more scalar operands, with possibly different graphs
+     * @return full synchronized relation with one independent cost dimension per operand
+     */
+    public static MultiWeightedAutomaton synchronizedProduct(WeightedAutomaton... automata) {
+        return MultiWeightedOperations.synchronizedProduct(automata);
+    }
+    /**
+     * @return compiled deterministic vector evaluator; no implicit vector determinization
+     */
+    public CompiledMultiWeightedDfa compile() { return CompiledMultiWeightedDfa.of(this); }
+    /**
      * @param dimensions positive number of dimensions
      * @return convenience builder
      */

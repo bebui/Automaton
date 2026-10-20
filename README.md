@@ -13,6 +13,15 @@ Transitions are labelled with sets of integer intervals, so an automaton can wor
 - Graphviz export
 - Unreleased extension: scalar/vector weights, shortest paths, finite horizons, lexicographic and Pareto optimization — see [weighted automata](WEIGHTED_AUTOMATA.md)
 
+## Documentation
+
+Read the [complete library manual](docs/README.md) for installation, Boolean and
+weighted automata, algorithms, contracts and runnable examples. The
+[public API reference](docs/API_REFERENCE.md) lists every current public type and
+overload, including the unreleased extension. The 11 documented examples are
+checked against executable source with `python3 docs/check_examples.py` after a
+local build. Published Javadoc and Maven artifacts may lag behind this checkout.
+
 ## Installation
 
 Available on Maven Central (requires Java 17):
@@ -167,7 +176,7 @@ for (int[] word : a.words(2))      // [1], [1, 1], [2, 1]: by length, then lexic
 
 ## Fast recognition
 
-`compile()` turns an automaton into an immutable deterministic automaton stored in arrays. Reading a symbol is a binary search among the transitions of the current state, 2 to 3 times faster than `Automaton.run`, and the result can be shared between threads.
+`compile()` turns an automaton into an immutable deterministic automaton stored in arrays. Reading a symbol is a binary search among the interval segments of the current state; performance depends on degree and symbol distribution. The result can be shared between threads.
 
 ```java
 CompiledDfa dfa = Automaton.dfaFromString("(1|2)*12").compile();
@@ -206,7 +215,7 @@ dot -Tpng auto.dot -o auto.png
 
 | Operation | Complexity |
 |---|---|
-| Regular expression to NFA | O(size of the expression) (Thompson's construction) |
+| Regular expression to NFA | Linear in simple Thompson fragments; repetition expansion and embedded Boolean operations add their own costs |
 | Determinization | proportional to the number of states of the resulting DFA (exponential in the worst case) |
 | Minimization (default) | O(m log n), n states, m transitions per symbol class (Valmari–Lehtinen) |
 | Brzozowski minimization | exponential in the worst case, often fast in practice |
@@ -215,9 +224,11 @@ dot -Tpng auto.dot -o auto.png
 | `isSubsetOf` | antichains, without determinization |
 | `reduce` | O(m log n) (Paige–Tarjan) |
 | `CompiledDfa.run` | O(length · log t), t outgoing transitions per state |
-| `run` on a deterministic automaton | O(length · t) |
-| `run` on a non-deterministic automaton | O(length · number of states) |
+| `run` on a deterministic automaton | O(length · t · log(k+1)), k intervals per label |
+| `run` on a non-deterministic automaton | O(length · (V+E) · log(k+1)) upper bound for set simulation and ε-closure |
 | `Searcher.find` | O(length of the text + length of the match) |
+
+The refinement/minimization bounds exclude any preceding NFA determinization, which can be exponential.
 
 Symbol classes are the maximal intervals of values that every transition treats in the same way, so their number stays small even when transitions cover large ranges.
 

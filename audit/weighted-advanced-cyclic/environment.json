@@ -1,0 +1,27 @@
+{
+  "base_commit": "43f998a",
+  "implementation_commits": [
+    "8727496",
+    "50d5142"
+  ],
+  "java": "17.0.20.1",
+  "jmh": "1.37",
+  "maven": "3.9.12",
+  "threads": 1,
+  "forks": 2,
+  "warmup_iterations": 3,
+  "warmup_ms": 500,
+  "measurement_iterations": 5,
+  "measurement_ms": 500,
+  "heap": [
+    "-Xms128m",
+    "-Xmx256m"
+  ],
+  "profiler": "gc",
+  "shared_host": true,
+  "campaigns_sequential": true,
+  "baseline_before_candidate": true,
+  "benchmark_library_class_files_match_tested_build": 102,
+  "parallel_heavy_tests_builds_or_benchmarks_during_final_campaigns": false,
+  "lightweight_file_checks_during_campaigns": true
+}

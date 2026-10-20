@@ -707,3 +707,105 @@ concaténations, ε-cycles, frontières, extrêmes, scalarisation et réutilisat
 normalisation pondérée, K chemins et annulations numériques. Voir les journaux
 et rapports de `audit/weighted-extension/` pour l’exécution finale, les mesures
 JMH par famille d’algorithmes et la mesure de mémoire par instrumentation JVM.
+
+
+## 15. Advanced follow-up: cyclic graphs, distinct words and lazy enumeration
+
+Section 14 records the initial implementation merged through PR #7. The following
+extensions supersede its corresponding advanced restrictions. Julien explicitly
+requested continuation and GitHub publication. No original Boolean source or
+runtime dependency changes were needed.
+
+- `KBestPaths.iterator` / `pathsByCost`: exact-potential best-first enumeration of
+  accepting walks on signed cyclic graphs without useful negative cycles. Persistent
+  prefixes, fair equal-cost ordering by edge count, including epsilon edges. DAG
+  K-best retains its fast suffix-list implementation. Fixed horizons now allow
+  nonnegative epsilon cycles without consuming a position.
+- `WeightedWord`, `KBestWords`, `kBestWords`, `wordsByCost`: distinct concrete words
+  at minimum accepting cost. NFA prefixes carry exact per-state costs and weighted
+  epsilon closure, with no complete determinization prerequisite. Symbolic interval
+  classes use lazy concrete-symbol cursors. Deterministic graphs use a direct fast
+  path. Signed consuming cycles are supported at a fixed horizon.
+- `determinize(input,maxStates)`: exact residuals and epsilon closures over binary
+  double values; cyclic inputs succeed when construction completes within the
+  explicit state budget (default 10,000). No partial result or nondeterminizability
+  claim on exhaustion. Already deterministic inputs remain unchanged. The certified
+  bounded-integer DAG implementation remains available and automatically reused.
+- `minimize(input)`: deterministic epsilon-free cyclic graphs, including negative
+  consuming cycles. Potentials are exact costs of shortest-length, then smallest-word
+  accepted suffixes; normalized signatures are refined to a fixed point. This does
+  not require a finite minimum-cost walk.
+
+Transformations emit only finite exactly representable double weights/boundaries;
+otherwise they fail explicitly. Exact sums/differences of valid doubles need not
+fit in another double. Direct word enumeration emits no transformed edges and is
+not restricted by this representability test. There is no approximate residual
+comparison. Ordinary scalar/compiled-vector evaluation retains its IEEE contract.
+
+Structural costs exclude exact-number arithmetic: suffix potentials take O(V+E)
+on DAGs, O((V+E) log(V+E)) with nonnegative edges, otherwise O(VE). Search work
+and storage depend on explored prefixes/frontier; no specialized sidetrack bound
+is claimed. NFA prefixes need O(V) cost vectors and a per-class arc scan/weighted
+closure. Explicit determinization can be exponential or infinite; a state budget
+bounds the explored output, with O(RV) residual storage. Simple cyclic minimization
+has worst-case O(V(V+E+I log I)) time and O(V+E+I) live storage.
+
+Independent tests cover bounded exhaustive walks with completeness bounds, exact
+Floyd–Warshall epsilon closure plus word DP, and pair-product DFA offset equivalence
+for the minimal number of states. Tests also cover zero/improving/irrelevant cycles,
+horizons, cancellation, budgets, nonrepresentable outputs and full-int intervals.
+Proofs, measured results and remaining restrictions are in the
+[advanced report](audit/weighted-advanced-cyclic/README.md).
+
+No complete arbitrary-NFA determinization test or twins-property checker is
+provided. A growing residual construction may exhaust its budget even for a small
+representable function. Unrestricted increasing-cost enumeration rejects useful
+negative cycles. Infinite equal-cost sets can prevent access to higher costs.
+Simple paths without repeated vertices and general cyclic vector Pareto fronts
+remain distinct, unimplemented problems. Existing exact DAG fronts remain intact.
+
+Primary reference for the residual/normalization schemes:
+[Mohri, Weighted Automata Algorithms, sections 6.2–6.4](https://cs.nyu.edu/~mohri/pub/hwa.pdf).
+The canonical-suffix proof and implemented invariants are explained in the report;
+this reference is not used to claim universal cyclic determinization convergence.
+
+## 16. Compiled vectors and scalar-to-vector composition
+
+Additional explicit request: compile multi-weighted automata directly, and construct
+multi-weighted automata from several scalar weightings.
+
+- `CompiledMultiWeightedDfa`: deterministic vector recognition with caller buffers,
+  slices and explicit absence/overflow behavior. The existing scalar interval index
+  is reused without modifying its lookup loop. Projections, compiled scalarizations
+  and reweighting (including changed dimensions) share it. Reweightings do not retain
+  a chain of previous weight stores.
+- `MultiWeightedAutomaton.fromWeightings`: O(d) view of scalar weightings on the
+  identical graph, preserving the correlation of one common path. Operand references
+  are defensively snapshotted; graph and scalar tables are shared.
+- `synchronizedProduct`: one dimension per independent scalar operand; possibly
+  different structures, common words, full path/vector combinations. It reuses the
+  existing independent-resource product and its epsilon filter. Output may have
+  product size; interval alphabets are never expanded.
+
+The correlated view and independent product have different semantics even when
+operands physically share a graph. Independent tests use generated DFA transition
+tables and full Cartesian products of exhaustively enumerated operand paths,
+including epsilon and boundaries. JMH measures dimensions 2/8/32, caller-buffer
+allocations, index reuse, views and product construction. Reachable-object memory
+measurements verify shared indexes and absence of reweighting-history retention.
+
+## 17. Complete English library documentation
+
+Julien explicitly requested documentation of the entire library, in English to
+match the project. The new [manual](docs/README.md) covers Boolean automata,
+integer alphabets, expressions, operations, language queries, compiled search,
+scalar/vector weights, horizons, advanced algorithms, numeric/concurrency contracts
+and FAQ. Its generated reference lists all 39 public types, including nested types
+and overloads, from the actual compiled API. Existing historical audit sections
+retain their original language and snapshot facts.
+
+Eleven source-linked snippets are checked against an executable Java tour, compiled
+against this checkout, and run. A regeneration tool keeps the static signature
+reference reproducible. Root README links to the manual; library sources and the
+root POM remain unchanged by documentation work. Javadoc generation is verified
+separately. Documentation validation and hashes accompany the final audit.
