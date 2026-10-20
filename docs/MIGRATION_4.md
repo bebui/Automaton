@@ -7,10 +7,10 @@ scalar/vector weighted automata, path algorithms, finite horizons, multiobjectiv
 optimization and the package organization below. Java 17 remains the minimum;
 there are no new production dependencies. JMH remains an optional separate module.
 
-The current checkout develops `4.1.0-SNAPSHOT`; build/install locally for its
-[new Automaton/weights bridge](AUTOMATON_AND_WEIGHTS.md). This page records the
-4.0 package migration, which remains valid. The published 4.0.0 release is on
-Maven Central; merging later changes does not publish another artifact.
+The current published release is `4.1.0`, which adds the
+[Automaton/weights bridge](AUTOMATON_AND_WEIGHTS.md) while preserving the 4.0
+public API. Both releases are available on Maven Central. This page records
+the 4.0 package migration, which remains valid for 4.1.
 
 ## Existing 3.0 Boolean clients
 

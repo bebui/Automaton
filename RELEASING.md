@@ -1,8 +1,8 @@
 # Preparing and publishing a Maven Central release
 
-The published release is `fr.menana:automaton:4.0.0`; this checkout develops
-`4.1.0-SNAPSHOT`. Before preparing another release, select and review a new
-non-SNAPSHOT POM version. The verifier rejects development snapshots.
+The published release is `fr.menana:automaton:4.1.0`, with source tag `v4.1.0`.
+Before preparing another release, select and review a new non-SNAPSHOT POM
+version. Never redeploy the published version. The verifier rejects development snapshots.
 
 Release preparation creates a signed Central bundle locally. Uploading and publishing are subsequent
 actions. A normal library build needs neither signing keys nor Central credentials.

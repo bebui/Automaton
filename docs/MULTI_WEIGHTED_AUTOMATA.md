@@ -1,6 +1,6 @@
 # Multi-weighted automata
 
-In the **4.1 development API**, start from `automaton.multiWeighted(callbacks...)`
+Since **4.1**, start from `automaton.multiWeighted(callbacks...)`
 or reuse `automaton.snapshot()` across scalar/vector weightings. See
 [Automaton and weights](AUTOMATON_AND_WEIGHTS.md). The APIs below also remain
 available for direct construction and independent graph composition.

@@ -88,7 +88,7 @@ the documented preconditions instead of depending on incidental exceptions.
 
 Use `mvn clean verify` for tests/packaging and the optional standalone
 [benchmark module](../benchmarks/README.md) for JMH/GC measurements. The source
-POM develops 4.1.0-SNAPSHOT. The original Boolean recognizer/compiler remain
+POM selects the published 4.1.0 release. The original Boolean recognizer/compiler remain
 unchanged; coaccessibility now shares a primitive reachability kernel. The
 [integration audit](../audit/automaton-integration/README.md) records correctness,
 compatibility and before/after measurements. The historical 4.0 package audit follows.

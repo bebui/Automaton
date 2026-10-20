@@ -84,9 +84,9 @@ The shared snapshot captures one graph for multiple cost stores. See
 
 ## How do I publish or install the extension?
 
-Build/install the checkout locally for development. The POM develops `4.1.0-SNAPSHOT`;
-the published 4.0.0 artifact does not include subsequent Git changes. Signing
-and publishing artifacts is a separate release action. See the
+Use `fr.menana:automaton:4.1.0` from Maven Central, or build/install the checkout
+locally for development. Signing and publishing a later version is a separate
+release action described in the [release guide](../RELEASING.md). See the
 [4.0 migration guide](MIGRATION_4.md) for packages and compatibility.
 The library remains LGPL-3.0; see [LICENSE](../LICENSE).
 
