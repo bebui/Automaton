@@ -1,0 +1,20 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< fr.menana:automaton >-------------------------
+[INFO] Building fr.menana:automaton 3.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> javadoc:3.8.0:javadoc (default-cli) > generate-sources @ automaton >>>
+[INFO] 
+[INFO] <<< javadoc:3.8.0:javadoc (default-cli) < generate-sources @ automaton <<<
+[INFO] 
+[INFO] 
+[INFO] --- javadoc:3.8.0:javadoc (default-cli) @ automaton ---
+[INFO] Configuration changed, re-generating javadoc.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  20.059 s
+[INFO] Finished at: 2026-10-20T03:34:28+02:00
+[INFO] ------------------------------------------------------------------------

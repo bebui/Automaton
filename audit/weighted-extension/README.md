@@ -1,5 +1,9 @@
 # Validation de l’extension pondérée
 
+Historical snapshot: initial PR #7 implementation (commit `2c19468`).
+The [advanced follow-up](../weighted-advanced-cyclic/README.md) extends its restrictions;
+measurements and hashes below still describe this original snapshot.
+
 Base : Automaton 3.0.0, commit `f7532436cbe964758988e13f8c5872c43bebe58b`.
 Ces résultats ont été obtenus avant le premier commit et le premier push.
 Les compteurs Git du fichier `verification.json` décrivent cet instantané
