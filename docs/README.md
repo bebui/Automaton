@@ -12,6 +12,7 @@ see [local build instructions](GETTING_STARTED.md) and the [4.0 migration guide]
 |---|---|
 | Release changes, package map, migration from 3.0 / weighted snapshots | [Migration to 4.0](MIGRATION_4.md) |
 | Installation, build, first program, running examples | [Getting started](GETTING_STARTED.md) |
+| Maintainer signing, local Central bundle, validation and publication | [Release guide](../RELEASING.md) |
 | States, integer intervals, epsilon, mutation and copying | [Automata and alphabets](AUTOMATA.md) |
 | Integer expression syntax, precedence, parser API | [Regular expressions](REGULAR_EXPRESSIONS.md) |
 | Boolean language operations and transformations | [Language operations](LANGUAGE_OPERATIONS.md) |

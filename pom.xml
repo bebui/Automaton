@@ -10,6 +10,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <junit.version>4.13.2</junit.version>
+        <central.skipUpload>false</central.skipUpload>
     </properties>
     <dependencies>
         <dependency>
@@ -103,7 +104,8 @@
     </build>
 
     <profiles>
-        <!-- Signs the artifacts and publishes them on Maven Central : mvn -P release deploy -->
+        <!-- Prepare a local signed bundle: mvn -P release -Dcentral.skipUpload=true deploy.
+             Upload for manual Central publication: mvn -P release deploy. -->
         <profile>
             <id>release</id>
             <build>
@@ -125,10 +127,11 @@
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.11.0</version>
+                        <version>0.12.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>central</publishingServerId>
+                            <skipUpload>${central.skipUpload}</skipUpload>
                             <!-- The deployment is uploaded and validated, then published by hand on central.sonatype.com -->
                             <autoPublish>false</autoPublish>
                         </configuration>
