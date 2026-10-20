@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.1.0 — unreleased (`4.1.0-SNAPSHOT`)
+## 4.1.0 — release preparation
 
 - Connect `Automaton` directly to scalar/vector costs with `weighted`,
   `multiWeighted` and a reusable `AutomatonSnapshot` preserving original identity
@@ -14,7 +14,7 @@
   before/after JMH comparisons. Preserve the published 4.0 public API.
 
 See [Automaton and weights](docs/AUTOMATON_AND_WEIGHTS.md) and the
-[integration plan](AUTOMATON_INTEGRATION_PLAN.md). No 4.1 artifact is published.
+[integration plan](AUTOMATON_INTEGRATION_PLAN.md). The 4.1.0 release is being signed and validated for Maven Central.
 
 ## 4.0.0 — published 2026-10-20
 
